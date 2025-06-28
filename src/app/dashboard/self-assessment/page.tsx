@@ -32,6 +32,8 @@ const assessmentSchema = z.object({
   subjects: z.string().min(10, "Please list a few favorite subjects."),
   hobbies: z.string().min(10, "Please tell us about your hobbies."),
   personality: z.string().min(5, "Describe your personality in a few words."),
+  workStyle: z.string().min(10, "Please describe your preferred work style."),
+  ambition: z.string().min(10, "Please tell us about your future ambitions."),
 });
 
 export default function SelfAssessmentPage() {
@@ -48,6 +50,8 @@ export default function SelfAssessmentPage() {
       subjects: "",
       hobbies: "",
       personality: "",
+      workStyle: "",
+      ambition: "",
     }
   });
 
@@ -146,6 +150,22 @@ export default function SelfAssessmentPage() {
                   </FormItem>
                 )} />
 
+                <FormField control={form.control} name="workStyle" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>How do you like to work?</FormLabel>
+                        <FormControl><Textarea {...field} placeholder="e.g., Solving complex puzzles, collaborating with a team, working with my hands, expressing creativity..." /></FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
+                <FormField control={form.control} name="ambition" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>What kind of impact do you want to make?</FormLabel>
+                        <FormControl><Textarea {...field} placeholder="e.g., Build useful technology, help people stay healthy, create beautiful art, start my own business..." /></FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )} />
+
                 <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
@@ -182,5 +202,3 @@ export default function SelfAssessmentPage() {
     </>
   );
 }
-
-    

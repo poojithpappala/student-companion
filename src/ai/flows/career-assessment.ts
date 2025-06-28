@@ -17,6 +17,8 @@ const CareerAssessmentInputSchema = z.object({
   subjects: z.string().describe('The student\'s favorite subjects in school.'),
   hobbies: z.string().describe('The student\'s hobbies and interests outside of school.'),
   personality: z.string().describe('A brief description of the student\'s personality traits (e.g., creative, analytical, team player).'),
+  workStyle: z.string().describe("The student's preferred style of working (e.g., solving puzzles, teamwork, hands-on creation)."),
+  ambition: z.string().describe("The student's long-term career ambitions or desired impact."),
 });
 export type CareerAssessmentInput = z.infer<typeof CareerAssessmentInputSchema>;
 
@@ -42,14 +44,16 @@ const prompt = ai.definePrompt({
   - Favorite Subjects: {{{subjects}}}
   - Hobbies and Interests: {{{hobbies}}}
   - Personality: {{{personality}}}
+  - Preferred Work Style: {{{workStyle}}}
+  - Ambitions/Goals: {{{ambition}}}
 
   **Available Career Paths:**
   ${careers.map(c => `- ${c.name} (id: ${c.id})`).join('\n')}
 
   **Your Task:**
-  1.  Carefully review the student's profile.
+  1.  Carefully review the student's **entire profile**, paying close attention to how their ambitions, work style, and personality align with the available careers.
   2.  Select the **single most suitable career ID** from the list above.
-  3.  Write a warm, positive, and personalized justification (2-3 sentences) explaining *why* you're recommending this path. Connect their subjects, hobbies, and personality to the career choice directly. For example, "Your love for [Subject] and passion for [Hobby] makes you a natural fit for..."
+  3.  Write a warm, positive, and personalized justification (2-3 sentences) explaining *why* you're recommending this path. Connect their subjects, hobbies, personality, work style, and ambitions to the career choice directly. For example, "Your goal to '{{{ambition}}}' and your love for {{{subjects}}} makes you a natural fit for..."
 
   Provide your response in the required JSON format.
   `,
