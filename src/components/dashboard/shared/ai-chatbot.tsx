@@ -20,7 +20,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { aiCareerCoachChatbot } from "@/ai/flows/ai-career-coach-chatbot";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/use-auth";
 
 const chatSchema = z.object({
   question: z.string().min(1, "Message cannot be empty"),
@@ -37,7 +36,6 @@ export function AiChatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { userProfile } = useAuth();
 
   const form = useForm<z.infer<typeof chatSchema>>({
     resolver: zodResolver(chatSchema),
@@ -60,11 +58,12 @@ export function AiChatbot() {
     setIsTyping(true);
 
     try {
+      // Since there's no auth, we send static values for context.
       const response = await aiCareerCoachChatbot({
         question: values.question,
-        stage: userProfile?.stage || "Not specified",
-        careerId: userProfile?.careerId,
-        year: userProfile?.year,
+        stage: "during",
+        careerId: "swe",
+        year: "2nd Year",
       });
       const botMessage: Message = { id: (Date.now() + 1).toString(), text: response.answer, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);

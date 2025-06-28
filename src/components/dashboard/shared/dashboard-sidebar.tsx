@@ -29,8 +29,6 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
-import { useAuth } from "@/hooks/use-auth";
-import { signOut } from "@/lib/firebase/auth";
 
 const menuItems = [
   { href: "/dashboard/before", icon: <Rocket />, label: "Before Undergrad" },
@@ -48,13 +46,12 @@ export function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
-  const { userProfile } = useAuth();
 
   const closeSidebar = () => setOpenMobile(false);
   
-  const handleLogout = async () => {
-    await signOut();
-    router.push('/');
+  const handleLogout = () => {
+    // Mock logout, navigate to auth page
+    router.push('/auth');
   };
 
   return (
@@ -123,12 +120,12 @@ export function DashboardSidebar() {
          </SidebarMenu>
          <div className="flex items-center gap-3 p-2 rounded-lg">
              <Avatar>
-                 <AvatarImage src={userProfile?.photoURL || "https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
-                 <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'U'}</AvatarFallback>
+                 <AvatarImage src={"https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
+                 <AvatarFallback>U</AvatarFallback>
              </Avatar>
              <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
-                 <p className="font-semibold text-sm truncate">{userProfile?.displayName || 'User'}</p>
-                 <p className="text-xs text-muted-foreground truncate">{userProfile?.email || 'user@example.com'}</p>
+                 <p className="font-semibold text-sm truncate">Guest User</p>
+                 <p className="text-xs text-muted-foreground truncate">guest@example.com</p>
              </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 group-data-[collapsible=icon]:hidden" onClick={handleLogout}>
                   <LogOut className="h-4 w-4"/>

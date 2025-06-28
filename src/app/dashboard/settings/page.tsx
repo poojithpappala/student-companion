@@ -10,11 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useAuth } from '@/hooks/use-auth';
-import { updateUserProfile, UserProfile } from '@/lib/firebase/user';
-import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 type UserSettings = {
@@ -23,50 +20,21 @@ type UserSettings = {
 }
 
 export default function SettingsPage() {
-    const { user, userProfile, loading, refreshUserProfile } = useAuth();
-    const router = useRouter();
     const { toast } = useToast();
-    const [settings, setSettings] = useState<UserSettings>({ stage: undefined, year: undefined });
+    const [settings, setSettings] = useState<UserSettings>({ stage: 'during', year: '2nd Year' });
     const [isSaving, setIsSaving] = useState(false);
 
-    useEffect(() => {
-        if (userProfile) {
-            setSettings({
-                stage: userProfile.stage,
-                year: userProfile.year,
-            });
-        }
-    }, [userProfile]);
-
     const handleSave = async () => {
-        if (!user) return;
         setIsSaving(true);
-        try {
-            await updateUserProfile(user.uid, settings);
-            await refreshUserProfile(); // Refresh context state
+        // Mock save operation
+        setTimeout(() => {
             toast({
-                title: 'Settings saved',
-                description: 'Your profile has been updated.',
+                title: 'Settings saved (mock)',
+                description: 'This is a demo. Settings are not persisted.',
             });
-            // Redirect to the new dashboard page if stage has changed
-            if (settings.stage && settings.stage !== userProfile?.stage) {
-                router.push(`/dashboard/${settings.stage}`);
-            }
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: 'destructive',
-                title: 'Save failed',
-                description: 'Could not save your settings. Please try again.',
-            });
-        } finally {
             setIsSaving(false);
-        }
+        }, 1000);
     };
-
-    if (loading) {
-        return <div className="flex justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin" /></div>;
-    }
 
     return (
         <div className="space-y-8 max-w-2xl mx-auto">

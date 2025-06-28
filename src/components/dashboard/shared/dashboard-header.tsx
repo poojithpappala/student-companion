@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/use-auth";
-import { signOut } from "@/lib/firebase/auth";
+import { usePathname } from "next/navigation";
 
 const getBreadcrumb = (pathname: string) => {
     const parts = pathname.split('/').filter(part => part);
@@ -32,13 +30,6 @@ const getBreadcrumb = (pathname: string) => {
 
 export function DashboardHeader() {
   const pathname = usePathname();
-  const { userProfile } = useAuth();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await signOut();
-    router.push('/');
-  };
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
@@ -69,10 +60,10 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 px-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={userProfile?.photoURL || "https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
-                <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'U'}</AvatarFallback>
+                <AvatarImage src={"https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
-              <span className="hidden sm:inline">{userProfile?.displayName || 'User'}</span>
+              <span className="hidden sm:inline">Guest User</span>
               <ChevronDown className="h-4 w-4 hidden sm:inline" />
             </Button>
           </DropdownMenuTrigger>
@@ -83,10 +74,6 @@ export function DashboardHeader() {
               <Link href="/dashboard/settings">Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              Logout
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

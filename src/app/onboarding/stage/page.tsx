@@ -4,8 +4,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button';
 import { Rocket, School, Briefcase, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/logo';
-import { useAuth } from '@/hooks/use-auth';
-import { updateUserProfile } from '@/lib/firebase/user';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
@@ -31,32 +29,11 @@ const stages = [
 ];
 
 export default function StageSelectionPage() {
-  const { user } = useAuth();
   const router = useRouter();
-  const { toast } = useToast();
 
   const handleSelectStage = async (stage: 'before' | 'during' | 'after') => {
-      if (!user) {
-          toast({
-              variant: 'destructive',
-              title: 'Not signed in',
-              description: 'You must be signed in to select a stage.',
-          });
-          router.push('/auth');
-          return;
-      }
-
-      try {
-          await updateUserProfile(user.uid, { stage });
-          router.push('/onboarding/career');
-      } catch (error) {
-          console.error(error);
-          toast({
-              variant: 'destructive',
-              title: 'Update failed',
-              description: 'Could not save your stage. Please try again.',
-          });
-      }
+      // Navigate to the next step, passing the stage as a query parameter
+      router.push(`/onboarding/career?stage=${stage}`);
   };
 
   return (

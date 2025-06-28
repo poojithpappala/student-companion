@@ -5,59 +5,18 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { careers } from '@/lib/constants';
-import { useAuth } from '@/hooks/use-auth';
-import { updateUserProfile } from '@/lib/firebase/user';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
+import { Suspense } from 'react';
 
-export default function CareerSelectionPage() {
-    const { user, userProfile, loading } = useAuth();
+function CareerSelectionContent() {
     const router = useRouter();
-    const { toast } = useToast();
+    const searchParams = useSearchParams();
+    const stage = searchParams.get('stage') || 'during'; // Default to 'during' if not passed
 
-    const handleSelectCareer = async (careerId: string) => {
-        if (!user || !userProfile?.stage) {
-            toast({
-                variant: 'destructive',
-                title: 'Error',
-                description: 'User data not found. Please try again.',
-            });
-            router.push('/onboarding/stage');
-            return;
-        }
-
-        try {
-            await updateUserProfile(user.uid, { careerId });
-            router.push(`/dashboard/${userProfile.stage}?careerId=${careerId}`);
-        } catch (error) {
-            console.error(error);
-            toast({
-                variant: 'destructive',
-                title: 'Update failed',
-                description: 'Could not save your career choice. Please try again.',
-            });
-        }
+    const handleSelectCareer = (careerId: string) => {
+        router.push(`/dashboard/${stage}?careerId=${careerId}`);
     };
-    
-    useEffect(() => {
-        if (!loading && !userProfile?.stage) {
-            router.replace('/onboarding/stage');
-        }
-    }, [loading, userProfile, router]);
-
-
-    if (loading) {
-        return (
-            <div className="flex flex-col min-h-screen items-center justify-center p-4">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-        );
-    }
-    
-    if (!userProfile?.stage) {
-        return null;
-    }
 
     return (
         <div className="flex flex-col min-h-screen items-center justify-center p-4">
@@ -91,4 +50,12 @@ export default function CareerSelectionPage() {
             </div>
         </div>
     );
+}
+
+export default function CareerSelectionPage() {
+    return (
+        <Suspense fallback={<div className="flex h-screen w-full items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>}>
+            <CareerSelectionContent />
+        </Suspense>
+    )
 }

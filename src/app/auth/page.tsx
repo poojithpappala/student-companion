@@ -4,11 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
-import { signInWithGoogle } from '@/lib/firebase/auth';
-import { useToast } from '@/hooks/use-toast';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -21,41 +18,13 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function AuthPage() {
     const router = useRouter();
-    const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
-    const { user, loading } = useAuth();
-
-    // If user is already logged in, redirect them to the dashboard.
-    useEffect(() => {
-        if (!loading && user) {
-            router.replace('/dashboard');
-        }
-    }, [user, loading, router]);
 
     const handleSignIn = async () => {
         setIsLoading(true);
-        try {
-            // This now triggers a page redirect, not a popup.
-            await signInWithGoogle();
-        } catch (error: any) {
-            console.error(error);
-            toast({
-                variant: "destructive",
-                title: "Sign-in failed",
-                description: "Could not start the sign-in process. Please try again.",
-            });
-            setIsLoading(false); // Stop loading animation if there's an error
-        }
+        // This is now a mock sign-in, just navigate to the first step of onboarding.
+        router.push('/onboarding/stage');
     };
-    
-    // Show a loading screen while we check for an existing session or redirect.
-    if (loading || user) {
-        return (
-            <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-        );
-    }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
