@@ -84,7 +84,7 @@ export default function DuringUndergradPage() {
         </CardHeader>
       </Card>
       <Tabs defaultValue="year1" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList>
           <TabsTrigger value="year1">1st Year</TabsTrigger>
           <TabsTrigger value="year2">2nd Year</TabsTrigger>
           <TabsTrigger value="year3">3rd Year</TabsTrigger>

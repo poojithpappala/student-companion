@@ -71,7 +71,7 @@ export default async function AfterUndergradPage({ searchParams }: { searchParam
                 <CardHeader>
                     <CardTitle className="font-headline flex items-center gap-2"><School/> Higher-Ed & Abroad Guides</CardTitle>
                 </CardHeader>
-                <CardContent className="flex justify-around">
+                <CardContent className="flex flex-wrap justify-center gap-4">
                      <Button variant="outline">GRE Prep</Button>
                      <Button variant="outline">GMAT Prep</Button>
                      <Button variant="outline">IELTS Prep</Button>
