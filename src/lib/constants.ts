@@ -1,6 +1,14 @@
-import { AreaChart, Dna, Code, Landmark, PenTool, Mic, HeartPulse, Scale } from 'lucide-react';
+import { AreaChart, Dna, Code, Landmark, PenTool, Mic, HeartPulse, Scale, TrendingUp, FileText, Target, MessageSquare, LucideIcon } from 'lucide-react';
+import type { ComponentType } from 'react';
 
-export const careers = [
+type Career = {
+  id: string;
+  name: string;
+  degree: string;
+  icon: ComponentType<{ className?: string }>;
+};
+
+export const careers: Career[] = [
   { id: 'swe', name: 'Software Engineering', degree: 'B.Sc. Computer Science', icon: Code },
   { id: 'data-science', name: 'Data Science', degree: 'B.Sc. Data Science', icon: AreaChart },
   { id: 'biotech', name: 'Biotechnology', degree: 'B.Tech Biotechnology', icon: Dna },
@@ -29,3 +37,78 @@ export const entranceExams = [
     { name: 'NEET', eligibility: '12th Grade (Biology)', deadline: 'May', link: '#', area: 'Medical (India)' },
     { name: 'CLAT', eligibility: '12th Grade', deadline: 'Dec', link: '#', area: 'Law (India)' },
 ]
+
+// DYNAMIC DATA FOR 'DURING' DASHBOARD
+export const defaultProjectIdeas = [
+  { title: 'Personal Portfolio Website', tags: ['Web Dev', 'React', 'Beginner'], icon: 'FileText' },
+  { title: 'Task Management App', tags: ['Full-stack', 'Node.js', 'Intermediate'], icon: 'Target' },
+  { title: 'AI Chatbot for a Niche', tags: ['AI/ML', 'Python', 'Advanced'], icon: 'MessageSquare' },
+];
+
+export const projectIdeasByCareer: Record<string, typeof defaultProjectIdeas> = {
+  swe: [
+    { title: 'Full-stack E-commerce Site', tags: ['Web Dev', 'React', 'Node.js'], icon: 'FileText' },
+    { title: 'Real-time Chat Application', tags: ['Web Sockets', 'Express', 'Intermediate'], icon: 'MessageSquare' },
+    { title: 'API for a Social Media App', tags: ['Backend', 'REST API', 'Advanced'], icon: 'Target' },
+  ],
+  'data-science': [
+    { title: 'Sentiment Analysis of Twitter Data', tags: ['NLP', 'Python', 'Beginner'], icon: 'FileText' },
+    { title: 'Stock Price Prediction Model', tags: ['ML', 'Pandas', 'Intermediate'], icon: 'Target' },
+    { title: 'Customer Churn Prediction', tags: ['Classification', 'Scikit-learn', 'Advanced'], icon: 'MessageSquare' },
+  ],
+};
+
+export const defaultInternships = [
+    { title: 'Software Engineer Intern', company: 'Tech Corp', location: 'Remote', type: 'Summer' },
+    { title: 'Product Design Intern', company: 'Innovate LLC', location: 'New York, NY', type: 'Fall' },
+    { title: 'Data Analyst Intern', company: 'DataDriven Co.', location: 'Remote', type: '6-Month' },
+]
+
+export const internshipsByCareer: Record<string, typeof defaultInternships> = {
+  swe: [
+    { title: 'Frontend Developer Intern', company: 'WebFlow Inc.', location: 'Remote', type: 'Summer' },
+    { title: 'Backend Engineer Intern', company: 'DataStax', location: 'San Francisco, CA', type: 'Fall' },
+    { title: 'Mobile App Dev Intern', company: 'Appify', location: 'Remote', type: '6-Month' },
+  ],
+  'data-science': [
+    { title: 'Data Analyst Intern', company: 'Insight Corp', location: 'New York, NY', type: 'Summer' },
+    { title: 'Machine Learning Intern', company: 'AI Solutions', location: 'Remote', type: 'Fall' },
+    { title: 'Business Intelligence Intern', company: 'Metrics Co.', location: 'Chicago, IL', type: '6-Month' },
+  ]
+};
+
+// DYNAMIC DATA FOR 'AFTER' DASHBOARD
+export const defaultGrowthPlans = [
+  { title: 'Advanced Cloud Computing', provider: 'Coursera', duration: '3 months', icon: 'TrendingUp' },
+  { title: 'AI for Project Managers', provider: 'edX', duration: '6 weeks', icon: 'TrendingUp' },
+  { title: 'Cybersecurity Specialization', provider: 'Udacity', duration: '4 months', icon: 'TrendingUp' },
+];
+
+export const growthPlansByCareer: Record<string, typeof defaultGrowthPlans> = {
+  swe: [
+    { title: 'Advanced Kubernetes', provider: 'Linux Foundation', duration: '4 months', icon: 'TrendingUp' },
+    { title: 'System Design Interview Prep', provider: 'Educative', duration: '8 weeks', icon: 'TrendingUp' },
+    { title: 'WebAssembly Fundamentals', provider: 'Frontend Masters', duration: '6 weeks', icon: 'TrendingUp' },
+  ],
+  'data-science': [
+    { title: 'Deep Learning Specialization', provider: 'Coursera', duration: '4 months', icon: 'TrendingUp' },
+    { title: 'Big Data with Spark', provider: 'edX', duration: '10 weeks', icon: 'TrendingUp' },
+    { title: 'MLOps Specialization', provider: 'Udacity', duration: '5 months', icon: 'TrendingUp' },
+  ],
+};
+
+export const defaultJobSearches = [
+    { role: "Senior Frontend Developer", location: "Remote" },
+    { role: "Product Manager", location: "San Francisco, CA" },
+]
+
+export const jobSearchesByCareer: Record<string, typeof defaultJobSearches> = {
+    swe: [
+        { role: "Junior Software Engineer", location: "Remote" },
+        { role: "React Developer", location: "Austin, TX" },
+    ],
+    'data-science': [
+        { role: "Entry-Level Data Scientist", location: "Boston, MA" },
+        { role: "Data Analyst", location: "Remote" },
+    ]
+};

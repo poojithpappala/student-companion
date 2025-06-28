@@ -5,15 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from 'next/link';
-import {
-  Lightbulb,
-  Briefcase,
-  Users,
-  Target,
+import { Lightbulb, Briefcase, Users, Target, FileText, MessageSquare, ArrowRight, type LucideProps } from "lucide-react";
+import { projectIdeasByCareer, defaultProjectIdeas, internshipsByCareer, defaultInternships } from '@/lib/constants';
+import type { ComponentType } from "react";
+
+const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   FileText,
+  Target,
   MessageSquare,
-  ArrowRight
-} from "lucide-react";
+};
+
 
 // Mock Data
 const roadmapItems = [
@@ -24,18 +25,6 @@ const roadmapItems = [
   { year: 3, sem: 1, title: 'Internship Prep', done: false },
 ];
 
-const projectIdeas = [
-  { title: 'Personal Portfolio Website', tags: ['Web Dev', 'React', 'Beginner'], icon: <FileText/> },
-  { title: 'Task Management App', tags: ['Full-stack', 'Node.js', 'Intermediate'], icon: <Target/> },
-  { title: 'AI Chatbot for a Niche', tags: ['AI/ML', 'Python', 'Advanced'], icon: <MessageSquare/> },
-];
-
-const internships = [
-    { title: 'Software Engineer Intern', company: 'Tech Corp', location: 'Remote', type: 'Summer' },
-    { title: 'Product Design Intern', company: 'Innovate LLC', location: 'New York, NY', type: 'Fall' },
-    { title: 'Data Analyst Intern', company: 'DataDriven Co.', location: 'Remote', type: '6-Month' },
-]
-
 const applicationTracker = [
     { company: "Innovate LLC", role: "Frontend Intern", status: "Applied" },
     { company: "Big Tech Co", role: "SWE Intern", status: "Interview" },
@@ -43,7 +32,12 @@ const applicationTracker = [
 ]
 
 
-export default function DuringUndergradPage() {
+export default function DuringUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
+  const careerId = searchParams?.careerId as keyof typeof projectIdeasByCareer | undefined;
+  
+  const projectIdeas = (careerId && projectIdeasByCareer[careerId]) || defaultProjectIdeas;
+  const internships = (careerId && internshipsByCareer[careerId]) || defaultInternships;
+
   return (
     <div className="space-y-8">
        <Card>
@@ -94,15 +88,18 @@ export default function DuringUndergradPage() {
                 <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {projectIdeas.map(p => (
-                   <Card key={p.title} className="p-4 flex items-start gap-4">
-                     <div className="text-accent">{p.icon}</div>
-                     <div>
-                       <h4 className="font-semibold">{p.title}</h4>
-                       <div className="flex gap-2 mt-1">{p.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}</div>
-                     </div>
-                   </Card>
-                ))}
+                {projectIdeas.map(p => {
+                  const Icon = iconMap[p.icon] || FileText;
+                  return (
+                    <Card key={p.title} className="p-4 flex items-start gap-4">
+                      <div className="text-accent"><Icon /></div>
+                      <div>
+                        <h4 className="font-semibold">{p.title}</h4>
+                        <div className="flex gap-2 mt-1">{p.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}</div>
+                      </div>
+                    </Card>
+                  )
+                })}
               </CardContent>
             </Card>
             <Card>

@@ -9,19 +9,19 @@ const stages = [
     icon: <Rocket className="h-10 w-10 text-accent" />,
     title: 'Before Undergrad',
     description: "I'm exploring career options and preparing for college applications.",
-    href: '/dashboard/before',
+    href: '/onboarding/career?stage=before',
   },
   {
     icon: <School className="h-10 w-10 text-accent" />,
     title: 'During Undergrad',
     description: "I'm currently a student, looking for internships and building skills.",
-    href: '/dashboard/during',
+    href: '/onboarding/career?stage=during',
   },
   {
     icon: <Briefcase className="h-10 w-10 text-accent" />,
     title: 'After Undergrad',
     description: "I've graduated and am seeking jobs or further education.",
-    href: '/dashboard/after',
+    href: '/onboarding/career?stage=after',
   },
 ];
 

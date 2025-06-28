@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { careers, skillsByCareer, entranceExams } from '@/lib/constants';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-export default function BeforeUndergradPage() {
-  const [selectedCareer, setSelectedCareer] = useState<(typeof careers)[0] | null>(null);
+export default function BeforeUndergradPage({ searchParams }: { searchParams?: { careerId?: string }}) {
+  const selectedCareer = searchParams?.careerId
+    ? careers.find((c) => c.id === searchParams.careerId)
+    : null;
 
   const salaryData = [
     { name: 'Entry', salary: 75000 },
@@ -25,87 +26,80 @@ export default function BeforeUndergradPage() {
     { year: '2028', growth: 18 },
   ];
 
+  if (!selectedCareer) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh]">
+        <Card className="p-8 text-center">
+            <CardTitle className="font-headline">Welcome!</CardTitle>
+            <CardDescription className="mt-2">Please choose a career path to get personalized recommendations.</CardDescription>
+            <Button asChild className="mt-4">
+                <Link href="/onboarding/career?stage=before">Choose a Career</Link>
+            </Button>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Career Chooser</CardTitle>
-          <CardDescription>Select a career path to explore your options.</CardDescription>
+          <CardTitle className="font-headline">Your chosen path: {selectedCareer.name}</CardTitle>
+          <CardDescription>Here's your personalized dashboard. You can change your path in Settings.</CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {careers.map((career) => {
-            const Icon = career.icon;
-            return (
-              <button
-                key={career.id}
-                onClick={() => setSelectedCareer(career)}
-                className={cn(
-                  "p-4 rounded-lg border-2 text-center transition-all duration-200",
-                  selectedCareer?.id === career.id ? 'border-accent bg-accent/10 shadow-lg' : 'hover:border-primary/50 hover:bg-primary/5'
-                )}
-              >
-                <div className="flex justify-center text-primary"><Icon /></div>
-                <p className="font-semibold mt-2 text-primary">{career.name}</p>
-                <p className="text-xs text-muted-foreground">{career.degree}</p>
-              </button>
-            );
-          })}
-        </CardContent>
       </Card>
 
-      {selectedCareer && (
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-             <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer: {selectedCareer.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="grid md:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer: {selectedCareer.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
+                  <ResponsiveContainer width="100%" height={200}>
+                      <BarChart data={salaryData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+                          <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
+                          <Bar dataKey="salary" fill="hsl(var(--primary))" />
+                      </BarChart>
+                  </ResponsiveContainer>
+                </div>
                   <div>
-                    <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
+                  <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
                     <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={salaryData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
-                            <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
-                            <Bar dataKey="salary" fill="hsl(var(--primary))" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                   <div>
-                    <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
-                     <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={growthData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="year" />
-                            <YAxis tickFormatter={(value) => `${value}%`} />
-                            <Tooltip formatter={(value) => `${value}% Projected Growth`} />
-                            <Bar dataKey="growth" fill="hsl(var(--accent))" />
-                        </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
-                {(skillsByCareer[selectedCareer.id] || []).map((skill, index) => (
-                  <li key={index} className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-accent" />
-                    <span className="font-medium">{skill}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
+                      <BarChart data={growthData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="year" />
+                          <YAxis tickFormatter={(value) => `${value}%`} />
+                          <Tooltip formatter={(value) => `${value}% Projected Growth`} />
+                          <Bar dataKey="growth" fill="hsl(var(--accent))" />
+                      </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
           </Card>
         </div>
-      )}
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-3">
+              {(skillsByCareer[selectedCareer.id] || []).map((skill, index) => (
+                <li key={index} className="flex items-center gap-3">
+                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <span className="font-medium">{skill}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardHeader>

@@ -2,39 +2,42 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, RefreshCw, Briefcase, School, ArrowRight } from 'lucide-react';
+import { TrendingUp, RefreshCw, Briefcase, School, ArrowRight, type LucideProps } from 'lucide-react';
+import type { ComponentType } from 'react';
+import { growthPlansByCareer, defaultGrowthPlans, jobSearchesByCareer, defaultJobSearches } from '@/lib/constants';
 
-const growthPlans = [
-  { title: 'Advanced Cloud Computing', provider: 'Coursera', duration: '3 months', icon: <TrendingUp/> },
-  { title: 'AI for Project Managers', provider: 'edX', duration: '6 weeks', icon: <TrendingUp/> },
-  { title: 'Cybersecurity Specialization', provider: 'Udacity', duration: '4 months', icon: <TrendingUp/> },
-];
+const iconMap: { [key: string]: ComponentType<LucideProps> } = {
+  TrendingUp,
+};
 
-const savedSearches = [
-    { role: "Senior Frontend Developer", location: "Remote" },
-    { role: "Product Manager", location: "San Francisco, CA" },
-]
+export default function AfterUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
+  const careerId = searchParams?.careerId as keyof typeof growthPlansByCareer | undefined;
 
-export default function AfterUndergradPage() {
+  const growthPlans = (careerId && growthPlansByCareer[careerId]) || defaultGrowthPlans;
+  const savedSearches = (careerId && jobSearchesByCareer[careerId]) || defaultJobSearches;
+
   return (
     <div className="space-y-8">
       <div className="grid lg:grid-cols-2 gap-8">
         <Card className="flex flex-col">
             <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><TrendingUp/> Career Growth Plans</CardTitle>
-                <CardDescription>Upskill with recommended micro-courses.</CardDescription>
+                <CardDescription>Upskill with recommended micro-courses based on your career choice.</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow space-y-4">
-            {growthPlans.map((plan) => (
-              <div key={plan.title} className="p-4 rounded-lg border flex items-center gap-4">
-                <div className="text-accent bg-accent/10 p-3 rounded-lg">{plan.icon}</div>
-                <div className="flex-grow">
-                    <h4 className="font-semibold">{plan.title}</h4>
-                    <p className="text-sm text-muted-foreground">{plan.provider} • {plan.duration}</p>
+            {growthPlans.map((plan) => {
+              const Icon = iconMap[plan.icon] || TrendingUp;
+              return (
+                <div key={plan.title} className="p-4 rounded-lg border flex items-center gap-4">
+                  <div className="text-accent bg-accent/10 p-3 rounded-lg"><Icon /></div>
+                  <div className="flex-grow">
+                      <h4 className="font-semibold">{plan.title}</h4>
+                      <p className="text-sm text-muted-foreground">{plan.provider} • {plan.duration}</p>
+                  </div>
+                  <Button variant="ghost" size="sm">View</Button>
                 </div>
-                <Button variant="ghost" size="sm">View</Button>
-              </div>
-            ))}
+              );
+            })}
           </CardContent>
         </Card>
         <div className="space-y-8">
