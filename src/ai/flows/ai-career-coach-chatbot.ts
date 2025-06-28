@@ -43,4 +43,17 @@ const prompt = ai.definePrompt({
 
   Question: {{{question}}}
 
-  Answer:`, // Removed unnecessary 
+  Answer:`
+});
+
+const aiCareerCoachChatbotFlow = ai.defineFlow(
+  {
+    name: 'aiCareerCoachChatbotFlow',
+    inputSchema: AiCareerCoachChatbotInputSchema,
+    outputSchema: AiCareerCoachChatbotOutputSchema,
+  },
+  async (input) => {
+    const { output } = await prompt(input);
+    return output!;
+  }
+);
