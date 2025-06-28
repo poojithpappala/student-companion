@@ -39,13 +39,21 @@ export default function LandingPage() {
                 router.push(profile?.stage ? `/dashboard/${profile.stage}` : '/onboarding/stage');
             }
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-        toast({
-            variant: "destructive",
-            title: "Sign-in failed",
-            description: "Could not sign in with Google. Please try again.",
-        });
+        if (error.code === 'auth/popup-closed-by-user') {
+            toast({
+                variant: "destructive",
+                title: "Sign-in Canceled",
+                description: "The sign-in window was closed. Please try again.",
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Sign-in failed",
+                description: "Could not sign in with Google. Please try again.",
+            });
+        }
     } finally {
         setLoading(false);
     }
