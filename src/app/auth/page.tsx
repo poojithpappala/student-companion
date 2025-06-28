@@ -6,10 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Logo } from '@/components/logo';
 import { signInWithGoogle } from '@/lib/firebase/auth';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
-import { getUserProfile } from '@/lib/firebase/user';
-import { auth } from '@/lib/firebase/firebase';
+import { useAuth } from '@/hooks/use-auth';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -24,44 +23,39 @@ export default function AuthPage() {
     const router = useRouter();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
+    const { user, loading } = useAuth();
+
+    // If user is already logged in, redirect them to the dashboard.
+    useEffect(() => {
+        if (!loading && user) {
+            router.replace('/dashboard');
+        }
+    }, [user, loading, router]);
 
     const handleSignIn = async () => {
         setIsLoading(true);
         try {
-            const { isNewUser } = await signInWithGoogle();
-            if (isNewUser) {
-                router.push('/onboarding/stage');
-            } else {
-                const user = auth.currentUser;
-                if (user) {
-                    const profile = await getUserProfile(user.uid);
-                    if (profile?.stage) {
-                        router.push(`/dashboard/${profile.stage}`);
-                    } else {
-                        router.push('/onboarding/stage');
-                    }
-                } else {
-                    router.push('/onboarding/stage');
-                }
-            }
+            // This now triggers a page redirect, not a popup.
+            await signInWithGoogle();
         } catch (error: any) {
             console.error(error);
-            if (error.code === 'auth/popup-closed-by-user') {
-                toast({
-                    variant: "destructive",
-                    title: "Sign-in Canceled",
-                    description: "The sign-in window was closed. Please try again.",
-                });
-            } else {
-                 toast({
-                    variant: "destructive",
-                    title: "Sign-in failed",
-                    description: "Could not sign in with Google. Please try again.",
-                });
-            }
-            setIsLoading(false);
+            toast({
+                variant: "destructive",
+                title: "Sign-in failed",
+                description: "Could not start the sign-in process. Please try again.",
+            });
+            setIsLoading(false); // Stop loading animation if there's an error
         }
     };
+    
+    // Show a loading screen while we check for an existing session or redirect.
+    if (loading || user) {
+        return (
+            <div className="flex h-screen w-full items-center justify-center bg-gray-100 dark:bg-gray-900">
+                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">

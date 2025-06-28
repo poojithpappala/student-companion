@@ -6,10 +6,9 @@ import { ArrowRight, Bot, BarChart, FileText, Briefcase, Loader2 } from 'lucide-
 import { Logo } from '@/components/logo';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signInWithGoogle } from '@/lib/firebase/auth';
-import { auth } from '@/lib/firebase/firebase';
-import { getUserProfile } from '@/lib/firebase/user';
+import { useAuth } from '@/hooks/use-auth';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -25,36 +24,29 @@ export default function LandingPage() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isHeaderAuthLoading, setHeaderAuthLoading] = useState(false);
+  const { user, loading } = useAuth();
+
+  // If the user is already signed in, redirect them to the dashboard.
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/dashboard');
+    }
+  }, [user, loading, router]);
+
 
   const handleSignIn = async (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
     setLoading(true);
     try {
-        const { isNewUser } = await signInWithGoogle();
-        if (isNewUser) {
-            router.push('/onboarding/stage');
-        } else {
-            const user = auth.currentUser;
-            if (user) {
-                const profile = await getUserProfile(user.uid);
-                router.push(profile?.stage ? `/dashboard/${profile.stage}` : '/onboarding/stage');
-            }
-        }
+        await signInWithGoogle();
+        // The page will redirect to Google and then back to the app.
+        // The AuthProvider will handle the rest of the flow.
     } catch (error: any) {
         console.error(error);
-        if (error.code === 'auth/popup-closed-by-user') {
-            toast({
-                variant: "destructive",
-                title: "Sign-in Canceled",
-                description: "The sign-in window was closed. Please try again.",
-            });
-        } else {
-            toast({
-                variant: "destructive",
-                title: "Sign-in failed",
-                description: "Could not sign in with Google. Please try again.",
-            });
-        }
-    } finally {
+        toast({
+            variant: "destructive",
+            title: "Sign-in failed",
+            description: "Could not start sign-in with Google. Please try again.",
+        });
         setLoading(false);
     }
   };
@@ -81,6 +73,14 @@ export default function LandingPage() {
       description: 'Discover opportunities and track your applications seamlessly.',
     },
   ];
+
+  if (loading || user) {
+    return (
+        <div className="flex h-screen w-full items-center justify-center bg-background">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
