@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -8,9 +9,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { careers, skillsByCareer, entranceExams } from '@/lib/constants';
 import Link from 'next/link';
 
-export default function BeforeUndergradPage({ searchParams }: { searchParams?: { careerId?: string }}) {
-  const selectedCareer = searchParams?.careerId
-    ? careers.find((c) => c.id === searchParams.careerId)
+export default function BeforeUndergradPage() {
+  const searchParams = useSearchParams();
+  const careerId = searchParams.get('careerId');
+
+  const selectedCareer = careerId
+    ? careers.find((c) => c.id === careerId)
     : null;
 
   const salaryData = [
