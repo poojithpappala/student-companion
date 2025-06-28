@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -5,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Rocket, School, Briefcase, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
 
 const stages = [
   {
@@ -32,8 +32,11 @@ export default function StageSelectionPage() {
   const router = useRouter();
 
   const handleSelectStage = async (stage: 'before' | 'during' | 'after') => {
-      // Navigate to the next step, passing the stage as a query parameter
-      router.push(`/onboarding/career?stage=${stage}`);
+      if (stage === 'before') {
+        router.push('/dashboard/self-assessment');
+      } else {
+        router.push(`/onboarding/career?stage=${stage}`);
+      }
   };
 
   return (
