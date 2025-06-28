@@ -73,7 +73,11 @@ export default function SelfAssessmentPage() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     if (recommendation) {
-        router.push(`/dashboard/before?careerId=${recommendation.recommendedCareerId}`);
+        const params = new URLSearchParams({
+            careerId: recommendation.recommendedCareerId,
+            justification: recommendation.justification
+        });
+        router.push(`/dashboard/before?${params.toString()}`);
     }
   }
 
@@ -162,7 +166,7 @@ export default function SelfAssessmentPage() {
                 <RecommendedIcon className="h-8 w-8 text-accent" />
             </div>
             <AlertDialogTitle className="text-center font-headline text-2xl">
-                Your Recommended Career Path
+                Your Recommended Career Path is {recommendation ? careers.find(c => c.id === recommendation.recommendedCareerId)?.name : ''}!
             </AlertDialogTitle>
             <AlertDialogDescription className="text-center text-base py-4">
               {recommendation?.justification}
@@ -178,3 +182,5 @@ export default function SelfAssessmentPage() {
     </>
   );
 }
+
+    
