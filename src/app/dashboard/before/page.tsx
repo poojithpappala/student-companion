@@ -88,7 +88,7 @@ export default function BeforeUndergradPage() {
     return (
       <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
         <Card className="w-full max-w-2xl text-center shadow-lg">
-            <CardHeader className="items-center">
+            <CardHeader className="items-center p-8">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
                 </div>
@@ -97,7 +97,7 @@ export default function BeforeUndergradPage() {
                     Take our quick, AI-powered self-assessment quiz to unlock personalized career recommendations and a tailored dashboard experience.
                 </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pb-8">
                 <Button asChild size="lg">
                     <Link href="/dashboard/self-assessment">Take the Quiz Now</Link>
                 </Button>
@@ -110,11 +110,11 @@ export default function BeforeUndergradPage() {
   // The main tabbed dashboard for users who have completed the assessment.
   return (
     <Tabs defaultValue="career-path" className="w-full space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="career-path"><Target className="mr-2" /> Your Career Path</TabsTrigger>
-            <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2" /> Career Deep Dive</TabsTrigger>
-            <TabsTrigger value="exam-planner"><Trophy className="mr-2" /> Exam Planner</TabsTrigger>
-            <TabsTrigger value="college-explorer"><GraduationCap className="mr-2" /> College Explorer</TabsTrigger>
+        <TabsList>
+            <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
+            <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
+            <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>
+            <TabsTrigger value="college-explorer"><GraduationCap className="mr-2 h-4 w-4" /> College Explorer</TabsTrigger>
         </TabsList>
         
         <TabsContent value="career-path" className="space-y-6">
@@ -132,59 +132,55 @@ export default function BeforeUndergradPage() {
                 )}
             </Card>
 
-            <div className="grid lg:grid-cols-5 gap-6">
-                <div className="lg:col-span-3">
-                    <Card>
-                        <CardHeader>
-                          <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer</CardTitle>
-                          <CardDescription>This is your career interest map, showing potential salary and growth.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="grid md:grid-cols-2 gap-6">
-                          <div>
-                            <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
-                            <ResponsiveContainer width="100%" height={200}>
-                                <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
-                                    <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
-                                    <Bar dataKey="salary" fill="hsl(var(--primary))" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                          </div>
-                          <div>
-                            <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
-                              <ResponsiveContainer width="100%" height={200}>
-                                <BarChart data={growthData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="year" />
-                                    <YAxis tickFormatter={(value) => `${value}%`} />
-                                    <Tooltip formatter={(value) => `${value}% Projected Growth`} />
-                                    <Bar dataKey="growth" fill="hsl(var(--accent))" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                          </div>
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="lg:col-span-2">
-                    <Card className="h-full">
-                      <CardHeader>
-                        <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
-                         <CardDescription>Skills to focus on for a head start in {selectedCareer.name}.</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <ul className="space-y-3">
-                          {(skillsByCareer[selectedCareer.id] || []).map((skill, index) => (
-                            <li key={index} className="flex items-center gap-3">
-                              <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
-                              <span className="font-medium">{skill}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                </div>
+            <div className="grid lg:grid-cols-2 gap-6">
+                <Card>
+                    <CardHeader>
+                      <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer</CardTitle>
+                      <CardDescription>This is your career interest map, showing potential salary and growth.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
+                        <ResponsiveContainer width="100%" height={200}>
+                            <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+                                <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
+                                <Bar dataKey="salary" fill="hsl(var(--primary))" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
+                          <ResponsiveContainer width="100%" height={200}>
+                            <BarChart data={growthData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="year" />
+                                <YAxis tickFormatter={(value) => `${value}%`} />
+                                <Tooltip formatter={(value) => `${value}% Projected Growth`} />
+                                <Bar dataKey="growth" fill="hsl(var(--accent))" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </CardContent>
+                </Card>
+                <Card className="flex flex-col">
+                  <CardHeader>
+                    <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
+                     <CardDescription>Skills to focus on for a head start in {selectedCareer.name}.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <ul className="space-y-3">
+                      {(skillsByCareer[selectedCareer.id] || []).map((skill, index) => (
+                        <li key={index} className="flex items-center gap-3">
+                          <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
+                          <span className="font-medium">{skill}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
             </div>
         </TabsContent>
 
@@ -240,7 +236,7 @@ export default function BeforeUndergradPage() {
                       ))}
                       {filteredExams.length === 0 && (
                         <TableRow>
-                            <TableCell colSpan={5} className="text-center text-muted-foreground">No exams typically taken in {selectedGrade} Grade.</TableCell>
+                            <TableCell colSpan={5} className="text-center text-muted-foreground py-6">No exams typically taken in {selectedGrade} Grade.</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -257,14 +253,14 @@ export default function BeforeUndergradPage() {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="flex flex-col md:flex-row items-end gap-4 mb-6 p-4 border rounded-lg bg-muted/50">
+                      <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-muted/50">
                         <FormField control={form.control} name="major" render={({ field }) => (
-                            <FormItem className="flex-grow w-full"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
+                            <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="location" render={({ field }) => (
-                            <FormItem className="flex-grow w-full"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA" /></FormControl><FormMessage /></FormItem>
+                            <FormItem className="w-full md:col-span-2"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA or any" /></FormControl><FormMessage /></FormItem>
                         )} />
-                        <Button type="submit" disabled={isExploring} className="w-full md:w-auto">
+                        <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1">
                             {isExploring ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
                              Find Colleges
                         </Button>
@@ -306,5 +302,3 @@ export default function BeforeUndergradPage() {
     </Tabs>
   );
 }
-
-    
