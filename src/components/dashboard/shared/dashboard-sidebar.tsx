@@ -113,7 +113,7 @@ export function DashboardSidebar() {
          </SidebarMenu>
          <div className="flex items-center gap-3 p-2 rounded-lg">
              <Avatar>
-                 <AvatarImage src="https://placehold.co/40x40.png" alt="User" />
+                 <AvatarImage src="https://placehold.co/40x40.png" alt="User avatar" data-ai-hint="person profile" />
                  <AvatarFallback>U</AvatarFallback>
              </Avatar>
              <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">

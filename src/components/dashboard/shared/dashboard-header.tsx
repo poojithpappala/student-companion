@@ -61,7 +61,7 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 px-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src="https://placehold.co/40x40.png" alt="User" />
+                <AvatarImage src="https://placehold.co/40x40.png" alt="User avatar" data-ai-hint="person profile" />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <span className="hidden sm:inline">User Name</span>

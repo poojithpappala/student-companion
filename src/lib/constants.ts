@@ -1,14 +1,14 @@
 import { AreaChart, Dna, Code, Landmark, PenTool, Mic, HeartPulse, Scale } from 'lucide-react';
 
 export const careers = [
-  { id: 'swe', name: 'Software Engineering', degree: 'B.Sc. Computer Science', icon: <Code /> },
-  { id: 'data-science', name: 'Data Science', degree: 'B.Sc. Data Science', icon: <AreaChart /> },
-  { id: 'biotech', name: 'Biotechnology', degree: 'B.Tech Biotechnology', icon: <Dna /> },
-  { id: 'finance', name: 'Finance', degree: 'B.Com / BBA', icon: <Landmark /> },
-  { id: 'design', name: 'UX/UI Design', degree: 'B.Des', icon: <PenTool /> },
-  { id: 'marketing', name: 'Digital Marketing', degree: 'BBA Marketing', icon: <Mic /> },
-  { id: 'healthcare', name: 'Healthcare Mgmt', degree: 'B.Sc. Nursing', icon: <HeartPulse /> },
-  { id: 'law', name: 'Corporate Law', degree: 'LLB', icon: <Scale /> },
+  { id: 'swe', name: 'Software Engineering', degree: 'B.Sc. Computer Science', icon: Code },
+  { id: 'data-science', name: 'Data Science', degree: 'B.Sc. Data Science', icon: AreaChart },
+  { id: 'biotech', name: 'Biotechnology', degree: 'B.Tech Biotechnology', icon: Dna },
+  { id: 'finance', name: 'Finance', degree: 'B.Com / BBA', icon: Landmark },
+  { id: 'design', name: 'UX/UI Design', degree: 'B.Des', icon: PenTool },
+  { id: 'marketing', name: 'Digital Marketing', degree: 'BBA Marketing', icon: Mic },
+  { id: 'healthcare', name: 'Healthcare Mgmt', degree: 'B.Sc. Nursing', icon: HeartPulse },
+  { id: 'law', name: 'Corporate Law', degree: 'LLB', icon: Scale },
 ];
 
 export const skillsByCareer: Record<string, string[]> = {

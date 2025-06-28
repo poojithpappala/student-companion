@@ -10,7 +10,7 @@ import { careers, skillsByCareer, entranceExams } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 export default function BeforeUndergradPage() {
-  const [selectedCareer, setSelectedCareer] = useState<typeof careers[0] | null>(null);
+  const [selectedCareer, setSelectedCareer] = useState<(typeof careers)[0] | null>(null);
 
   const salaryData = [
     { name: 'Entry', salary: 75000 },
@@ -33,20 +33,23 @@ export default function BeforeUndergradPage() {
           <CardDescription>Select a career path to explore your options.</CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {careers.map((career) => (
-            <button
-              key={career.id}
-              onClick={() => setSelectedCareer(career)}
-              className={cn(
-                "p-4 rounded-lg border-2 text-center transition-all duration-200",
-                selectedCareer?.id === career.id ? 'border-accent bg-accent/10 shadow-lg' : 'hover:border-primary/50 hover:bg-primary/5'
-              )}
-            >
-              <div className="flex justify-center text-primary">{career.icon}</div>
-              <p className="font-semibold mt-2 text-primary">{career.name}</p>
-              <p className="text-xs text-muted-foreground">{career.degree}</p>
-            </button>
-          ))}
+          {careers.map((career) => {
+            const Icon = career.icon;
+            return (
+              <button
+                key={career.id}
+                onClick={() => setSelectedCareer(career)}
+                className={cn(
+                  "p-4 rounded-lg border-2 text-center transition-all duration-200",
+                  selectedCareer?.id === career.id ? 'border-accent bg-accent/10 shadow-lg' : 'hover:border-primary/50 hover:bg-primary/5'
+                )}
+              >
+                <div className="flex justify-center text-primary"><Icon /></div>
+                <p className="font-semibold mt-2 text-primary">{career.name}</p>
+                <p className="text-xs text-muted-foreground">{career.degree}</p>
+              </button>
+            );
+          })}
         </CardContent>
       </Card>
 

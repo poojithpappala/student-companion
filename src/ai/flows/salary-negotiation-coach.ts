@@ -62,7 +62,8 @@ const prompt = ai.definePrompt({
   - Motivational and confidence-boosting advice for the negotiation process.
 
   Ensure the advice is practical, actionable, and tailored to the student's specific situation.
-  `,config: {
+  `,
+  config: {
     safetySettings: [
       {
         category: 'HARM_CATEGORY_HATE_SPEECH',
