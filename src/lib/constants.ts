@@ -32,11 +32,12 @@ export const skillsByCareer: Record<string, string[]> = {
 };
 
 export const entranceExams = [
-    { name: 'SAT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)' },
-    { name: 'ACT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)' },
-    { name: 'JEE Main', eligibility: '12th Grade (Science)', deadline: 'Jan/Apr', link: '#', area: 'Engineering (India)' },
-    { name: 'NEET', eligibility: '12th Grade (Biology)', deadline: 'May', link: '#', area: 'Medical (India)' },
-    { name: 'CLAT', eligibility: '12th Grade', deadline: 'Dec', link: '#', area: 'Law (India)' },
+    { name: 'SAT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)', grades: ['10th', '11th', '12th'] },
+    { name: 'ACT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)', grades: ['10th', '11th', '12th'] },
+    { name: 'PSAT/NMSQT', eligibility: '10th/11th Grade', deadline: 'October', link: '#', area: 'Pre-SAT (US)', grades: ['10th', '11th'] },
+    { name: 'JEE Main', eligibility: '12th Grade (Science)', deadline: 'Jan/Apr', link: '#', area: 'Engineering (India)', grades: ['11th', '12th'] },
+    { name: 'NEET', eligibility: '12th Grade (Biology)', deadline: 'May', link: '#', area: 'Medical (India)', grades: ['11th', '12th'] },
+    { name: 'CLAT', eligibility: '12th Grade', deadline: 'December', link: '#', area: 'Law (India)', grades: ['11th', '12th'] },
 ]
 
 // DYNAMIC DATA FOR 'DURING' DASHBOARD

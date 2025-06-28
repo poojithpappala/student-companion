@@ -7,3 +7,5 @@ import '@/ai/flows/salary-negotiation-coach.ts';
 import '@/ai/flows/resume-analyzer.ts';
 import '@/ai/flows/company-insights.ts';
 import '@/ai/flows/career-roadmap.ts';
+import '@/ai/flows/career-assessment.ts';
+import '@/ai/flows/college-explorer.ts';
