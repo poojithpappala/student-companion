@@ -66,19 +66,19 @@ export function DashboardSidebar() {
           </SidebarMenuItem>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} passHref legacyBehavior>
-                <SidebarMenuButton
-                  as="a"
-                  isActive={pathname.startsWith(item.href)}
-                  onClick={closeSidebar}
-                  tooltip={{
-                    children: item.label
-                  }}
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(item.href)}
+                onClick={closeSidebar}
+                tooltip={{
+                  children: item.label,
+                }}
+              >
+                <Link href={item.href}>
                   {item.icon}
                   <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -89,19 +89,19 @@ export function DashboardSidebar() {
             </SidebarMenuItem>
             {tools.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                <Link href={item.href} passHref legacyBehavior>
-                    <SidebarMenuButton
-                    as="a"
+                  <SidebarMenuButton
+                    asChild
                     isActive={pathname === item.href}
                     onClick={closeSidebar}
                     tooltip={{
-                        children: item.label
+                      children: item.label,
                     }}
-                    >
-                    {item.icon}
-                    <span>{item.label}</span>
-                    </SidebarMenuButton>
-                </Link>
+                  >
+                    <Link href={item.href}>
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
             ))}
         </SidebarMenu>
@@ -110,12 +110,16 @@ export function DashboardSidebar() {
          <SidebarSeparator />
          <SidebarMenu>
             <SidebarMenuItem>
-              <Link href="/dashboard/settings" passHref legacyBehavior>
-                <SidebarMenuButton as="a" isActive={pathname === "/dashboard/settings"} onClick={closeSidebar}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === "/dashboard/settings"}
+                onClick={closeSidebar}
+              >
+                <Link href="/dashboard/settings">
                   <Settings />
                   <span>Settings</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
          </SidebarMenu>
          <div className="flex items-center gap-3 p-2 rounded-lg">
