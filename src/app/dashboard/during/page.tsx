@@ -1,15 +1,18 @@
+"use client";
 
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Link from 'next/link';
-import { Lightbulb, Briefcase, Users, Target, FileText, MessageSquare, ArrowRight, type LucideProps } from "lucide-react";
+import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, type LucideProps } from "lucide-react";
+import { CareerRoadmap } from '@/components/dashboard/during/career-roadmap';
 import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
+import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import type { ComponentType } from "react";
-import { fetchAdzunaJobs } from "@/services/jobs";
 
 const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   FileText,
@@ -17,30 +20,54 @@ const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   MessageSquare,
 };
 
-
-// Mock Data
-const roadmapItems = [
-  { year: 1, sem: 1, title: 'Core CS Concepts', done: true },
-  { year: 1, sem: 2, title: 'Data Structures', done: true },
-  { year: 2, sem: 1, title: 'Algorithms & OS', done: false },
-  { year: 2, sem: 2, title: 'Build Personal Project', done: false },
-  { year: 3, sem: 1, title: 'Internship Prep', done: false },
-];
-
 const applicationTracker = [
     { company: "Innovate LLC", role: "Frontend Intern", status: "Applied" },
     { company: "Big Tech Co", role: "SWE Intern", status: "Interview" },
     { company: "Local Startup", role: "Full-Stack Dev", status: "Offer" },
-]
+];
 
-
-export default async function DuringUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
-  const careerId = searchParams?.careerId as keyof typeof projectIdeasByCareer | undefined;
+export default function DuringUndergradPage() {
+  const searchParams = useSearchParams();
+  const careerId = searchParams.get('careerId') as keyof typeof projectIdeasByCareer | undefined;
   const career = careers.find(c => c.id === careerId);
+
+  const [internships, setInternships] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
   
   const projectIdeas = (careerId && projectIdeasByCareer[careerId]) || defaultProjectIdeas;
-  const internships = await fetchAdzunaJobs({ query: `${career?.name || 'tech'} intern`, resultsPerPage: 10 });
-  const jobs = await fetchAdzunaJobs({ query: `${career?.name || 'tech'} graduate`, resultsPerPage: 5 });
+
+  useEffect(() => {
+    async function loadJobs() {
+      if (career) {
+        setLoading(true);
+        const [internshipResults, jobResults] = await Promise.all([
+          fetchAdzunaJobs({ query: `${career.name} intern`, resultsPerPage: 10 }),
+          fetchAdzunaJobs({ query: `${career.name} graduate`, resultsPerPage: 5 })
+        ]);
+        setInternships(internshipResults);
+        setJobs(jobResults);
+        setLoading(false);
+      }
+    }
+    if (career) {
+        loadJobs();
+    }
+  }, [career]);
+
+  if (!careerId || !career) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[50vh]">
+        <Card className="p-8 text-center">
+          <CardTitle className="font-headline">Let's Get Personal</CardTitle>
+          <CardDescription className="mt-2">Please choose a career path to get a personalized dashboard and roadmap.</CardDescription>
+          <Button asChild className="mt-4">
+            <Link href="/onboarding/career?stage=during">Choose a Career</Link>
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -63,33 +90,17 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
           <TabsTrigger value="year4">Final Year</TabsTrigger>
         </TabsList>
 
-        {/* 1st Year */}
         <TabsContent value="year1" className="mt-6 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Interactive Career Roadmap</CardTitle>
-              <CardDescription>Your personalized journey for the next four years.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Progress value={40} className="mb-4" />
-              <div className="flex flex-col gap-4">
-                {roadmapItems.map(item => (
-                  <div key={item.title} className={`p-3 rounded-md ${item.done ? 'bg-accent/20' : 'bg-muted'}`}>
-                    <p className="font-semibold">{item.title}</p>
-                    <p className="text-sm text-muted-foreground">Year {item.year}, Sem {item.sem}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <CareerRoadmap careerId={careerId} year="1st Year" />
         </TabsContent>
 
-        {/* 2nd Year */}
         <TabsContent value="year2" className="mt-6 space-y-6">
+          <CareerRoadmap careerId={careerId} year="2nd Year" />
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas</CardTitle>
+                <CardDescription>Get inspired with projects tailored to your career path.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {projectIdeas.map(p => {
@@ -119,15 +130,16 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
                         <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
                     </div>
                 ))}
-                 {internships.length === 0 && <p className="text-muted-foreground">No internships found.</p>}
+                 {internships.length === 0 && !loading && <p className="text-muted-foreground">No internships found.</p>}
+                 {loading && <p className="text-muted-foreground">Loading...</p>}
                 </ScrollArea>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* 3rd Year */}
         <TabsContent value="year3" className="mt-6 space-y-6">
+          <CareerRoadmap careerId={careerId} year="3rd Year" />
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -145,7 +157,8 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
                         <Button size="sm" asChild><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
                     </div>
                 ))}
-                {internships.length === 0 && <p className="text-muted-foreground">No internships found.</p>}
+                {internships.length === 0 && !loading && <p className="text-muted-foreground">No internships found.</p>}
+                {loading && <p className="text-muted-foreground">Loading...</p>}
                 </ScrollArea>
               </CardContent>
             </Card>
@@ -171,8 +184,8 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
           </div>
         </TabsContent>
         
-        {/* Final Year */}
         <TabsContent value="year4" className="mt-6 space-y-6">
+            <CareerRoadmap careerId={careerId} year="Final Year" />
              <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Graduate Job Board</CardTitle>
@@ -187,12 +200,14 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
                            </div>
                            <Button size="sm" asChild><Link href={job.redirect_url} target="_blank">View Job</Link></Button>
                        </div>
-                   )) : <p className="text-muted-foreground text-center">No jobs found for today. Check back later!</p>}
+                   )) : !loading && <p className="text-muted-foreground text-center">No jobs found for today. Check back later!</p>}
+                   {loading && <p className="text-muted-foreground text-center">Loading...</p>}
                 </CardContent>
              </Card>
               <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline">Higher Studies Roadmap</CardTitle>
+                    <CardTitle className="font-headline flex items-center gap-2"><School/> Higher Studies</CardTitle>
+                    <CardDescription>Resources to prepare for post-graduate exams.</CardDescription>
                 </CardHeader>
                 <CardContent className="flex justify-around">
                     <Button variant="outline">GRE Prep</Button>
