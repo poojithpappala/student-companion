@@ -1,8 +1,15 @@
-import Link from 'next/link';
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Bot, BarChart, FileText, Briefcase } from 'lucide-react';
+import { ArrowRight, Bot, BarChart, FileText, Briefcase, Loader2 } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
+import { signInWithGoogle } from '@/lib/firebase/auth';
+import { auth } from '@/lib/firebase/firebase';
+import { getUserProfile } from '@/lib/firebase/user';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -14,6 +21,36 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isHeaderAuthLoading, setHeaderAuthLoading] = useState(false);
+
+  const handleSignIn = async (setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setLoading(true);
+    try {
+        const { isNewUser } = await signInWithGoogle();
+        if (isNewUser) {
+            router.push('/onboarding/stage');
+        } else {
+            const user = auth.currentUser;
+            if (user) {
+                const profile = await getUserProfile(user.uid);
+                router.push(profile?.stage ? `/dashboard/${profile.stage}` : '/onboarding/stage');
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        toast({
+            variant: "destructive",
+            title: "Sign-in failed",
+            description: "Could not sign in with Google. Please try again.",
+        });
+    } finally {
+        setLoading(false);
+    }
+  };
+
   const features = [
     {
       icon: <BarChart className="w-8 h-8 text-accent" />,
@@ -41,10 +78,9 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Logo />
-        <Button asChild variant="ghost">
-          <Link href="/onboarding/stage">
-            Sign In <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
+        <Button variant="ghost" onClick={() => handleSignIn(setHeaderAuthLoading)} disabled={isHeaderAuthLoading}>
+           {isHeaderAuthLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ArrowRight className="mr-2 h-4 w-4" />}
+            Sign In
         </Button>
       </header>
 
@@ -60,11 +96,13 @@ export default function LandingPage() {
             <p className="mt-4 max-w-2xl mx-auto text-base md:text-lg text-foreground/80">
               An all-in-one student career platform with lifecycle-aware dashboards to guide you from classroom to career.
             </p>
-            <Button asChild size="lg" className="mt-8 bg-accent hover:bg-accent/90 text-accent-foreground">
-              <Link href="/onboarding/stage">
-                <GoogleIcon className="mr-2" />
-                Sign In with Google
-              </Link>
+            <Button onClick={() => handleSignIn(setIsLoading)} size="lg" className="mt-8 bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isLoading}>
+              {isLoading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                  <GoogleIcon className="mr-2" />
+              )}
+              Sign In with Google
             </Button>
           </div>
         </section>

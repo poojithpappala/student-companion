@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Bot, Send, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { aiCareerCoachChatbot } from "@/ai/flows/ai-career-coach-chatbot";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 const chatSchema = z.object({
   question: z.string().min(1, "Message cannot be empty"),
@@ -36,6 +37,7 @@ export function AiChatbot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { userProfile } = useAuth();
 
   const form = useForm<z.infer<typeof chatSchema>>({
     resolver: zodResolver(chatSchema),
@@ -60,7 +62,9 @@ export function AiChatbot() {
     try {
       const response = await aiCareerCoachChatbot({
         question: values.question,
-        stage: "During Undergrad", // This should be dynamic based on user data
+        stage: userProfile?.stage || "Not specified",
+        careerId: userProfile?.careerId,
+        year: userProfile?.year,
       });
       const botMessage: Message = { id: (Date.now() + 1).toString(), text: response.answer, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);

@@ -1,7 +1,15 @@
-import Link from 'next/link';
+"use client";
+
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
+import { signInWithGoogle } from '@/lib/firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { getUserProfile } from '@/lib/firebase/user';
+import { auth } from '@/lib/firebase/firebase';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px" {...props}>
@@ -13,34 +21,70 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 export default function AuthPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-      <div className="w-full max-w-md">
-        <Card className="shadow-2xl">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <Logo />
+    const router = useRouter();
+    const { toast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSignIn = async () => {
+        setIsLoading(true);
+        try {
+            const { isNewUser } = await signInWithGoogle();
+            if (isNewUser) {
+                router.push('/onboarding/stage');
+            } else {
+                const user = auth.currentUser;
+                if (user) {
+                    const profile = await getUserProfile(user.uid);
+                    if (profile?.stage) {
+                        router.push(`/dashboard/${profile.stage}`);
+                    } else {
+                        router.push('/onboarding/stage');
+                    }
+                } else {
+                    router.push('/onboarding/stage');
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            toast({
+                variant: "destructive",
+                title: "Sign-in failed",
+                description: "Could not sign in with Google. Please try again.",
+            });
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+            <div className="w-full max-w-md">
+                <Card className="shadow-2xl">
+                    <CardHeader className="text-center">
+                        <div className="flex justify-center mb-4">
+                            <Logo />
+                        </div>
+                        <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
+                        <CardDescription>
+                            Sign in to access your personalized career dashboard.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                        <div className="flex flex-col gap-4">
+                            <Button onClick={handleSignIn} className="w-full" size="lg" disabled={isLoading}>
+                                {isLoading ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    <GoogleIcon className="mr-2" />
+                                )}
+                                Sign In with Google
+                            </Button>
+                        </div>
+                        <p className="mt-6 text-center text-xs text-muted-foreground">
+                            By continuing, you agree to our Terms of Service and Privacy Policy.
+                        </p>
+                    </CardContent>
+                </Card>
             </div>
-            <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
-            <CardDescription>
-              Sign in to access your personalized career dashboard.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="flex flex-col gap-4">
-              <Button asChild className="w-full" size="lg">
-                <Link href="/onboarding/stage">
-                  <GoogleIcon className="mr-2" />
-                  Sign In with Google
-                </Link>
-              </Button>
-            </div>
-            <p className="mt-6 text-center text-xs text-muted-foreground">
-              By continuing, you agree to our Terms of Service and Privacy Policy.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }

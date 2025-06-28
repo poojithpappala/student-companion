@@ -1,31 +1,64 @@
-import Link from 'next/link';
+"use client";
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Rocket, School, Briefcase, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import { useAuth } from '@/hooks/use-auth';
+import { updateUserProfile } from '@/lib/firebase/user';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 const stages = [
   {
     icon: <Rocket className="h-10 w-10 text-accent" />,
     title: 'Before Undergrad',
     description: "I'm exploring career options and preparing for college applications.",
-    href: '/onboarding/career?stage=before',
+    value: 'before',
   },
   {
     icon: <School className="h-10 w-10 text-accent" />,
     title: 'During Undergrad',
     description: "I'm currently a student, looking for internships and building skills.",
-    href: '/onboarding/career?stage=during',
+    value: 'during',
   },
   {
     icon: <Briefcase className="h-10 w-10 text-accent" />,
     title: 'After Undergrad',
     description: "I've graduated and am seeking jobs or further education.",
-    href: '/onboarding/career?stage=after',
+    value: 'after',
   },
 ];
 
 export default function StageSelectionPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleSelectStage = async (stage: 'before' | 'during' | 'after') => {
+      if (!user) {
+          toast({
+              variant: 'destructive',
+              title: 'Not signed in',
+              description: 'You must be signed in to select a stage.',
+          });
+          router.push('/auth');
+          return;
+      }
+
+      try {
+          await updateUserProfile(user.uid, { stage });
+          router.push('/onboarding/career');
+      } catch (error) {
+          console.error(error);
+          toast({
+              variant: 'destructive',
+              title: 'Update failed',
+              description: 'Could not save your stage. Please try again.',
+          });
+      }
+  };
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-4">
       <div className="text-center mb-10">
@@ -45,10 +78,8 @@ export default function StageSelectionPage() {
               <CardDescription className="mt-2 min-h-[40px]">{stage.description}</CardDescription>
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full bg-accent/90 hover:bg-accent text-accent-foreground">
-                <Link href={stage.href}>
+              <Button onClick={() => handleSelectStage(stage.value as any)} className="w-full bg-accent/90 hover:bg-accent text-accent-foreground">
                   Select <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
               </Button>
             </CardFooter>
           </Card>

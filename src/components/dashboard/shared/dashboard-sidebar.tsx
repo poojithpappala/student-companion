@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   SidebarHeader,
   SidebarContent,
@@ -30,6 +29,8 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/use-auth";
+import { signOut } from "@/lib/firebase/auth";
 
 const menuItems = [
   { href: "/dashboard/before", icon: <Rocket />, label: "Before Undergrad" },
@@ -45,9 +46,16 @@ const tools = [
 
 export function DashboardSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { setOpenMobile } = useSidebar();
+  const { userProfile } = useAuth();
 
   const closeSidebar = () => setOpenMobile(false);
+  
+  const handleLogout = async () => {
+    await signOut();
+    router.push('/');
+  };
 
   return (
     <>
@@ -115,18 +123,16 @@ export function DashboardSidebar() {
          </SidebarMenu>
          <div className="flex items-center gap-3 p-2 rounded-lg">
              <Avatar>
-                 <AvatarImage src="https://placehold.co/40x40.png" alt="User avatar" data-ai-hint="person profile" />
-                 <AvatarFallback>U</AvatarFallback>
+                 <AvatarImage src={userProfile?.photoURL || "https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
+                 <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'U'}</AvatarFallback>
              </Avatar>
              <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
-                 <p className="font-semibold text-sm truncate">User Name</p>
-                 <p className="text-xs text-muted-foreground truncate">user.name@example.com</p>
+                 <p className="font-semibold text-sm truncate">{userProfile?.displayName || 'User'}</p>
+                 <p className="text-xs text-muted-foreground truncate">{userProfile?.email || 'user@example.com'}</p>
              </div>
-             <Link href="/" className="group-data-[collapsible=icon]:hidden">
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <LogOut className="h-4 w-4"/>
-                </Button>
-             </Link>
+              <Button variant="ghost" size="icon" className="h-8 w-8 group-data-[collapsible=icon]:hidden" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4"/>
+              </Button>
          </div>
       </SidebarFooter>
     </>
