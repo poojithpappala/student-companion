@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, type LucideProps } from "lucide-react";
-import { CareerRoadmap } from '@/components/dashboard/during/career-roadmap';
 import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import type { ComponentType } from "react";
@@ -91,11 +91,21 @@ export default function DuringUndergradPage() {
         </TabsList>
 
         <TabsContent value="year1" className="mt-6 space-y-6">
-          <CareerRoadmap careerId={careerId} year="1st Year" />
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">1st Year Roadmap</CardTitle>
+            </CardHeader>
+            <CardContent><p>Focus on core subjects and explore different clubs.</p></CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="year2" className="mt-6 space-y-6">
-          <CareerRoadmap careerId={careerId} year="2nd Year" />
+          <Card>
+              <CardHeader>
+                <CardTitle className="font-headline">2nd Year Roadmap</CardTitle>
+              </CardHeader>
+              <CardContent><p>Start building foundational projects and network.</p></CardContent>
+          </Card>
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -139,7 +149,12 @@ export default function DuringUndergradPage() {
         </TabsContent>
 
         <TabsContent value="year3" className="mt-6 space-y-6">
-          <CareerRoadmap careerId={careerId} year="3rd Year" />
+           <Card>
+              <CardHeader>
+                <CardTitle className="font-headline">3rd Year Roadmap</CardTitle>
+              </CardHeader>
+              <CardContent><p>Focus on a specialization and apply for internships.</p></CardContent>
+          </Card>
           <div className="grid md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -185,7 +200,12 @@ export default function DuringUndergradPage() {
         </TabsContent>
         
         <TabsContent value="year4" className="mt-6 space-y-6">
-            <CareerRoadmap careerId={careerId} year="Final Year" />
+            <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline">Final Year Roadmap</CardTitle>
+                </CardHeader>
+                <CardContent><p>Prepare for interviews, finalize projects, and apply for full-time roles.</p></CardContent>
+            </Card>
              <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Graduate Job Board</CardTitle>
