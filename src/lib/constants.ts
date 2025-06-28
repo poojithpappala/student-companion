@@ -1,4 +1,5 @@
-import { AreaChart, Dna, Code, Landmark, PenTool, Mic, HeartPulse, Scale, TrendingUp, FileText, Target, MessageSquare, LucideIcon } from 'lucide-react';
+
+import { AreaChart, Dna, Code, Landmark, PenTool, Mic, HeartPulse, Scale, TrendingUp, FileText, Target, MessageSquare, LucideIcon, Building2 } from 'lucide-react';
 import type { ComponentType } from 'react';
 
 type Career = {
@@ -58,25 +59,6 @@ export const projectIdeasByCareer: Record<string, typeof defaultProjectIdeas> = 
   ],
 };
 
-export const defaultInternships = [
-    { title: 'Software Engineer Intern', company: 'Tech Corp', location: 'Remote', type: 'Summer' },
-    { title: 'Product Design Intern', company: 'Innovate LLC', location: 'New York, NY', type: 'Fall' },
-    { title: 'Data Analyst Intern', company: 'DataDriven Co.', location: 'Remote', type: '6-Month' },
-]
-
-export const internshipsByCareer: Record<string, typeof defaultInternships> = {
-  swe: [
-    { title: 'Frontend Developer Intern', company: 'WebFlow Inc.', location: 'Remote', type: 'Summer' },
-    { title: 'Backend Engineer Intern', company: 'DataStax', location: 'San Francisco, CA', type: 'Fall' },
-    { title: 'Mobile App Dev Intern', company: 'Appify', location: 'Remote', type: '6-Month' },
-  ],
-  'data-science': [
-    { title: 'Data Analyst Intern', company: 'Insight Corp', location: 'New York, NY', type: 'Summer' },
-    { title: 'Machine Learning Intern', company: 'AI Solutions', location: 'Remote', type: 'Fall' },
-    { title: 'Business Intelligence Intern', company: 'Metrics Co.', location: 'Chicago, IL', type: '6-Month' },
-  ]
-};
-
 // DYNAMIC DATA FOR 'AFTER' DASHBOARD
 export const defaultGrowthPlans = [
   { title: 'Advanced Cloud Computing', provider: 'Coursera', duration: '3 months', icon: 'TrendingUp' },
@@ -95,20 +77,4 @@ export const growthPlansByCareer: Record<string, typeof defaultGrowthPlans> = {
     { title: 'Big Data with Spark', provider: 'edX', duration: '10 weeks', icon: 'TrendingUp' },
     { title: 'MLOps Specialization', provider: 'Udacity', duration: '5 months', icon: 'TrendingUp' },
   ],
-};
-
-export const defaultJobSearches = [
-    { role: "Senior Frontend Developer", location: "Remote" },
-    { role: "Product Manager", location: "San Francisco, CA" },
-]
-
-export const jobSearchesByCareer: Record<string, typeof defaultJobSearches> = {
-    swe: [
-        { role: "Junior Software Engineer", location: "Remote" },
-        { role: "React Developer", location: "Austin, TX" },
-    ],
-    'data-science': [
-        { role: "Entry-Level Data Scientist", location: "Boston, MA" },
-        { role: "Data Analyst", location: "Remote" },
-    ]
 };

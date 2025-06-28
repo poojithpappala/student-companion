@@ -1,20 +1,23 @@
+
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, RefreshCw, Briefcase, School, ArrowRight, type LucideProps } from 'lucide-react';
 import type { ComponentType } from 'react';
-import { growthPlansByCareer, defaultGrowthPlans, jobSearchesByCareer, defaultJobSearches } from '@/lib/constants';
+import { growthPlansByCareer, defaultGrowthPlans, careers } from '@/lib/constants';
+import { fetchAdzunaJobs } from '@/services/jobs';
 
 const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   TrendingUp,
 };
 
-export default function AfterUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
+export default async function AfterUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
   const careerId = searchParams?.careerId as keyof typeof growthPlansByCareer | undefined;
+  const career = careers.find(c => c.id === careerId);
 
   const growthPlans = (careerId && growthPlansByCareer[careerId]) || defaultGrowthPlans;
-  const savedSearches = (careerId && jobSearchesByCareer[careerId]) || defaultJobSearches;
+  const jobs = await fetchAdzunaJobs({ query: career?.name || 'tech professional', resultsPerPage: 4 });
 
   return (
     <div className="space-y-8">
@@ -34,7 +37,7 @@ export default function AfterUndergradPage({ searchParams }: { searchParams?: { 
                       <h4 className="font-semibold">{plan.title}</h4>
                       <p className="text-sm text-muted-foreground">{plan.provider} • {plan.duration}</p>
                   </div>
-                  <Button variant="ghost" size="sm">View</Button>
+                   <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank">View</Link></Button>
                 </div>
               );
             })}
@@ -44,21 +47,23 @@ export default function AfterUndergradPage({ searchParams }: { searchParams?: { 
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline flex items-center gap-2"><RefreshCw/> Job-Switch Toolkit</CardTitle>
+                     <CardDescription>Tools and live job postings to help you find your next role.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <Button asChild className="w-full" variant="outline"><Link href="/dashboard/resume-analyzer">Refresh Resume</Link></Button>
-                    <Button className="w-full">Browse Market</Button>
                     <div className="pt-2">
-                        <h4 className="font-semibold text-sm mb-2">Saved Searches</h4>
-                        {savedSearches.map(search => (
-                            <div key={search.role} className="flex justify-between items-center p-2 rounded-md hover:bg-muted">
+                        <h4 className="font-semibold text-sm mb-2">Live Job Postings</h4>
+                        <div className="space-y-2">
+                        {jobs.length > 0 ? jobs.map(job => (
+                            <div key={job.id} className="flex justify-between items-center p-2 rounded-md border hover:bg-muted">
                                 <div>
-                                    <p className="font-medium">{search.role}</p>
-                                    <p className="text-xs text-muted-foreground">{search.location}</p>
+                                    <p className="font-medium text-sm">{job.title}</p>
+                                    <p className="text-xs text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
                                 </div>
-                                <Button variant="ghost" size="sm">Run</Button>
+                                <Button variant="ghost" size="sm" asChild><Link href={job.redirect_url} target="_blank">View</Link></Button>
                             </div>
-                        ))}
+                        )) : <p className="text-sm text-muted-foreground">No jobs found.</p>}
+                        </div>
                     </div>
                 </CardContent>
             </Card>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -25,7 +26,7 @@ import {
   BadgeCent,
   Settings,
   LogOut,
-  Bot,
+  Building2,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -39,6 +40,7 @@ const menuItems = [
 const tools = [
     { href: "/dashboard/resume-analyzer", icon: <FileText />, label: "Resume Analyzer" },
     { href: "/dashboard/salary-negotiator", icon: <BadgeCent />, label: "Salary Negotiator" },
+    { href: "/dashboard/company-insights", icon: <Building2 />, label: "Company Insights" },
 ]
 
 export function DashboardSidebar() {
@@ -62,7 +64,7 @@ export function DashboardSidebar() {
               <Link href={item.href} passHref legacyBehavior>
                 <SidebarMenuButton
                   as="a"
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   onClick={closeSidebar}
                   tooltip={{
                     children: item.label

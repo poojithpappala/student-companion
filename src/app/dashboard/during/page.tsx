@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,8 +7,9 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from 'next/link';
 import { Lightbulb, Briefcase, Users, Target, FileText, MessageSquare, ArrowRight, type LucideProps } from "lucide-react";
-import { projectIdeasByCareer, defaultProjectIdeas, internshipsByCareer, defaultInternships } from '@/lib/constants';
+import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
 import type { ComponentType } from "react";
+import { fetchAdzunaJobs } from "@/services/jobs";
 
 const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   FileText,
@@ -32,11 +34,13 @@ const applicationTracker = [
 ]
 
 
-export default function DuringUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
+export default async function DuringUndergradPage({ searchParams }: { searchParams?: { careerId?: string } }) {
   const careerId = searchParams?.careerId as keyof typeof projectIdeasByCareer | undefined;
+  const career = careers.find(c => c.id === careerId);
   
   const projectIdeas = (careerId && projectIdeasByCareer[careerId]) || defaultProjectIdeas;
-  const internships = (careerId && internshipsByCareer[careerId]) || defaultInternships;
+  const internships = await fetchAdzunaJobs({ query: `${career?.name || 'tech'} intern`, resultsPerPage: 10 });
+  const jobs = await fetchAdzunaJobs({ query: `${career?.name || 'tech'} graduate`, resultsPerPage: 5 });
 
   return (
     <div className="space-y-8">
@@ -105,15 +109,17 @@ export default function DuringUndergradPage({ searchParams }: { searchParams?: {
             <Card>
               <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Micro-Internships</CardTitle>
+                 <CardDescription>Short-term projects to build your experience.</CardDescription>
               </CardHeader>
               <CardContent>
                 <ScrollArea className="h-64">
-                {internships.map(i => (
-                    <div key={i.title} className="p-3 mb-2 rounded-md border">
+                {internships.slice(0, 5).map(i => (
+                    <div key={i.id} className="p-3 mb-2 rounded-md border">
                         <h4 className="font-semibold">{i.title}</h4>
-                        <p className="text-sm text-muted-foreground">{i.company} - {i.location}</p>
+                        <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
                     </div>
                 ))}
+                 {internships.length === 0 && <p className="text-muted-foreground">No internships found.</p>}
                 </ScrollArea>
               </CardContent>
             </Card>
@@ -126,24 +132,27 @@ export default function DuringUndergradPage({ searchParams }: { searchParams?: {
             <Card>
               <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship/Job Board</CardTitle>
+                <CardDescription>Live internships from Adzuna.</CardDescription>
               </CardHeader>
                <CardContent>
                 <ScrollArea className="h-72">
                 {internships.map(i => (
-                    <div key={i.title} className="p-3 mb-2 rounded-md border flex justify-between items-center">
+                    <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
                         <div>
                             <h4 className="font-semibold">{i.title}</h4>
-                            <p className="text-sm text-muted-foreground">{i.company} - {i.location}</p>
+                            <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
                         </div>
-                        <Button size="sm">Apply</Button>
+                        <Button size="sm" asChild><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
                     </div>
                 ))}
+                {internships.length === 0 && <p className="text-muted-foreground">No internships found.</p>}
                 </ScrollArea>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
                 <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
+                 <CardDescription>Keep track of your job applications.</CardDescription>
               </CardHeader>
               <CardContent>
                  {applicationTracker.map(app => (
@@ -166,11 +175,19 @@ export default function DuringUndergradPage({ searchParams }: { searchParams?: {
         <TabsContent value="year4" className="mt-6 space-y-6">
              <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline">Daily Job Application Dashboard</CardTitle>
+                    <CardTitle className="font-headline">Graduate Job Board</CardTitle>
+                    <CardDescription>Top graduate job recommendations for you today.</CardDescription>
                 </CardHeader>
-                <CardContent className="text-center">
-                    <p className="text-muted-foreground mb-4">You have 5 recommended jobs for today.</p>
-                    <Button>View Jobs</Button>
+                <CardContent className="space-y-3">
+                   {jobs.length > 0 ? jobs.map(job => (
+                        <div key={job.id} className="p-3 rounded-md border flex justify-between items-center">
+                           <div>
+                               <h4 className="font-semibold">{job.title}</h4>
+                               <p className="text-sm text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
+                           </div>
+                           <Button size="sm" asChild><Link href={job.redirect_url} target="_blank">View Job</Link></Button>
+                       </div>
+                   )) : <p className="text-muted-foreground text-center">No jobs found for today. Check back later!</p>}
                 </CardContent>
              </Card>
               <Card>
