@@ -37,7 +37,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="space-y-8 max-w-2xl mx-auto">
+        <div className="space-y-8">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Account Settings</CardTitle>
