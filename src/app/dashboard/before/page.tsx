@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase } from 'lucide-react';
+import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase, Compass } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { careers, skillsByCareer, entranceExams } from '@/lib/constants';
 import Link from 'next/link';
@@ -32,13 +32,22 @@ export default function BeforeUndergradPage() {
 
   if (!selectedCareer) {
     return (
-      <div className="flex flex-col items-center justify-center h-[50vh]">
-        <Card className="p-8 text-center">
-            <CardTitle className="font-headline">Welcome!</CardTitle>
-            <CardDescription className="mt-2">Please choose a career path to get personalized recommendations.</CardDescription>
-            <Button asChild className="mt-4">
-                <Link href="/onboarding/career?stage=before">Choose a Career</Link>
-            </Button>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <Card className="w-full max-w-lg p-8">
+            <CardHeader className="p-0 items-center">
+                <div className="p-4 bg-accent/10 rounded-full mb-4">
+                    <Compass className="h-12 w-12 text-accent" />
+                </div>
+                <CardTitle className="font-headline text-2xl">Welcome!</CardTitle>
+                <CardDescription className="mt-2">
+                    Please choose a career path to get personalized recommendations for your journey.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0 mt-6">
+                <Button asChild size="lg">
+                    <Link href="/onboarding/career?stage=before">Choose a Career Path</Link>
+                </Button>
+            </CardContent>
         </Card>
       </div>
     );
