@@ -8,9 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2, UploadCloud, FileText, Sparkles } from "lucide-react";
+import { Loader2, UploadCloud, FileText, Sparkles, Star, ListChecks } from "lucide-react";
 import { analyzeResume, AnalyzeResumeOutput } from "@/ai/flows/resume-analyzer";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 
 const resumeSchema = z.object({
   resume: z
@@ -57,7 +60,7 @@ export default function ResumeAnalyzerPage() {
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
+    <div className="grid md:grid-cols-3 gap-8 items-start">
       <div className="md:col-span-1">
         <Card>
           <CardHeader>
@@ -94,10 +97,10 @@ export default function ResumeAnalyzerPage() {
                         </div>
                       </FormLabel>
                       <FormControl>
-                        <Input 
-                            id="resume-upload" 
-                            type="file" 
-                            className="hidden" 
+                        <Input
+                            id="resume-upload"
+                            type="file"
+                            className="hidden"
                             accept=".pdf"
                             onChange={(e) => {
                                 field.onChange(e.target.files);
@@ -140,13 +143,63 @@ export default function ResumeAnalyzerPage() {
                 </div>
             )}
             {analysis ? (
-              <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-sans">
-                  {analysis.feedback}
-              </div>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="font-headline font-semibold flex items-center gap-3 mb-2 text-lg">
+                      <Star className="text-accent"/> Overall Score: {analysis.overallScore} / 100
+                  </h3>
+                  <Progress value={analysis.overallScore} className="w-full" />
+                </div>
+                
+                <p className="text-muted-foreground italic border-l-4 border-accent pl-4 py-2">"{analysis.firstImpression}"</p>
+                
+                <Card className="bg-muted/50">
+                    <CardHeader>
+                        <CardTitle className="text-base font-semibold">Summary</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground text-sm whitespace-pre-wrap">{analysis.summary}</p>
+                    </CardContent>
+                </Card>
+
+                <div>
+                    <h3 className="text-lg font-headline font-semibold mb-3 flex items-center gap-2"><ListChecks /> Actionable Tips</h3>
+                    <ul className="space-y-3">
+                        {analysis.actionableTips.map((tip, index) => (
+                            <li key={index} className="flex items-start gap-3 text-sm">
+                                <div className="mt-1 w-4 h-4 text-accent"><Sparkles className="w-4 h-4"/></div>
+                                <span>{tip}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+        
+                <div>
+                    <h3 className="text-lg font-headline font-semibold mb-2 mt-4">Section-by-Section Analysis</h3>
+                    <Accordion type="single" collapsible className="w-full">
+                        {analysis.sectionBySectionFeedback.map((item, index) => (
+                            <AccordionItem value={`item-${index}`} key={index}>
+                                <AccordionTrigger>
+                                    <div className="flex items-center justify-between w-full pr-4">
+                                        <span className="font-semibold">{item.section}</span>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="font-bold">{item.score}/10</span>
+                                            <Progress value={item.score * 10} className="w-24 h-2" />
+                                        </div>
+                                    </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="prose prose-sm dark:prose-invert max-w-none font-sans whitespace-pre-wrap">
+                                  {item.feedback}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </div>
+            </div>
             ) : !isSubmitting && (
               <div className="text-center text-muted-foreground h-64 flex flex-col justify-center items-center">
                 <FileText className="w-12 h-12 mb-4" />
-                <p>Your resume feedback will appear here.</p>
+                <p>Your detailed resume feedback will appear here.</p>
               </div>
             )}
           </CardContent>
