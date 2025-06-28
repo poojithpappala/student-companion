@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   SidebarHeader,
   SidebarContent,
@@ -45,14 +45,29 @@ const tools = [
 export function DashboardSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setOpenMobile } = useSidebar();
+
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const stageFromPath = ['before', 'during', 'after'].find(s => s === pathSegments[1]);
+  const stageFromSearch = searchParams.get('stage');
+  const currentStage = stageFromPath || stageFromSearch;
 
   const closeSidebar = () => setOpenMobile(false);
   
   const handleLogout = () => {
-    // Mock logout, navigate to auth page
     router.push('/auth');
   };
+
+  const preservedSearchParams = new URLSearchParams(searchParams);
+  if (currentStage && !preservedSearchParams.has('stage')) {
+    preservedSearchParams.set('stage', currentStage);
+  }
+  const preservedQueryString = preservedSearchParams.toString();
+
+  const visibleMenuItems = currentStage 
+    ? menuItems.filter(item => item.href.includes(currentStage)) 
+    : [];
 
   return (
     <>
@@ -60,29 +75,33 @@ export function DashboardSidebar() {
         <Logo />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <span className="text-xs text-muted-foreground px-2">Dashboards</span>
-          </SidebarMenuItem>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname.startsWith(item.href)}
-                onClick={closeSidebar}
-                tooltip={{
-                  children: item.label,
-                }}
-              >
-                <Link href={item.href}>
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-        <SidebarSeparator />
+        {visibleMenuItems.length > 0 && (
+          <>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <span className="text-xs text-muted-foreground px-2">Dashboard</span>
+              </SidebarMenuItem>
+              {visibleMenuItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith(item.href)}
+                    onClick={closeSidebar}
+                    tooltip={{
+                      children: item.label,
+                    }}
+                  >
+                    <Link href={`${item.href}?${searchParams.toString()}`}>
+                      {item.icon}
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+            <SidebarSeparator />
+          </>
+        )}
         <SidebarMenu>
             <SidebarMenuItem>
                 <span className="text-xs text-muted-foreground px-2">Tools</span>
@@ -97,7 +116,7 @@ export function DashboardSidebar() {
                       children: item.label,
                     }}
                   >
-                    <Link href={item.href}>
+                    <Link href={`${item.href}?${preservedQueryString}`}>
                       {item.icon}
                       <span>{item.label}</span>
                     </Link>
@@ -115,7 +134,7 @@ export function DashboardSidebar() {
                 isActive={pathname === "/dashboard/settings"}
                 onClick={closeSidebar}
               >
-                <Link href="/dashboard/settings">
+                <Link href={`/dashboard/settings?${preservedQueryString}`}>
                   <Settings />
                   <span>Settings</span>
                 </Link>
