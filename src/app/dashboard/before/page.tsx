@@ -19,6 +19,7 @@ import { z } from "zod";
 import { getCollegeSuggestions, CollegeSuggestion } from '@/ai/flows/college-explorer';
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CareerDeepDive } from '@/components/dashboard/before/career-deep-dive';
 
 
 const collegeExplorerSchema = z.object({
@@ -109,8 +110,9 @@ export default function BeforeUndergradPage() {
   // The main tabbed dashboard for users who have completed the assessment.
   return (
     <Tabs defaultValue="career-path" className="w-full space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="career-path"><Target className="mr-2" /> Your Career Path</TabsTrigger>
+            <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2" /> Career Deep Dive</TabsTrigger>
             <TabsTrigger value="exam-planner"><Trophy className="mr-2" /> Exam Planner</TabsTrigger>
             <TabsTrigger value="college-explorer"><GraduationCap className="mr-2" /> College Explorer</TabsTrigger>
         </TabsList>
@@ -184,6 +186,10 @@ export default function BeforeUndergradPage() {
                     </Card>
                 </div>
             </div>
+        </TabsContent>
+
+        <TabsContent value="career-deep-dive">
+            <CareerDeepDive careerId={selectedCareer.id} careerName={selectedCareer.name} />
         </TabsContent>
 
         <TabsContent value="exam-planner">
