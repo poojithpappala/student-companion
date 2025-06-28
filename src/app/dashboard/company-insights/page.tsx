@@ -93,7 +93,7 @@ export default function CompanyInsightsPage() {
                 </div>
             )}
             {insights ? (
-              <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap font-sans" dangerouslySetInnerHTML={{ __html: insights.report.replace(/\n/g, '<br />') }}>
+              <div className="prose prose-sm dark:prose-invert max-w-none font-sans" dangerouslySetInnerHTML={{ __html: insights.report }}>
               </div>
             ) : !isSubmitting && (
               <div className="text-center text-muted-foreground h-64 flex flex-col justify-center items-center">

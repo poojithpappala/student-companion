@@ -74,7 +74,7 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
               <Progress value={40} className="mb-4" />
               <div className="flex flex-col gap-4">
                 {roadmapItems.map(item => (
-                  <div key={item.title} className={`p-3 rounded-md ${item.done ? 'bg-green-100 dark:bg-green-900' : 'bg-muted'}`}>
+                  <div key={item.title} className={`p-3 rounded-md ${item.done ? 'bg-accent/20' : 'bg-muted'}`}>
                     <p className="font-semibold">{item.title}</p>
                     <p className="text-sm text-muted-foreground">Year {item.year}, Sem {item.sem}</p>
                   </div>
@@ -162,7 +162,7 @@ export default async function DuringUndergradPage({ searchParams }: { searchPara
                                 <h4 className="font-semibold">{app.role}</h4>
                                 <p className="text-sm text-muted-foreground">{app.company}</p>
                             </div>
-                            <Badge variant={app.status === 'Offer' ? 'default' : 'outline'} className={app.status === 'Offer' ? 'bg-green-500 text-white' : ''}>{app.status}</Badge>
+                            <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
                          </div>
                      </div>
                  ))}

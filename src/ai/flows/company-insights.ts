@@ -17,7 +17,7 @@ const CompanyInsightsInputSchema = z.object({
 export type CompanyInsightsInput = z.infer<typeof CompanyInsightsInputSchema>;
 
 const CompanyInsightsOutputSchema = z.object({
-  report: z.string().describe('A detailed report on the company, formatted as markdown.'),
+  report: z.string().describe('A detailed report on the company, formatted as clean HTML.'),
 });
 export type CompanyInsightsOutput = z.infer<typeof CompanyInsightsOutputSchema>;
 
@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
 
   Based on your knowledge, generate a detailed report for the following company: {{{companyName}}}
 
-  The report should be well-structured and formatted in markdown. Include the following sections if possible:
+  The report should be well-structured and formatted in clean HTML. Use tags like <h4> for section titles, <ul> and <li> for lists, and <p> for paragraphs. Do not include <html>, <head>, or <body> tags. Include the following sections if possible:
   - **Company Culture**: Describe the work environment, values, and what it's like to work there.
   - **Interview Process**: Detail the typical stages of the interview process. Include common types of questions asked (e.g., behavioral, technical, case studies) and tips for preparation.
   - **Work-Life Balance**: Provide insights into the typical work hours, remote work policies, and overall employee well-being.
