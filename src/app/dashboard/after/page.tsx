@@ -58,22 +58,52 @@ function AfterUndergradContent() {
             }
             
             setLoading(true);
+            setJobs([]);
+            setCourses([]);
+
             try {
-                const [jobResults, deepDiveData] = await Promise.all([
+                const results = await Promise.allSettled([
                     fetchAdzunaJobs({ query: career.name, resultsPerPage: 5 }),
                     getCareerDeepDive({ careerName: career.name })
                 ]);
-                setJobs(jobResults);
-                setCourses(deepDiveData.suggestedCourses || []);
-            } catch (error) {
-                if (error instanceof Error && !error.message.includes('Adzuna API keys not configured')) {
-                    console.error("Failed to load dashboard data:", error);
+
+                const jobResult = results[0];
+                const deepDiveResult = results[1];
+
+                if (jobResult.status === 'fulfilled') {
+                    setJobs(jobResult.value);
+                } else {
+                    console.error("Failed to load jobs:", jobResult.reason);
+                    const errorMessage = jobResult.reason instanceof Error ? jobResult.reason.message : "An unknown error occurred while fetching jobs.";
                     toast({
                         variant: "destructive",
-                        title: "Error",
-                        description: "Could not load all dashboard data. Please try again.",
+                        title: "Could Not Load Jobs",
+                        description: errorMessage.includes('Adzuna API keys not configured') 
+                            ? "Adzuna API keys are not configured. Job listings are unavailable."
+                            : "An error occurred while fetching job listings.",
                     });
                 }
+
+                if (deepDiveResult.status === 'fulfilled') {
+                    setCourses(deepDiveResult.value.suggestedCourses || []);
+                } else {
+                    console.error("Failed to load career deep dive:", deepDiveResult.reason);
+                    const errorMessage = deepDiveResult.reason instanceof Error ? deepDiveResult.reason.message : "An unknown error occurred while fetching career details.";
+                    toast({
+                        variant: "destructive",
+                        title: "Could Not Load Career Details",
+                        description: errorMessage.includes('Google API Key not configured')
+                            ? "Google API Key is not configured. AI features are unavailable."
+                            : "An error occurred while fetching AI-powered recommendations.",
+                    });
+                }
+            } catch (error) {
+                console.error("An unexpected error occurred in loadData:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "An unexpected error occurred while loading the dashboard.",
+                });
             } finally {
                 setLoading(false);
             }
@@ -174,7 +204,7 @@ function AfterUndergradContent() {
                                             <Button variant="ghost" size="sm" asChild><Link href={job.redirect_url} target="_blank">View</Link></Button>
                                         </div>
                                     )) : (
-                                        <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}.</p>
+                                        <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}. Check configuration if this persists.</p>
                                     )}
                                 </div>
                             </div>
@@ -206,7 +236,7 @@ function AfterUndergradContent() {
                                     <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank"><ExternalLink className="h-4 w-4"/></Link></Button>
                                 </div>
                             )) : (
-                                <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found.</p>
+                                <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found. Check configuration if this persists.</p>
                             )}
                         </CardContent>
                     </Card>
@@ -251,5 +281,3 @@ export default function AfterUndergradPage() {
         </Suspense>
     )
 }
-
-    
