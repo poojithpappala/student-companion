@@ -283,18 +283,18 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-primary text-primary-foreground">
+      <footer className="bg-card text-card-foreground border-t">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
             <div>
-              <Logo isWhite />
-              <p className="mt-2 text-sm text-primary-foreground/80">
+              <Logo />
+              <p className="mt-2 text-sm text-muted-foreground">
                 © {new Date().getFullYear()} Student Companion. All rights reserved.
               </p>
             </div>
             <div className="flex gap-6 mt-4 sm:mt-0">
-                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white transition-colors">About Us</Link>
-                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white transition-colors">Contact</Link>
-                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">About Us</Link>
+                <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact</Link>
+                <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link>
             </div>
         </div>
       </footer>
