@@ -83,7 +83,7 @@ export default function SelfAssessmentPage() {
 
   return (
     <>
-      <div className="w-full max-w-3xl mx-auto my-8 animate-fade-in-up">
+      <div className="w-full max-w-3xl my-8 animate-fade-in-up">
         <Card>
         <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
