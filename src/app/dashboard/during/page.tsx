@@ -12,6 +12,8 @@ import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/consta
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import type { ComponentType } from "react";
 import { CareerRoadmap } from "@/components/dashboard/during/career-roadmap";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 const iconMap: { [key: string]: ComponentType<LucideProps> } = {
   FileText,
@@ -105,152 +107,184 @@ function DuringUndergradContent() {
     switch(year) {
       case '1st Year':
         return (
-          <div className="space-y-6">
-            <CareerRoadmap careerId={career.id} year="1st Year" />
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">Resume & Portfolio</CardTitle>
-                <CardDescription>Get AI-powered feedback to improve your resume. A strong resume is crucial, even in your first year!</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild>
-                  <Link href="/dashboard/resume-analyzer">Analyze Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+            <TabsList>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="foundations"><FileText className="mr-2 h-4 w-4" /> Foundations</TabsTrigger>
+            </TabsList>
+            <TabsContent value="roadmap">
+              <CareerRoadmap careerId={career.id} year="1st Year" />
+            </TabsContent>
+            <TabsContent value="foundations">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-headline">Resume & Portfolio</CardTitle>
+                  <CardDescription>Get AI-powered feedback to improve your resume. A strong resume is crucial, even in your first year!</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild>
+                    <Link href="/dashboard/resume-analyzer">Analyze Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         );
       case '2nd Year':
         return (
-          <div className="space-y-6">
-            <CareerRoadmap careerId={career.id} year="2nd Year" />
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas</CardTitle>
-                  <CardDescription>Get inspired with projects tailored to {career.name}.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {projectIdeas.map(p => {
-                    const Icon = iconMap[p.icon] || FileText;
-                    return (
-                      <div key={p.title} className="p-4 rounded-lg border flex items-start gap-4">
-                          <div className="text-accent bg-accent/10 p-3 rounded-lg"><Icon /></div>
-                          <div>
-                              <h4 className="font-semibold">{p.title}</h4>
-                              <div className="flex flex-wrap gap-2 mt-1">{p.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}</div>
-                          </div>
-                      </div>
-                    )
-                  })}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Micro-Internships</CardTitle>
-                  <CardDescription>Short-term projects to build your experience.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-64">
-                  {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
-                  {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No micro-internships found for {career.name}.</p>}
-                  {internships.slice(0, 5).map(i => (
-                      <div key={i.id} className="p-3 mb-2 rounded-md border">
-                          <h4 className="font-semibold text-sm">{i.title}</h4>
-                          <p className="text-xs text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
-                      </div>
-                  ))}
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+            <TabsList>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="skill-building"><Lightbulb className="mr-2 h-4 w-4" /> Skill Building</TabsTrigger>
+            </TabsList>
+            <TabsContent value="roadmap">
+                <CareerRoadmap careerId={career.id} year="2nd Year" />
+            </TabsContent>
+            <TabsContent value="skill-building" className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                    <Card>
+                        <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas</CardTitle>
+                        <CardDescription>Get inspired with projects tailored to {career.name}.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                        {projectIdeas.map(p => {
+                            const Icon = iconMap[p.icon] || FileText;
+                            return (
+                            <div key={p.title} className="p-4 rounded-lg border flex items-start gap-4">
+                                <div className="text-accent bg-accent/10 p-3 rounded-lg"><Icon /></div>
+                                <div>
+                                    <h4 className="font-semibold">{p.title}</h4>
+                                    <div className="flex flex-wrap gap-2 mt-1">{p.tags.map(t => <Badge key={t} variant="secondary">{t}</Badge>)}</div>
+                                </div>
+                            </div>
+                            )
+                        })}
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Micro-Internships</CardTitle>
+                        <CardDescription>Short-term projects to build your experience.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                        <ScrollArea className="h-64">
+                        {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
+                        {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No micro-internships found for {career.name}.</p>}
+                        {internships.slice(0, 5).map(i => (
+                            <div key={i.id} className="p-3 mb-2 rounded-md border">
+                                <h4 className="font-semibold text-sm">{i.title}</h4>
+                                <p className="text-xs text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                            </div>
+                        ))}
+                        </ScrollArea>
+                        </CardContent>
+                    </Card>
+                </div>
+            </TabsContent>
+          </Tabs>
         );
       case '3rd Year':
         return (
-          <div className="space-y-6">
-            <CareerRoadmap careerId={career.id} year="3rd Year" />
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship Board</CardTitle>
-                  <CardDescription>Live internship postings for {career.name} from Adzuna.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-72">
-                    {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
-                    {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No internships found.</p>}
-                    {internships.map(i => (
-                      <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
-                        <div>
-                          <h4 className="font-semibold">{i.title}</h4>
-                          <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+            <TabsList>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="internships"><Briefcase className="mr-2 h-4 w-4" /> Internships</TabsTrigger>
+            </TabsList>
+            <TabsContent value="roadmap">
+              <CareerRoadmap careerId={career.id} year="3rd Year" />
+            </TabsContent>
+            <TabsContent value="internships" className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                <Card>
+                    <CardHeader>
+                    <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship Board</CardTitle>
+                    <CardDescription>Live internship postings for {career.name} from Adzuna.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                    <ScrollArea className="h-72">
+                        {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
+                        {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No internships found.</p>}
+                        {internships.map(i => (
+                        <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
+                            <div>
+                            <h4 className="font-semibold">{i.title}</h4>
+                            <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                            </div>
+                            <Button size="sm" asChild variant="secondary"><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
                         </div>
-                        <Button size="sm" asChild variant="secondary"><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
-                      </div>
+                        ))}
+                    </ScrollArea>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                    <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
+                    <CardDescription>Keep track of your job applications (demo).</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                    {applicationTracker.map(app => (
+                        <div key={app.company} className="p-3 mb-2 rounded-md border">
+                        <div className="flex justify-between items-center">
+                            <div>
+                            <h4 className="font-semibold">{app.role}</h4>
+                            <p className="text-sm text-muted-foreground">{app.company}</p>
+                            </div>
+                            <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
+                        </div>
+                        </div>
                     ))}
-                  </ScrollArea>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
-                  <CardDescription>Keep track of your job applications (demo).</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {applicationTracker.map(app => (
-                    <div key={app.company} className="p-3 mb-2 rounded-md border">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h4 className="font-semibold">{app.role}</h4>
-                          <p className="text-sm text-muted-foreground">{app.company}</p>
-                        </div>
-                        <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                    </CardContent>
+                </Card>
+                </div>
+            </TabsContent>
+          </Tabs>
         );
       case 'Final Year':
         return (
-          <div className="space-y-6">
-            <CareerRoadmap careerId={career.id} year="Final Year" />
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                  <CardHeader>
-                      <CardTitle className="font-headline">Graduate Job Board</CardTitle>
-                      <CardDescription>Top graduate job recommendations for {career.name}.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                  {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
-                  {!loading && jobs.length === 0 && <p className="text-muted-foreground text-center pt-4">No graduate jobs found. Check back later!</p>}
-                  {jobs.map(job => (
-                      <div key={job.id} className="p-3 rounded-md border flex justify-between items-center">
-                        <div>
-                          <h4 className="font-semibold">{job.title}</h4>
-                          <p className="text-sm text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
+          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+            <TabsList>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="next-steps"><ArrowRight className="mr-2 h-4 w-4" /> Next Steps</TabsTrigger>
+            </TabsList>
+            <TabsContent value="roadmap">
+              <CareerRoadmap careerId={career.id} year="Final Year" />
+            </TabsContent>
+            <TabsContent value="next-steps" className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="font-headline">Graduate Job Board</CardTitle>
+                        <CardDescription>Top graduate job recommendations for {career.name}.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                    {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
+                    {!loading && jobs.length === 0 && <p className="text-muted-foreground text-center pt-4">No graduate jobs found. Check back later!</p>}
+                    {jobs.map(job => (
+                        <div key={job.id} className="p-3 rounded-md border flex justify-between items-center">
+                            <div>
+                            <h4 className="font-semibold">{job.title}</h4>
+                            <p className="text-sm text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
+                            </div>
+                            <Button size="sm" asChild variant="secondary"><Link href={job.redirect_url} target="_blank">View Job</Link></Button>
                         </div>
-                        <Button size="sm" asChild variant="secondary"><Link href={job.redirect_url} target="_blank">View Job</Link></Button>
-                      </div>
-                  ))}
-                  </CardContent>
-              </Card>
-              <Card>
-                  <CardHeader>
-                      <CardTitle className="font-headline flex items-center gap-2"><School/> Higher Studies</CardTitle>
-                      <CardDescription>Resources to prepare for post-graduate exams.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="flex flex-wrap justify-center gap-4">
-                      <Button variant="outline">GRE Prep</Button>
-                      <Button variant="outline">GMAT Prep</Button>
-                      <Button variant="outline">IELTS Prep</Button>
-                  </CardContent>
-              </Card>
-            </div>
-          </div>
+                    ))}
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><School/> Higher Studies</CardTitle>
+                        <CardDescription>Resources to prepare for post-graduate exams.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-wrap justify-center gap-4">
+                        <Button variant="outline">GRE Prep</Button>
+                        <Button variant="outline">GMAT Prep</Button>
+                        <Button variant="outline">IELTS Prep</Button>
+                    </CardContent>
+                </Card>
+                </div>
+            </TabsContent>
+          </Tabs>
         );
       default:
         return <p>Invalid year selected.</p>;
