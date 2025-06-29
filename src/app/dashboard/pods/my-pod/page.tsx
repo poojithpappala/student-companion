@@ -2,6 +2,7 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +10,19 @@ import { usePodStore } from '@/hooks/use-pod-store';
 import { ActivityFeed } from '@/components/dashboard/pods/activity-feed';
 import { MembersList } from '@/components/dashboard/pods/members-list';
 import { Lightbulb } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 export default function MyPodDashboardPage() {
     const router = useRouter();
     const { currentPod, leavePod } = usePodStore();
+
+    useEffect(() => {
+        // If the user is not in a pod and navigates here directly,
+        // redirect them to the find page. This check runs only on the client.
+        if (!currentPod) {
+            router.replace('/dashboard/pods/find');
+        }
+    }, [currentPod, router]);
 
     const handleLeave = () => {
         leavePod();
@@ -20,11 +30,14 @@ export default function MyPodDashboardPage() {
     };
 
     if (!currentPod) {
-        // This should not happen if the main pods page redirects correctly, but as a fallback:
-        if (typeof window !== 'undefined') {
-            router.replace('/dashboard/pods/find');
-        }
-        return null;
+        // Return a loader while the redirect effect runs.
+        // This prevents rendering the rest of the component with a null pod.
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin" />
+                <p className="ml-4">Redirecting...</p>
+            </div>
+        );
     }
 
     return (
