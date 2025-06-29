@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Suspense, useState, useEffect } from 'react';
@@ -9,30 +10,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TrendingUp, Briefcase, GraduationCap, ArrowRight, Wand2, Search, Compass, Loader2 } from 'lucide-react';
 import { careers } from '@/lib/constants';
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
+import { getCareerDeepDive } from '@/ai/flows/career-deep-dive';
+import { type CareerDeepDiveOutput } from '@/ai/schemas';
+import { useToast } from '@/hooks/use-toast';
 
 function AfterUndergradContent() {
     const searchParams = useSearchParams();
+    const { toast } = useToast();
     const careerId = searchParams.get('careerId');
     const career = careers.find(c => c.id === careerId);
 
     const [jobs, setJobs] = useState<Job[]>([]);
+    const [courses, setCourses] = useState<CareerDeepDiveOutput['suggestedCourses']>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function loadJobs() {
+        async function loadData() {
             if (career) {
                 setLoading(true);
-                const jobResults = await fetchAdzunaJobs({ query: career.name, resultsPerPage: 5 });
-                setJobs(jobResults);
+                try {
+                    const [jobResults, deepDiveData] = await Promise.all([
+                        fetchAdzunaJobs({ query: career.name, resultsPerPage: 5 }),
+                        getCareerDeepDive({ careerName: career.name })
+                    ]);
+                    setJobs(jobResults);
+                    setCourses(deepDiveData.suggestedCourses || []);
+                } catch (error) {
+                    console.error("Failed to load dashboard data:", error);
+                    toast({
+                        variant: "destructive",
+                        title: "Error",
+                        description: "Could not load all dashboard data. Please try again.",
+                    });
+                } finally {
+                    setLoading(false);
+                }
+            } else {
                 setLoading(false);
             }
         }
-        if (career) {
-            loadJobs();
-        } else {
-            setLoading(false);
-        }
-    }, [career]);
+        loadData();
+    }, [career, toast]);
 
     if (!career) {
         return (
@@ -68,7 +86,7 @@ function AfterUndergradContent() {
                 </CardHeader>
             </Card>
             <Tabs defaultValue="job-search" className="w-full">
-                <TabsList>
+                <TabsList className="grid w-full grid-cols-1 md:grid-cols-3">
                     <TabsTrigger value="job-search"><Search className="mr-2 h-4 w-4" /> Job Search</TabsTrigger>
                     <TabsTrigger value="career-growth"><TrendingUp className="mr-2 h-4 w-4" /> Career Growth</TabsTrigger>
                     <TabsTrigger value="advanced-tools"><Wand2 className="mr-2 h-4 w-4" /> Advanced Tools</TabsTrigger>
@@ -108,34 +126,21 @@ function AfterUndergradContent() {
                 <TabsContent value="career-growth" className="mt-6">
                      <Card className="flex flex-col">
                         <CardHeader>
-                            <CardTitle className="font-headline flex items-center gap-2"><TrendingUp /> Career Growth Plans</CardTitle>
-                            <CardDescription>Upskill with recommended micro-courses based on your career choice.</CardDescription>
+                            <CardTitle className="font-headline flex items-center gap-2"><TrendingUp /> AI-Recommended Courses</CardTitle>
+                            <CardDescription>Upskill with AI-powered micro-course recommendations based on your career choice.</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex-grow grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="p-4 rounded-lg border flex items-center gap-4">
-                                <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
-                                <div className="flex-grow">
-                                    <h4 className="font-semibold">Advanced Cloud Computing</h4>
-                                    <p className="text-sm text-muted-foreground">Coursera • 3 months</p>
+                        <CardContent className="flex-grow grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                            {loading && <div className="flex justify-center items-center h-full pt-10 lg:col-span-2"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}
+                            {!loading && courses.length > 0 ? courses.map((course, index) => (
+                                <div key={index} className="p-4 rounded-lg border flex items-center gap-4">
+                                    <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
+                                    <div className="flex-grow">
+                                        <h4 className="font-semibold">{course.name}</h4>
+                                        <p className="text-sm text-muted-foreground">{course.platform}</p>
+                                    </div>
+                                    <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank">View</Link></Button>
                                 </div>
-                                <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank">View</Link></Button>
-                            </div>
-                            <div className="p-4 rounded-lg border flex items-center gap-4">
-                                <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
-                                <div className="flex-grow">
-                                    <h4 className="font-semibold">AI for Project Managers</h4>
-                                    <p className="text-sm text-muted-foreground">edX • 6 weeks</p>
-                                </div>
-                                <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank">View</Link></Button>
-                            </div>
-                            <div className="p-4 rounded-lg border flex items-center gap-4">
-                                <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
-                                <div className="flex-grow">
-                                    <h4 className="font-semibold">Cybersecurity Specialization</h4>
-                                    <p className="text-sm text-muted-foreground">Udacity • 4 months</p>
-                                </div>
-                                <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank">View</Link></Button>
-                            </div>
+                            )) : !loading && <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found.</p>}
                         </CardContent>
                     </Card>
                 </TabsContent>

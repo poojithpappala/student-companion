@@ -50,6 +50,10 @@ export const CareerDeepDiveOutputSchema = z.object({
     name: z.string().describe("The name of a related career path."),
     description: z.string().describe("A one-sentence description of why it's a related or alternative path."),
   })).describe("A list of 3 related career paths students might also consider."),
+  suggestedCourses: z.array(z.object({
+    name: z.string().describe("The name of the suggested online course or certification."),
+    platform: z.string().describe("The platform where the course might be found (e.g., Coursera, edX, Udacity)."),
+  })).describe("A list of 3 recommended online courses for upskilling in this career."),
 });
 export type CareerDeepDiveOutput = z.infer<typeof CareerDeepDiveOutputSchema>;
 
