@@ -6,16 +6,16 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { careers } from '@/lib/constants';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
 import { Suspense } from 'react';
 
 function CareerSelectionContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const stage = searchParams.get('stage') || 'during'; // Default to 'during' if not passed
+    const stage = searchParams.get('stage') || 'during';
 
     const handleSelectCareer = (careerId: string) => {
-        router.push(`/dashboard/${stage}?careerId=${careerId}`);
+        // Corrected user flow: after selecting a career, go to year selection.
+        router.push(`/onboarding/year?stage=${stage}&careerId=${careerId}`);
     };
 
     return (
