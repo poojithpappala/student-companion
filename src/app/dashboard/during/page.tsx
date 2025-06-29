@@ -54,7 +54,7 @@ function DuringUndergradContent() {
 
   if (!careerId || !career) {
     return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
         <Card className="w-full max-w-2xl text-center shadow-lg">
             <CardHeader className="items-center p-8">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
@@ -77,7 +77,7 @@ function DuringUndergradContent() {
   
   if (!year) {
      return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
         <Card className="w-full max-w-2xl text-center shadow-lg">
             <CardHeader className="items-center p-8">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">

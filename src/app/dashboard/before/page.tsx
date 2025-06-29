@@ -9,7 +9,7 @@ import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase, Compass, BookOpen
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { careers, skillsByCareer, entranceExams, salaryByCareer, growthByCareer } from '@/lib/constants';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ const collegeExplorerSchema = CollegeExplorerInputSchema.omit({ grade: true }).e
   location: z.string().optional(),
 });
 
-export default function BeforeUndergradPage() {
+function BeforeUndergradContent() {
   const searchParams = useSearchParams();
   const careerId = searchParams.get('careerId');
   const justification = searchParams.get('justification');
@@ -74,7 +74,7 @@ export default function BeforeUndergradPage() {
   // If the user hasn't taken the self-assessment quiz, show a prompt.
   if (!selectedCareer) {
     return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
         <Card className="w-full max-w-2xl text-center shadow-lg">
             <CardHeader className="items-center p-8">
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
@@ -291,4 +291,13 @@ export default function BeforeUndergradPage() {
       </Tabs>
     </>
   );
+}
+
+
+export default function BeforeUndergradPage() {
+    return (
+        <Suspense fallback={<div className="flex h-screen w-full items-center justify-center"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>}>
+            <BeforeUndergradContent />
+        </Suspense>
+    );
 }
