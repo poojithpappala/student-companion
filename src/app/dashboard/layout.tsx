@@ -1,3 +1,4 @@
+
 "use client";
 
 import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
@@ -20,7 +21,9 @@ export default function DashboardLayout({
         <SidebarInset>
           <DashboardHeader />
           <main className="p-4 sm:p-6 lg:p-8 animate-fade-in-up">
-            {children}
+            <div className="w-full max-w-7xl mx-auto">
+              {children}
+            </div>
           </main>
         </SidebarInset>
         <AiChatbot />

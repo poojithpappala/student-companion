@@ -76,7 +76,7 @@ function AfterUndergradContent() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="space-y-6">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl text-primary">Your Dashboard for {career.name}</CardTitle>
@@ -85,7 +85,7 @@ function AfterUndergradContent() {
                     </CardDescription>
                 </CardHeader>
             </Card>
-            <Tabs defaultValue="job-search">
+            <Tabs defaultValue="job-search" className="w-full">
                 <TabsList className="grid w-full grid-cols-1 md:grid-cols-3">
                     <TabsTrigger value="job-search"><Search className="mr-2 h-4 w-4" /> Job Search</TabsTrigger>
                     <TabsTrigger value="career-growth"><TrendingUp className="mr-2 h-4 w-4" /> Career Growth</TabsTrigger>

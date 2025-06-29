@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -83,94 +84,92 @@ export default function SelfAssessmentPage() {
 
   return (
     <>
-      <div className="container mx-auto max-w-3xl py-8">
-        <Card>
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                <Wand2 className="h-8 w-8 text-primary" />
-            </div>
-            <CardTitle className="font-headline text-3xl text-primary">Career Self-Assessment</CardTitle>
-            <CardDescription className="text-base">Answer a few questions to let our AI find the best career path for you.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="grade"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>What grade are you in?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select your current grade level" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="9th">9th Grade</SelectItem>
-                          <SelectItem value="10th">10th Grade</SelectItem>
-                          <SelectItem value="11th">11th Grade</SelectItem>
-                          <SelectItem value="12th">12th Grade</SelectItem>
-                        </SelectContent>
-                      </Select>
+      <Card className="max-w-3xl mx-auto my-8">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+              <Wand2 className="h-8 w-8 text-primary" />
+          </div>
+          <CardTitle className="font-headline text-3xl text-primary">Career Self-Assessment</CardTitle>
+          <CardDescription className="text-base">Answer a few questions to let our AI find the best career path for you.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="grade"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>What grade are you in?</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your current grade level" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="9th">9th Grade</SelectItem>
+                        <SelectItem value="10th">10th Grade</SelectItem>
+                        <SelectItem value="11th">11th Grade</SelectItem>
+                        <SelectItem value="12th">12th Grade</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField control={form.control} name="subjects" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>What are your favorite subjects in school?</FormLabel>
+                  <FormControl><Textarea {...field} placeholder="e.g., Math, Physics, History, Art..." /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="hobbies" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>What do you do for fun? (Hobbies & Interests)</FormLabel>
+                  <FormControl><Textarea {...field} placeholder="e.g., Playing video games, coding, painting, reading books, playing sports..." /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              
+              <FormField control={form.control} name="personality" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>How would you describe your personality?</FormLabel>
+                  <FormControl><Input {...field} placeholder="e.g., Creative, analytical, enjoy teamwork, prefer working alone..." /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+
+              <FormField control={form.control} name="workStyle" render={({ field }) => (
+                  <FormItem>
+                      <FormLabel>How do you like to work?</FormLabel>
+                      <FormControl><Textarea {...field} placeholder="e.g., Solving complex puzzles, collaborating with a team, working with my hands, expressing creativity..." /></FormControl>
                       <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField control={form.control} name="subjects" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>What are your favorite subjects in school?</FormLabel>
-                    <FormControl><Textarea {...field} placeholder="e.g., Math, Physics, History, Art..." /></FormControl>
-                    <FormMessage />
                   </FormItem>
-                )} />
+              )} />
 
-                <FormField control={form.control} name="hobbies" render={({ field }) => (
+              <FormField control={form.control} name="ambition" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>What do you do for fun? (Hobbies & Interests)</FormLabel>
-                    <FormControl><Textarea {...field} placeholder="e.g., Playing video games, coding, painting, reading books, playing sports..." /></FormControl>
-                    <FormMessage />
+                      <FormLabel>What kind of impact do you want to make?</FormLabel>
+                      <FormControl><Textarea {...field} placeholder="e.g., Build useful technology, help people stay healthy, create beautiful art, start my own business..." /></FormControl>
+                      <FormMessage />
                   </FormItem>
-                )} />
-                
-                <FormField control={form.control} name="personality" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>How would you describe your personality?</FormLabel>
-                    <FormControl><Input {...field} placeholder="e.g., Creative, analytical, enjoy teamwork, prefer working alone..." /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+              )} />
 
-                <FormField control={form.control} name="workStyle" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>How do you like to work?</FormLabel>
-                        <FormControl><Textarea {...field} placeholder="e.g., Solving complex puzzles, collaborating with a team, working with my hands, expressing creativity..." /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-
-                <FormField control={form.control} name="ambition" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>What kind of impact do you want to make?</FormLabel>
-                        <FormControl><Textarea {...field} placeholder="e.g., Build useful technology, help people stay healthy, create beautiful art, start my own business..." /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-
-                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
-                    </>
-                  ) : "Find My Career"}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+              <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
+                  </>
+                ) : "Find My Career"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
       <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <AlertDialogContent>
