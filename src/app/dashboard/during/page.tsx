@@ -63,11 +63,7 @@ function DuringUndergradContent() {
         setLoading(false);
       }
     }
-    if (process.env.NEXT_PUBLIC_ADZUNA_APP_ID && process.env.NEXT_PUBLIC_ADZUNA_API_KEY) {
-        loadJobs();
-    } else {
-        setLoading(false);
-    }
+    loadJobs();
   }, [career, toast]);
 
   if (!careerId || !career) {
