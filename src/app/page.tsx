@@ -36,7 +36,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-secondary/30">
+    <div className="flex flex-col min-h-screen bg-background">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <Logo />
         <Button variant="ghost" asChild>
@@ -62,12 +62,12 @@ export default function LandingPage() {
               </Button>
             </div>
             <div className="animate-fade-in-up [animation-delay:200ms]">
-                <Image src="https://placehold.co/600x400.png" alt="Dashboard preview" width={600} height={400} className="rounded-xl shadow-2xl" data-ai-hint="dashboard professional" />
+                <Image src="https://placehold.co/600x400/111827/7c3aed.png" alt="Dashboard preview" width={600} height={400} className="rounded-xl shadow-2xl" data-ai-hint="dashboard professional" />
             </div>
           </div>
         </section>
 
-        <section className="py-20 md:py-24 bg-background">
+        <section className="py-20 md:py-24 bg-card">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary">
@@ -79,7 +79,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
-                <Card key={index} className="text-center shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${200 * index}ms` }}>
+                <Card key={index} className="text-center bg-background shadow-lg hover:shadow-primary/20 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${200 * index}ms` }}>
                   <CardContent className="p-8 flex flex-col items-center">
                     <div className="p-4 bg-primary/10 rounded-full">
                       {feature.icon}
@@ -98,10 +98,10 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-foreground text-background">
+      <footer className="bg-card">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
           <Logo isWhite />
-          <p className="mt-4 text-sm text-background/70">
+          <p className="mt-4 text-sm text-muted-foreground">
             © {new Date().getFullYear()} Student Companion. All rights reserved.
           </p>
         </div>

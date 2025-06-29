@@ -9,7 +9,7 @@ export function Logo({ isWhite = false, className }: { isWhite?: boolean; classN
       <span
         className={cn(
           "text-xl font-bold font-headline",
-          isWhite ? "text-white" : "text-primary"
+          isWhite ? "text-white" : "text-foreground"
         )}
       >
         Student Companion

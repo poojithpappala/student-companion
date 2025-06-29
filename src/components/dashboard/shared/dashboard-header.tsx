@@ -32,7 +32,7 @@ export function DashboardHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
       <div className="md:hidden">
         <SidebarTrigger />
       </div>
@@ -44,11 +44,11 @@ export function DashboardHeader() {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <Flame className="h-5 w-5 text-accent" />
-          <span>7 days</span>
+          <span className="text-accent-foreground">7 days</span>
         </div>
         <div className="flex items-center gap-2 text-sm font-semibold">
-          <Gem className="h-5 w-5 text-blue-500" />
-          <span>1,200 pts</span>
+          <Gem className="h-5 w-5 text-primary" />
+          <span className="text-primary-foreground">1,200 pts</span>
         </div>
 
         <Button variant="ghost" size="icon" className="rounded-full">
