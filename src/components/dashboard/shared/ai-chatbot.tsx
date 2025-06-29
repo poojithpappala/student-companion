@@ -1,6 +1,8 @@
+
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -13,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bot, Send, User } from "lucide-react";
+import { Bot, Send, User, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,11 +33,16 @@ type Message = {
   sender: "user" | "bot";
 };
 
-export function AiChatbot() {
+function ChatbotContent() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  
+  const searchParams = useSearchParams();
+  const stage = searchParams.get('stage') || 'during';
+  const careerId = searchParams.get('careerId') || undefined;
+  const year = searchParams.get('year') || undefined;
 
   const form = useForm<z.infer<typeof chatSchema>>({
     resolver: zodResolver(chatSchema),
@@ -58,12 +65,11 @@ export function AiChatbot() {
     setIsTyping(true);
 
     try {
-      // Since there's no auth, we send static values for context.
       const response = await aiCareerCoachChatbot({
         question: values.question,
-        stage: "during",
-        careerId: "swe",
-        year: "2nd Year",
+        stage,
+        careerId,
+        year,
       });
       const botMessage: Message = { id: (Date.now() + 1).toString(), text: response.answer, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);
@@ -173,4 +179,12 @@ export function AiChatbot() {
       </Sheet>
     </>
   );
+}
+
+export function AiChatbot() {
+    return (
+        <Suspense fallback={<Button className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-20" size="icon" disabled><Loader2 className="h-8 w-8 animate-spin" /></Button>}>
+            <ChatbotContent/>
+        </Suspense>
+    )
 }

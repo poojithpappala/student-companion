@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -14,12 +15,16 @@ function CareerSelectionContent() {
     const stage = searchParams.get('stage') || 'during';
 
     const handleSelectCareer = (careerId: string) => {
-        // Corrected user flow: after selecting a career, go to year selection.
-        router.push(`/onboarding/year?stage=${stage}&careerId=${careerId}`);
+        const params = new URLSearchParams({ stage, careerId });
+        if (stage === 'during') {
+             router.push(`/onboarding/year?${params.toString()}`);
+        } else { // 'after' stage
+             router.push(`/dashboard/after?${params.toString()}`);
+        }
     };
 
     return (
-        <div className="flex flex-col min-h-screen items-center justify-center p-4">
+        <div className="flex flex-col min-h-screen items-center justify-center p-4 bg-background">
             <div className="text-center mb-10">
                 <Logo />
                 <h1 className="mt-6 font-headline text-3xl md:text-4xl font-bold text-primary">What's your career interest?</h1>
