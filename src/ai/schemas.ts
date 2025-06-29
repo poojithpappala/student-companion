@@ -165,7 +165,7 @@ export const SalaryNegotiationInputSchema = z.object({
   companyName: z.string().describe('The name of the company offering the job.'),
   baseSalary: z.coerce.number().describe('The base salary offered for the position.'),
   location: z.string().describe('The location of the job (city, state).'),
-  yearsOfExperience: z.coerce.number().describe('The candidate\'s years of experience.'),
+  yearsOfExperience: z.coerce.number().describe("The candidate's years of experience."),
   benefits: z.string().describe('A description of the benefits package offered.'),
   strengths: z.string().describe('The candidate\'s key strengths and accomplishments relevant to the role.'),
   otherOffers: z.string().describe('Details of any other job offers the candidate has received.'),

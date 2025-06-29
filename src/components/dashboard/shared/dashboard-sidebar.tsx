@@ -62,7 +62,9 @@ export function DashboardSidebar() {
 
   // Ensure the stage is always part of the query string for tool pages
   const preservedSearchParams = new URLSearchParams(searchParams);
-  preservedSearchParams.set('stage', currentStage);
+  if (!preservedSearchParams.has('stage')) {
+    preservedSearchParams.set('stage', currentStage);
+  }
   const preservedQueryString = preservedSearchParams.toString();
 
   const activeDashboardItem = menuItems.find(item => item.stage === currentStage);

@@ -78,16 +78,16 @@ export default function SalaryNegotiatorPage() {
                   <FormItem><FormLabel>Company Name</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                  <FormField control={form.control} name="baseSalary" render={({ field }) => (
-                  <FormItem><FormLabel>Base Salary (Offered)</FormLabel><FormControl><Input type="number" {...field} onChange={event => field.onChange(+event.target.value)} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Base Salary (Offered)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="desiredSalary" render={({ field }) => (
-                  <FormItem><FormLabel>Desired Salary</FormLabel><FormControl><Input type="number" {...field} onChange={event => field.onChange(+event.target.value)} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Desired Salary</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                  <FormField control={form.control} name="location" render={({ field }) => (
                   <FormItem><FormLabel>Location (City, State)</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                  <FormField control={form.control} name="yearsOfExperience" render={({ field }) => (
-                  <FormItem><FormLabel>Years of Experience</FormLabel><FormControl><Input type="number" {...field} onChange={event => field.onChange(+event.target.value)} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Years of Experience</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="benefits" render={({ field }) => (
                   <FormItem><FormLabel>Benefits</FormLabel><FormControl><Textarea {...field} placeholder="e.g., Health insurance, 401k match, etc." /></FormControl><FormMessage /></FormItem>
