@@ -83,8 +83,7 @@ export default function SelfAssessmentPage() {
 
   return (
     <>
-      <div className="w-full max-w-3xl my-8 animate-fade-in-up">
-        <Card>
+      <Card className="w-full max-w-3xl mx-auto animate-fade-in-up">
         <CardHeader className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <Wand2 className="h-8 w-8 text-primary" />
@@ -177,7 +176,6 @@ export default function SelfAssessmentPage() {
             </Form>
         </CardContent>
         </Card>
-      </div>
 
       <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <AlertDialogContent>
