@@ -14,6 +14,8 @@ import { getCareerDeepDive } from '@/ai/flows/career-deep-dive';
 import { type CareerDeepDiveOutput } from '@/ai/schemas';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MiniCalendar } from '@/components/dashboard/shared/mini-calendar';
+import { FriendSuggestionsPanel } from '@/components/dashboard/shared/friend-suggestions-panel';
 
 function JobListItemSkeleton() {
     return (
@@ -75,13 +77,13 @@ function AfterUndergradContent() {
                 } else {
                     console.error("Failed to load jobs:", jobResult.reason);
                     const errorMessage = jobResult.reason instanceof Error ? jobResult.reason.message : "An unknown error occurred while fetching jobs.";
-                    toast({
-                        variant: "destructive",
-                        title: "Could Not Load Jobs",
-                        description: errorMessage.includes('Adzuna API keys not configured') 
-                            ? "Adzuna API keys are not configured. Job listings are unavailable."
-                            : "An error occurred while fetching job listings.",
-                    });
+                    if (!errorMessage.includes('Adzuna API keys not configured')) {
+                        toast({
+                            variant: "destructive",
+                            title: "Could Not Load Jobs",
+                            description: "An error occurred while fetching job listings.",
+                        });
+                    }
                 }
 
                 if (deepDiveResult.status === 'fulfilled') {
@@ -135,140 +137,146 @@ function AfterUndergradContent() {
     }
 
     return (
-        <div className="w-full space-y-6">
-            <Card>
-                <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <div>
-                        <CardTitle className="font-headline text-2xl text-primary flex items-center gap-3">
-                            <career.icon className="w-8 h-8"/>
-                            Your Dashboard for {career.name}
-                        </CardTitle>
-                        <CardDescription>
-                            Personalized tools and resources for career growth and job searching.
-                        </CardDescription>
-                        </div>
-                         <Link href="/onboarding/career?stage=after">
-                            <Button variant="outline">Change Career</Button>
-                        </Link>
-                    </div>
-                </CardHeader>
-            </Card>
-            <Tabs defaultValue="job-search" className="w-full">
-                <TabsList className="grid w-full grid-cols-1 md:grid-cols-3">
-                    <TabsTrigger value="job-search"><Search className="mr-2 h-4 w-4" /> Job Search Toolkit</TabsTrigger>
-                    <TabsTrigger value="career-growth"><TrendingUp className="mr-2 h-4 w-4" /> Career Growth</TabsTrigger>
-                    <TabsTrigger value="advanced-tools"><Wand2 className="mr-2 h-4 w-4" /> Advanced Tools</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="job-search" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job-Switch Toolkit</CardTitle>
-                            <CardDescription>Tools and live job postings to help you find your next role.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="grid md:grid-cols-2 gap-8">
-                            <div className="space-y-4">
-                               <Card className="bg-muted/50 p-4 flex items-center justify-between">
-                                  <div>
-                                    <h4 className="font-semibold text-sm flex items-center gap-2"><FileText/> Resume Analyzer</h4>
-                                    <p className="text-xs text-muted-foreground">Get instant AI feedback.</p>
-                                  </div>
-                                  <Button asChild size="sm"><Link href="/dashboard/resume-analyzer">Analyze</Link></Button>
-                               </Card>
-                               <Card className="bg-muted/50 p-4 flex items-center justify-between">
-                                  <div>
-                                    <h4 className="font-semibold text-sm flex items-center gap-2"><Search/> Company Insights</h4>
-                                    <p className="text-xs text-muted-foreground">Research company culture.</p>
-                                  </div>
-                                  <Button asChild size="sm"><Link href="/dashboard/company-insights">Research</Link></Button>
-                               </Card>
-                            </div>
+        <div className="grid lg:grid-cols-4 gap-8">
+            <main className="lg:col-span-3 space-y-6">
+                <Card>
+                    <CardHeader>
+                        <div className="flex justify-between items-center">
                             <div>
-                                <h4 className="font-semibold text-sm mb-4">Live Job Postings for {career.name}</h4>
-                                <div className="space-y-2">
-                                    {loading ? (
-                                        <>
-                                            <JobListItemSkeleton />
-                                            <JobListItemSkeleton />
-                                            <JobListItemSkeleton />
-                                            <JobListItemSkeleton />
-                                            <JobListItemSkeleton />
-                                        </>
-                                    ) : jobs.length > 0 ? jobs.map(job => (
-                                        <div key={job.id} className="flex justify-between items-center p-3 rounded-md border hover:bg-secondary/70 transition-colors">
-                                            <div>
-                                                <p className="font-medium text-sm">{job.title}</p>
-                                                <p className="text-xs text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
-                                            </div>
-                                            <Button variant="ghost" size="sm" asChild><Link href={job.redirect_url} target="_blank">View</Link></Button>
-                                        </div>
-                                    )) : (
-                                        <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}. Check configuration if this persists.</p>
-                                    )}
-                                </div>
+                            <CardTitle className="font-headline text-2xl text-primary flex items-center gap-3">
+                                <career.icon className="w-8 h-8"/>
+                                Your Dashboard for {career.name}
+                            </CardTitle>
+                            <CardDescription>
+                                Personalized tools and resources for career growth and job searching.
+                            </CardDescription>
                             </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-
-                <TabsContent value="career-growth" className="mt-6">
-                     <Card className="flex flex-col">
-                        <CardHeader>
-                            <CardTitle className="font-headline flex items-center gap-2"><TrendingUp /> AI-Recommended Courses</CardTitle>
-                            <CardDescription>Upskill with AI-powered micro-course recommendations based on your career choice.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-grow grid md:grid-cols-1 lg:grid-cols-2 gap-4">
-                            {loading ? (
-                                <>
-                                    <CourseCardSkeleton />
-                                    <CourseCardSkeleton />
-                                    <CourseCardSkeleton />
-                                    <CourseCardSkeleton />
-                                </>
-                            ) : courses.length > 0 ? courses.map((course, index) => (
-                                <div key={index} className="p-4 rounded-lg border flex items-center gap-4 hover:bg-secondary/70 transition-colors">
-                                    <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
-                                    <div className="flex-grow">
-                                        <h4 className="font-semibold">{course.name}</h4>
-                                        <p className="text-sm text-muted-foreground">{course.platform}</p>
+                            <Link href="/onboarding/career?stage=after">
+                                <Button variant="outline">Change Career</Button>
+                            </Link>
+                        </div>
+                    </CardHeader>
+                </Card>
+                <Tabs defaultValue="job-search" className="w-full">
+                    <TabsList className="grid w-full grid-cols-1 md:grid-cols-3">
+                        <TabsTrigger value="job-search"><Search className="mr-2 h-4 w-4" /> Job Search Toolkit</TabsTrigger>
+                        <TabsTrigger value="career-growth"><TrendingUp className="mr-2 h-4 w-4" /> Career Growth</TabsTrigger>
+                        <TabsTrigger value="advanced-tools"><Wand2 className="mr-2 h-4 w-4" /> Advanced Tools</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="job-search" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job-Switch Toolkit</CardTitle>
+                                <CardDescription>Tools and live job postings to help you find your next role.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="grid md:grid-cols-2 gap-8">
+                                <div className="space-y-4">
+                                <Card className="bg-muted/50 p-4 flex items-center justify-between">
+                                    <div>
+                                        <h4 className="font-semibold text-sm flex items-center gap-2"><FileText/> Resume Analyzer</h4>
+                                        <p className="text-xs text-muted-foreground">Get instant AI feedback.</p>
                                     </div>
-                                    <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank"><ExternalLink className="h-4 w-4"/></Link></Button>
+                                    <Button asChild size="sm"><Link href="/dashboard/resume-analyzer">Analyze</Link></Button>
+                                </Card>
+                                <Card className="bg-muted/50 p-4 flex items-center justify-between">
+                                    <div>
+                                        <h4 className="font-semibold text-sm flex items-center gap-2"><Search/> Company Insights</h4>
+                                        <p className="text-xs text-muted-foreground">Research company culture.</p>
+                                    </div>
+                                    <Button asChild size="sm"><Link href="/dashboard/company-insights">Research</Link></Button>
+                                </Card>
                                 </div>
-                            )) : (
-                                <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found. Check configuration if this persists.</p>
-                            )}
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-                
-                <TabsContent value="advanced-tools" className="mt-6">
-                     <div className="grid lg:grid-cols-2 gap-6">
-                        <Card className="bg-gradient-to-br from-primary to-primary/90 text-primary-foreground hover:-translate-y-1 transition-transform duration-300 shadow-xl">
-                            <CardHeader>
-                                <CardTitle className="font-headline flex items-center gap-2"><Wand2 /> Salary Negotiation Coach</CardTitle>
-                                <CardDescription className="text-primary-foreground/80">Get live salary data and AI-powered negotiation tips to maximize your offer.</CardDescription>
-                            </CardHeader>
-                            <CardFooter>
-                                <Button asChild variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-                                    <Link href="/dashboard/salary-negotiator">Launch Coach <ArrowRight className="ml-2 h-4 w-4" /></Link>
-                                </Button>
-                            </CardFooter>
+                                <div>
+                                    <h4 className="font-semibold text-sm mb-4">Live Job Postings for {career.name}</h4>
+                                    <div className="space-y-2">
+                                        {loading ? (
+                                            <>
+                                                <JobListItemSkeleton />
+                                                <JobListItemSkeleton />
+                                                <JobListItemSkeleton />
+                                                <JobListItemSkeleton />
+                                                <JobListItemSkeleton />
+                                            </>
+                                        ) : jobs.length > 0 ? jobs.map(job => (
+                                            <div key={job.id} className="flex justify-between items-center p-3 rounded-md border hover:bg-secondary/70 transition-colors">
+                                                <div>
+                                                    <p className="font-medium text-sm">{job.title}</p>
+                                                    <p className="text-xs text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
+                                                </div>
+                                                <Button variant="ghost" size="sm" asChild><Link href={job.redirect_url} target="_blank">View</Link></Button>
+                                            </div>
+                                        )) : (
+                                            <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}. Check configuration if this persists.</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </CardContent>
                         </Card>
-                        <Card className="hover:-translate-y-1 transition-transform duration-300 shadow-lg">
+                    </TabsContent>
+
+                    <TabsContent value="career-growth" className="mt-6">
+                        <Card className="flex flex-col">
                             <CardHeader>
-                                <CardTitle className="font-headline flex items-center gap-2"><GraduationCap /> Explore Higher Studies</CardTitle>
-                                <CardDescription>Find the best graduate programs for your field with our AI-powered search tool.</CardDescription>
+                                <CardTitle className="font-headline flex items-center gap-2"><TrendingUp /> AI-Recommended Courses</CardTitle>
+                                <CardDescription>Upskill with AI-powered micro-course recommendations based on your career choice.</CardDescription>
                             </CardHeader>
-                            <CardFooter>
-                                <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                                    <Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4" /></Link>
-                                </Button>
-                            </CardFooter>
+                            <CardContent className="flex-grow grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                                {loading ? (
+                                    <>
+                                        <CourseCardSkeleton />
+                                        <CourseCardSkeleton />
+                                        <CourseCardSkeleton />
+                                        <CourseCardSkeleton />
+                                    </>
+                                ) : courses.length > 0 ? courses.map((course, index) => (
+                                    <div key={index} className="p-4 rounded-lg border flex items-center gap-4 hover:bg-secondary/70 transition-colors">
+                                        <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
+                                        <div className="flex-grow">
+                                            <h4 className="font-semibold">{course.name}</h4>
+                                            <p className="text-sm text-muted-foreground">{course.platform}</p>
+                                        </div>
+                                        <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank"><ExternalLink className="h-4 w-4"/></Link></Button>
+                                    </div>
+                                )) : (
+                                    <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found. Check configuration if this persists.</p>
+                                )}
+                            </CardContent>
                         </Card>
-                    </div>
-                </TabsContent>
-            </Tabs>
+                    </TabsContent>
+                    
+                    <TabsContent value="advanced-tools" className="mt-6">
+                        <div className="grid lg:grid-cols-2 gap-6">
+                            <Card className="bg-gradient-to-br from-primary to-primary/90 text-primary-foreground hover:-translate-y-1 transition-transform duration-300 shadow-xl">
+                                <CardHeader>
+                                    <CardTitle className="font-headline flex items-center gap-2"><Wand2 /> Salary Negotiation Coach</CardTitle>
+                                    <CardDescription className="text-primary-foreground/80">Get live salary data and AI-powered negotiation tips to maximize your offer.</CardDescription>
+                                </CardHeader>
+                                <CardFooter>
+                                    <Button asChild variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+                                        <Link href="/dashboard/salary-negotiator">Launch Coach <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                            <Card className="hover:-translate-y-1 transition-transform duration-300 shadow-lg">
+                                <CardHeader>
+                                    <CardTitle className="font-headline flex items-center gap-2"><GraduationCap /> Explore Higher Studies</CardTitle>
+                                    <CardDescription>Find the best graduate programs for your field with our AI-powered search tool.</CardDescription>
+                                </CardHeader>
+                                <CardFooter>
+                                    <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                                        <Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        </div>
+                    </TabsContent>
+                </Tabs>
+            </main>
+            <aside className="lg:col-span-1 space-y-6 hidden lg:block">
+                <MiniCalendar />
+                <FriendSuggestionsPanel />
+            </aside>
         </div>
     );
 }

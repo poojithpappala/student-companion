@@ -15,6 +15,8 @@ import { CareerRoadmap } from "@/components/dashboard/during/career-roadmap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { MiniCalendar } from '@/components/dashboard/shared/mini-calendar';
+import { FriendSuggestionsPanel } from '@/components/dashboard/shared/friend-suggestions-panel';
 
 const applicationTracker = [
     { company: "Innovate LLC", role: "Frontend Intern", status: "Applied", statusColor: "bg-blue-500" },
@@ -332,23 +334,29 @@ function DuringUndergradContent() {
   };
 
   return (
-    <div className="w-full space-y-6">
-      <Card className="bg-card">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard</CardTitle>
-              <CardDescription>
-                Personalized tools and resources for your journey in <span className="font-semibold text-primary">{career?.name}</span>.
-              </CardDescription>
-            </div>
-            <Link href={`/onboarding/year?stage=during&careerId=${careerId}`}>
-                <Button variant="outline">Change Year</Button>
-            </Link>
-          </div>
-        </CardHeader>
-      </Card>
-      {renderContentForYear()}
+    <div className="grid lg:grid-cols-4 gap-8">
+        <main className="lg:col-span-3 space-y-6">
+            <Card className="bg-card">
+                <CardHeader>
+                <div className="flex justify-between items-center">
+                    <div>
+                    <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard</CardTitle>
+                    <CardDescription>
+                        Personalized tools and resources for your journey in <span className="font-semibold text-primary">{career?.name}</span>.
+                    </CardDescription>
+                    </div>
+                    <Link href={`/onboarding/year?stage=during&careerId=${careerId}`}>
+                        <Button variant="outline">Change Year</Button>
+                    </Link>
+                </div>
+                </CardHeader>
+            </Card>
+            {renderContentForYear()}
+        </main>
+        <aside className="lg:col-span-1 space-y-6 hidden lg:block">
+            <MiniCalendar />
+            <FriendSuggestionsPanel />
+        </aside>
     </div>
   );
 }
