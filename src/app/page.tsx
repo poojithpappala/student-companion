@@ -99,7 +99,7 @@ export default function LandingPage() {
         quote: "This platform was a game-changer. The AI career roadmap gave me a clear path, and the resume analyzer helped me land my first internship.",
         name: "Sarah J.",
         school: "UCLA, Computer Science",
-        image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3b21lbnxlbnwwfHx8fDE3NTExNTM3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "https://images.unsplash.com/photo-1481214110143-ed630356e1bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx3b21lbnxlbnwwfHx8fDE3NTExNTM3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080"
     },
     {
         quote: "As a high school student, I was completely lost. Student Companion helped me figure out what I wanted to do and which colleges to apply to. Invaluable!",
