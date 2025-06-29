@@ -1,0 +1,45 @@
+
+[
+    {
+      "id": "peer-1",
+      "name": "Alice Johnson",
+      "avatarUrl": "https://placehold.co/40x40.png",
+      "role": "Frontend Developer @ Stanford",
+      "domains": ["Web", "Mobile", "AI"]
+    },
+    {
+      "id": "peer-2",
+      "name": "Bob Williams",
+      "avatarUrl": "https://placehold.co/40x40.png",
+      "role": "Data Scientist @ MIT",
+      "domains": ["Data", "AI", "Cybersecurity"]
+    },
+    {
+      "id": "peer-3",
+      "name": "Charlie Brown",
+      "avatarUrl": "https://placehold.co/40x40.png",
+      "role": "Cybersecurity Analyst @ CMU",
+      "domains": ["Cybersecurity", "Web"]
+    },
+    {
+      "id": "peer-4",
+      "name": "Diana Miller",
+      "avatarUrl": "https://placehold.co/40x40.png",
+      "role": "UX/UI Designer @ UC Berkeley",
+      "domains": ["Mobile", "Web"]
+    },
+    {
+        "id": "peer-5",
+        "name": "Ethan Davis",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "Backend Developer @ Georgia Tech",
+        "domains": ["Web", "AI", "Cybersecurity"]
+    },
+    {
+        "id": "peer-6",
+        "name": "Fiona Garcia",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "ML Engineer @ UWaterloo",
+        "domains": ["AI", "Data"]
+    }
+]

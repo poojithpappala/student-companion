@@ -29,6 +29,7 @@ import {
   Building2,
   GraduationCap,
   Users,
+  Zap,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -45,6 +46,7 @@ const tools = [
     { href: "/dashboard/company-insights", icon: <Building2 />, label: "Company Insights" },
     { href: "/dashboard/graduate-school-finder", icon: <GraduationCap />, label: "Graduate School Finder" },
     { href: "/dashboard/pods", icon: <Users />, label: "Accountability Pods"},
+    { href: "/dashboard/connect", icon: <Zap />, label: "Connect" },
 ]
 
 export function DashboardSidebar() {
@@ -105,7 +107,7 @@ export function DashboardSidebar() {
         )}
         <SidebarMenu>
             <SidebarMenuItem>
-                <span className="text-xs text-muted-foreground px-2">Tools</span>
+                <span className="text-xs text-muted-foreground px-2">Tools &amp; Connect</span>
             </SidebarMenuItem>
             {tools.map((item) => (
                 <SidebarMenuItem key={item.href}>
