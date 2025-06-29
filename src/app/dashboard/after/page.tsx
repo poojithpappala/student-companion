@@ -85,7 +85,7 @@ function AfterUndergradContent() {
                     </CardDescription>
                 </CardHeader>
             </Card>
-            <Tabs defaultValue="job-search" className="w-full">
+            <Tabs defaultValue="job-search">
                 <TabsList className="grid w-full grid-cols-1 md:grid-cols-3">
                     <TabsTrigger value="job-search"><Search className="mr-2 h-4 w-4" /> Job Search</TabsTrigger>
                     <TabsTrigger value="career-growth"><TrendingUp className="mr-2 h-4 w-4" /> Career Growth</TabsTrigger>

@@ -102,7 +102,7 @@ function DuringUndergradContent() {
     switch(year) {
       case '1st Year':
         return (
-          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="foundations"><FileText className="mr-2 h-4 w-4" /> Foundations</TabsTrigger>
@@ -127,7 +127,7 @@ function DuringUndergradContent() {
         );
       case '2nd Year':
         return (
-          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="skill-building"><Lightbulb className="mr-2 h-4 w-4" /> Skill Building</TabsTrigger>
@@ -180,7 +180,7 @@ function DuringUndergradContent() {
         );
       case '3rd Year':
         return (
-          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="internships"><Briefcase className="mr-2 h-4 w-4" /> Internships</TabsTrigger>
@@ -249,7 +249,7 @@ function DuringUndergradContent() {
         );
       case 'Final Year':
         return (
-          <Tabs defaultValue="roadmap" className="w-full space-y-6">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="next-steps"><ArrowRight className="mr-2 h-4 w-4" /> Career Steps</TabsTrigger>
