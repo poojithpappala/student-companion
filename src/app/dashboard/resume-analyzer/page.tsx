@@ -88,17 +88,18 @@ export default function ResumeAnalyzerPage() {
       const result = await analyzeResume({ resumeDataUri });
       setAnalysis(result);
     } catch (error) {
-      console.error("Resume analysis failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Analysis Failed",
-        description: "There was an error analyzing your resume. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Analysis Failed",
+          description: error.message || "There was an error analyzing your resume. Please try again.",
+        });
+      }
     }
   }
 
   return (
-    <div className="w-full grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 items-start">
       <div className="lg:col-span-1">
         <Card>
           <CardHeader>
@@ -244,3 +245,5 @@ export default function ResumeAnalyzerPage() {
     </div>
   );
 }
+
+    

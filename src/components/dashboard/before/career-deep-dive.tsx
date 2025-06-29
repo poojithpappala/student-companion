@@ -28,6 +28,20 @@ const SectionCard = ({ icon, title, children }: { icon: React.ReactNode, title: 
   </Card>
 );
 
+function CareerDeepDiveSkeleton() {
+  return (
+    <div className="space-y-6 animate-pulse">
+      <Skeleton className="h-32 w-full" />
+      <div className="grid md:grid-cols-2 gap-6">
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
+      </div>
+      <Skeleton className="h-40 w-full" />
+      <Skeleton className="h-48 w-full" />
+    </div>
+  );
+}
+
 export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
   const [data, setData] = useState<CareerDeepDiveOutput | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,12 +54,13 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
         const result = await getCareerDeepDive({ careerName });
         setData(result);
       } catch (error) {
-        console.error("Failed to fetch career deep dive:", error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Could not load the career details. Please try again later.",
-        });
+        if (error instanceof Error) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: error.message || "Could not load the career details. Please try again later.",
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -54,17 +69,7 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
   }, [careerId, careerName, toast]);
 
   if (loading) {
-    return (
-      <div className="space-y-6">
-        <Skeleton className="h-32 w-full" />
-        <div className="grid md:grid-cols-2 gap-6">
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
-        </div>
-        <Skeleton className="h-40 w-full" />
-        <Skeleton className="h-48 w-full" />
-      </div>
-    );
+    return <CareerDeepDiveSkeleton />;
   }
 
   if (!data) {
@@ -151,3 +156,5 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
     </div>
   );
 }
+
+    

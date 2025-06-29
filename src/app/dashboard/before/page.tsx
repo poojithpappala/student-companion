@@ -23,9 +23,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CareerDeepDive } from '@/components/dashboard/before/career-deep-dive';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const collegeExplorerSchema = CollegeExplorerInputSchema.omit({ grade: true }).extend({
-  major: CollegeExplorerInputSchema.shape.desiredMajor,
-  location: z.string().optional(),
+const collegeExplorerSchema = CollegeExplorerInputSchema.pick({
+    desiredMajor: true,
+}).extend({
+    locationPreference: z.string().optional(),
 });
 
 function CollegeCardSkeleton() {
@@ -55,7 +56,7 @@ function BeforeUndergradContent() {
 
   const form = useForm<z.infer<typeof collegeExplorerSchema>>({
     resolver: zodResolver(collegeExplorerSchema),
-    defaultValues: { major: "", location: "" },
+    defaultValues: { desiredMajor: "", locationPreference: "" },
   });
 
   const selectedCareer = careerId ? careers.find((c) => c.id === careerId) : null;
@@ -71,17 +72,18 @@ function BeforeUndergradContent() {
     try {
       const result = await getCollegeSuggestions({
         grade: selectedGrade,
-        desiredMajor: values.major,
-        locationPreference: values.location || 'any',
+        desiredMajor: values.desiredMajor,
+        locationPreference: values.locationPreference || 'any',
       });
       setCollegeSuggestions(result.colleges);
     } catch (error) {
-      console.error("College explorer failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Search Failed",
-        description: "There was an error finding colleges. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Search Failed",
+          description: error.message || "There was an error finding colleges. Please try again.",
+        });
+      }
     } finally {
       setIsExploring(false);
     }
@@ -262,10 +264,10 @@ function BeforeUndergradContent() {
                   <CardContent>
                       <Form {...form}>
                         <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-card shadow-sm">
-                          <FormField control={form.control} name="major" render={({ field }) => (
+                          <FormField control={form.control} name="desiredMajor" render={({ field }) => (
                               <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
                           )} />
-                          <FormField control={form.control} name="location" render={({ field }) => (
+                          <FormField control={form.control} name="locationPreference" render={({ field }) => (
                               <FormItem className="w-full md:col-span-2"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA or any" /></FormControl><FormMessage /></FormItem>
                           )} />
                           <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1 bg-accent hover:bg-accent/90 text-accent-foreground">
@@ -320,3 +322,5 @@ export default function BeforeUndergradPage() {
         </Suspense>
     );
 }
+
+    

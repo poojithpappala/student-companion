@@ -57,17 +57,18 @@ export default function CompanyInsightsPage() {
       const result = await getCompanyInsights({ companyName: values.companyName });
       setInsights(result);
     } catch (error) {
-      console.error("Company insights generation failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Generation Failed",
-        description: "There was an error getting insights for this company. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Generation Failed",
+          description: error.message || "There was an error getting insights for this company. Please try again.",
+        });
+      }
     }
   }
 
   return (
-    <div className="w-full grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 items-start">
       <div className="lg:col-span-1">
         <Card>
           <CardHeader>
@@ -127,3 +128,5 @@ export default function CompanyInsightsPage() {
     </div>
   );
 }
+
+    

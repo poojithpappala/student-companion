@@ -57,12 +57,13 @@ export default function SalaryNegotiatorPage() {
       const response = await salaryNegotiationCoach(values);
       setResult(response);
     } catch (error) {
-      console.error("Salary negotiation coaching failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Generation Failed",
-        description: "There was an error generating your negotiation plan. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Generation Failed",
+          description: error.message || "There was an error generating your negotiation plan. Please try again.",
+        });
+      }
     }
   }
 
@@ -75,7 +76,7 @@ export default function SalaryNegotiatorPage() {
   ] : [];
 
   return (
-    <div className="w-full grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 items-start">
       <div className="lg:col-span-1">
         <Card>
           <CardHeader>
@@ -161,3 +162,5 @@ export default function SalaryNegotiatorPage() {
     </div>
   );
 }
+
+    

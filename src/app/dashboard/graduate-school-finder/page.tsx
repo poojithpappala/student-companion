@@ -56,17 +56,18 @@ export default function GraduateSchoolFinderPage() {
       const response = await findGraduatePrograms(values);
       setResult(response);
     } catch (error) {
-      console.error("Graduate school search failed:", error);
-      toast({
-        variant: "destructive",
-        title: "Search Failed",
-        description: "There was an error finding programs. Please try again.",
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Search Failed",
+          description: error.message || "There was an error finding programs. Please try again.",
+        });
+      }
     }
   }
 
   return (
-    <div className="w-full grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 items-start">
       <div className="lg:col-span-1 space-y-8">
         <Card>
           <CardHeader>
@@ -165,3 +166,5 @@ export default function GraduateSchoolFinderPage() {
     </div>
   );
 }
+
+    

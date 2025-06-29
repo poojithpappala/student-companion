@@ -13,7 +13,6 @@ import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import { getCareerDeepDive } from '@/ai/flows/career-deep-dive';
 import { type CareerDeepDiveOutput } from '@/ai/schemas';
 import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function JobListItemSkeleton() {
@@ -53,36 +52,33 @@ function AfterUndergradContent() {
 
     useEffect(() => {
         async function loadData() {
-            if (career) {
-                setLoading(true);
-                try {
-                    const [jobResults, deepDiveData] = await Promise.all([
-                        fetchAdzunaJobs({ query: career.name, resultsPerPage: 5 }),
-                        getCareerDeepDive({ careerName: career.name })
-                    ]);
-                    setJobs(jobResults);
-                    setCourses(deepDiveData.suggestedCourses || []);
-                } catch (error) {
-                    if (error instanceof Error && !error.message.includes('Adzuna API keys not configured')) {
-                        console.error("Failed to load dashboard data:", error);
-                        toast({
-                            variant: "destructive",
-                            title: "Error",
-                            description: "Could not load all dashboard data. Please try again.",
-                        });
-                    }
-                } finally {
-                    setLoading(false);
+            if (!career) {
+                setLoading(false);
+                return;
+            }
+            
+            setLoading(true);
+            try {
+                const [jobResults, deepDiveData] = await Promise.all([
+                    fetchAdzunaJobs({ query: career.name, resultsPerPage: 5 }),
+                    getCareerDeepDive({ careerName: career.name })
+                ]);
+                setJobs(jobResults);
+                setCourses(deepDiveData.suggestedCourses || []);
+            } catch (error) {
+                if (error instanceof Error && !error.message.includes('Adzuna API keys not configured')) {
+                    console.error("Failed to load dashboard data:", error);
+                    toast({
+                        variant: "destructive",
+                        title: "Error",
+                        description: "Could not load all dashboard data. Please try again.",
+                    });
                 }
-            } else {
+            } finally {
                 setLoading(false);
             }
         }
-        if (process.env.NEXT_PUBLIC_ADZUNA_APP_ID && process.env.NEXT_PUBLIC_ADZUNA_API_KEY) {
-            loadData();
-        } else {
-            setLoading(false);
-        }
+        loadData();
     }, [career, toast]);
 
     if (!career) {
@@ -109,7 +105,7 @@ function AfterUndergradContent() {
     }
 
     return (
-        <div className="w-full space-y-6 max-w-7xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto space-y-6">
             <Card>
                 <CardHeader>
                     <div className="flex justify-between items-center">
@@ -255,3 +251,5 @@ export default function AfterUndergradPage() {
         </Suspense>
     )
 }
+
+    
