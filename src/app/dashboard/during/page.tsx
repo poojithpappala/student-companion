@@ -332,7 +332,7 @@ function DuringUndergradContent() {
   };
 
   return (
-    <div className="w-full space-y-6 max-w-7xl mx-auto">
+    <div className="w-full space-y-6">
       <Card className="bg-card">
         <CardHeader>
           <div className="flex justify-between items-center">

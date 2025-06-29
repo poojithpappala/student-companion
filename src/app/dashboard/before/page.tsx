@@ -115,7 +115,7 @@ function BeforeUndergradContent() {
 
   // The main tabbed dashboard for users who have completed the assessment.
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full">
       <Tabs defaultValue="career-path" className="w-full space-y-6">
           <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
               <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Career Path</TabsTrigger>
