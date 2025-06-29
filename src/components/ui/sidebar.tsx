@@ -32,7 +32,7 @@ type SidebarContext = {
   setOpen: (open: boolean) => void
   openMobile: boolean
   setOpenMobile: (open: boolean) => void
-  isMobile: boolean
+  isMobile: boolean | undefined
   toggleSidebar: () => void
 }
 
@@ -176,6 +176,13 @@ const Sidebar = React.forwardRef<
     ref
   ) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+
+    if (isMobile === undefined) {
+      // On the server or during initial client render, return a placeholder
+      // to prevent hydration mismatch. This div mimics the desktop sidebar's
+      // footprint to avoid layout shift.
+      return <div className="hidden h-svh w-[--sidebar-width] md:block" />
+    }
 
     if (collapsible === "none") {
       return (
@@ -583,7 +590,7 @@ const SidebarMenuButton = React.forwardRef<
         <TooltipContent
           side="right"
           align="center"
-          hidden={state !== "collapsed" || isMobile}
+          hidden={state !== "collapsed" || !!isMobile}
           {...tooltip}
         />
       </Tooltip>
