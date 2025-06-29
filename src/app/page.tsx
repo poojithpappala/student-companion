@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -143,7 +144,7 @@ export default function LandingPage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="pb-12 md:pb-16">
+        <section className="py-20 md:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-up text-center md:text-left">
               <h1 className="font-headline text-4xl md:text-6xl font-bold text-primary leading-tight">
