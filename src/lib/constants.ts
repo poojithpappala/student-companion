@@ -31,6 +31,101 @@ export const skillsByCareer: Record<string, string[]> = {
   law: ['Legal Research', 'Logical Reasoning', 'Constitutional Law', 'Contract Law', 'Critical Thinking'],
 };
 
+export const salaryByCareer: Record<string, { name: string, salary: number }[]> = {
+  swe: [
+    { name: 'Entry', salary: 95000 },
+    { name: 'Mid', salary: 140000 },
+    { name: 'Senior', salary: 210000 },
+  ],
+  'data-science': [
+    { name: 'Entry', salary: 100000 },
+    { name: 'Mid', salary: 155000 },
+    { name: 'Senior', salary: 220000 },
+  ],
+  biotech: [
+    { name: 'Entry', salary: 70000 },
+    { name: 'Mid', salary: 110000 },
+    { name: 'Senior', salary: 160000 },
+  ],
+  finance: [
+    { name: 'Entry', salary: 80000 },
+    { name: 'Mid', salary: 130000 },
+    { name: 'Senior', salary: 190000 },
+  ],
+  design: [
+    { name: 'Entry', salary: 75000 },
+    { name: 'Mid', salary: 115000 },
+    { name: 'Senior', salary: 170000 },
+  ],
+  marketing: [
+    { name: 'Entry', salary: 65000 },
+    { name: 'Mid', salary: 95000 },
+    { name: 'Senior', salary: 140000 },
+  ],
+  healthcare: [
+    { name: 'Entry', salary: 75000 },
+    { name: 'Mid', salary: 98000 },
+    { name: 'Senior', salary: 130000 },
+  ],
+  law: [
+    { name: 'Entry', salary: 120000 },
+    { name: 'Mid', salary: 180000 },
+    { name: 'Senior', salary: 250000 },
+  ],
+};
+
+export const growthByCareer: Record<string, { year: string, growth: number }[]> = {
+  swe: [
+    { year: '2025', growth: 22 },
+    { year: '2026', growth: 25 },
+    { year: '2027', growth: 28 },
+    { year: '2028', growth: 30 },
+  ],
+  'data-science': [
+    { year: '2025', growth: 30 },
+    { year: '2026', growth: 32 },
+    { year: '2027', growth: 35 },
+    { year: '2028', growth: 36 },
+  ],
+  biotech: [
+    { year: '2025', growth: 10 },
+    { year: '2026', growth: 12 },
+    { year: '2027', growth: 14 },
+    { year: '2028', growth: 15 },
+  ],
+  finance: [
+    { year: '2025', growth: 8 },
+    { year: '2026', growth: 9 },
+    { year: '2027', growth: 10 },
+    { year: '2028', growth: 11 },
+  ],
+  design: [
+    { year: '2025', growth: 15 },
+    { year: '2026', growth: 16 },
+    { year: '2027', growth: 18 },
+    { year: '2028', growth: 20 },
+  ],
+  marketing: [
+    { year: '2025', growth: 12 },
+    { year: '2026', growth: 14 },
+    { year: '2027', growth: 15 },
+    { year: '2028', growth: 16 },
+  ],
+  healthcare: [
+    { year: '2025', growth: 9 },
+    { year: '2026', growth: 10 },
+    { year: '2027', growth: 11 },
+    { year: '2028', growth: 12 },
+  ],
+  law: [
+    { year: '2025', growth: 5 },
+    { year: '2026', growth: 6 },
+    { year: '2027', growth: 7 },
+    { year: '2028', growth: 8 },
+  ],
+};
+
+
 export const entranceExams = [
     { name: 'SAT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)', grades: ['10th', '11th', '12th'] },
     { name: 'ACT', eligibility: 'High School', deadline: 'Varies', link: '#', area: 'General (US)', grades: ['10th', '11th', '12th'] },

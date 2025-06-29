@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase, Compass, BookOpen, Search, Loader2, Target, Trophy, GraduationCap } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { careers, skillsByCareer, entranceExams } from '@/lib/constants';
+import { careers, skillsByCareer, entranceExams, salaryByCareer, growthByCareer } from '@/lib/constants';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -41,22 +41,10 @@ export default function BeforeUndergradPage() {
     defaultValues: { major: "", location: "" },
   });
 
-  const selectedCareer = careerId
-    ? careers.find((c) => c.id === careerId)
-    : null;
-
-  const salaryData = [
-    { name: 'Entry', salary: 75000 },
-    { name: 'Mid', salary: 120000 },
-    { name: 'Senior', salary: 180000 },
-  ];
-  
-  const growthData = [
-    { year: '2025', growth: 10 },
-    { year: '2026', growth: 12 },
-    { year: '2027', growth: 15 },
-    { year: '2028', growth: 18 },
-  ];
+  const selectedCareer = careerId ? careers.find((c) => c.id === careerId) : null;
+  const salaryData = (careerId && salaryByCareer[careerId]) || [];
+  const growthData = (careerId && growthByCareer[careerId]) || [];
+  const careerSkills = (careerId && skillsByCareer[careerId]) || [];
 
   const filteredExams = entranceExams.filter(exam => exam.grades.includes(selectedGrade));
 
@@ -171,7 +159,7 @@ export default function BeforeUndergradPage() {
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <ul className="space-y-3">
-                      {(skillsByCareer[selectedCareer.id] || []).map((skill, index) => (
+                      {careerSkills.map((skill, index) => (
                         <li key={index} className="flex items-center gap-3">
                           <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
                           <span className="font-medium">{skill}</span>
