@@ -15,8 +15,21 @@ import { salaryNegotiationCoach } from "@/ai/flows/salary-negotiation-coach";
 import { SalaryNegotiationInputSchema, type SalaryNegotiationOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const negotiationSchema = SalaryNegotiationInputSchema;
+
+function PlaybookSkeleton() {
+  return (
+    <div className="space-y-2 animate-pulse">
+      <Skeleton className="h-14 w-full" />
+      <Skeleton className="h-14 w-full" />
+      <Skeleton className="h-14 w-full" />
+      <Skeleton className="h-14 w-full" />
+      <Skeleton className="h-14 w-full" />
+    </div>
+  );
+}
 
 export default function SalaryNegotiatorPage() {
   const [result, setResult] = useState<SalaryNegotiationOutput | null>(null);
@@ -118,13 +131,9 @@ export default function SalaryNegotiatorPage() {
             <CardDescription>Follow these AI-generated steps to maximize your offer.</CardDescription>
           </CardHeader>
           <CardContent>
-            {isSubmitting && (
-              <div className="flex flex-col items-center justify-center py-20">
-                <Loader2 className="w-12 h-12 animate-spin text-primary" />
-                <p className="mt-4 text-muted-foreground">Building your custom negotiation strategy...</p>
-              </div>
-            )}
-            {result ? (
+            {isSubmitting ? (
+              <PlaybookSkeleton />
+            ) : result ? (
               <Accordion type="single" collapsible defaultValue="strategy" className="w-full">
                 {resultSections.map(section => (
                    <AccordionItem key={section.id} value={section.id}>
@@ -139,7 +148,7 @@ export default function SalaryNegotiatorPage() {
                    </AccordionItem>
                 ))}
               </Accordion>
-            ) : !isSubmitting && (
+            ) : (
               <div className="text-center text-muted-foreground py-20 flex flex-col justify-center items-center">
                 <Wand2 className="w-12 h-12 mb-4 text-primary/30" />
                  <p className="text-lg font-medium">Your personalized strategy will appear here.</p>

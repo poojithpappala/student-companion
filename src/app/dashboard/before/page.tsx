@@ -21,11 +21,27 @@ import { type CollegeSuggestion, CollegeExplorerInputSchema } from '@/ai/schemas
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CareerDeepDive } from '@/components/dashboard/before/career-deep-dive';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const collegeExplorerSchema = CollegeExplorerInputSchema.omit({ grade: true }).extend({
   major: CollegeExplorerInputSchema.shape.desiredMajor,
   location: z.string().optional(),
 });
+
+function CollegeCardSkeleton() {
+    return (
+        <Card className="animate-pulse">
+            <CardHeader>
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+            </CardHeader>
+            <CardContent>
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6 mt-2" />
+            </CardContent>
+        </Card>
+    );
+}
 
 function BeforeUndergradContent() {
   const searchParams = useSearchParams();
@@ -97,7 +113,7 @@ function BeforeUndergradContent() {
 
   // The main tabbed dashboard for users who have completed the assessment.
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto">
       <Tabs defaultValue="career-path" className="w-full space-y-6">
           <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
               <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Career Path</TabsTrigger>
@@ -259,35 +275,35 @@ function BeforeUndergradContent() {
                         </form>
                       </Form>
                       
-                      {isExploring && (
-                        <div className="text-center py-8">
-                          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-                          <p className="mt-2 text-muted-foreground">Our AI is searching for the best colleges for you...</p>
-                        </div>
-                      )}
-                      
-                      {!isExploring && collegeSuggestions.length > 0 && (
-                        <div className="space-y-4">
-                          <h3 className="font-semibold text-lg">AI Recommendations:</h3>
-                          {collegeSuggestions.map(college => (
-                            <Card key={college.name}>
-                              <CardHeader>
-                                <CardTitle className="text-lg">{college.name}</CardTitle>
-                                <CardDescription>{college.location}</CardDescription>
-                              </CardHeader>
-                              <CardContent>
-                                <p>{college.description}</p>
-                              </CardContent>
-                            </Card>
-                          ))}
-                        </div>
-                      )}
-
-                      {!isExploring && collegeSuggestions.length === 0 && (
-                           <div className="text-center text-muted-foreground py-8">
-                              <p>College suggestions will appear here once you search.</p>
-                           </div>
-                      )}
+                      <div className="mt-6">
+                        {isExploring ? (
+                            <div className="space-y-4">
+                                <h3 className="font-semibold text-lg text-muted-foreground">Our AI is searching for the best colleges for you...</h3>
+                                <CollegeCardSkeleton />
+                                <CollegeCardSkeleton />
+                                <CollegeCardSkeleton />
+                            </div>
+                        ) : collegeSuggestions.length > 0 ? (
+                            <div className="space-y-4">
+                            <h3 className="font-semibold text-lg">AI Recommendations:</h3>
+                            {collegeSuggestions.map(college => (
+                                <Card key={college.name}>
+                                <CardHeader>
+                                    <CardTitle className="text-lg">{college.name}</CardTitle>
+                                    <CardDescription>{college.location}</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <p>{college.description}</p>
+                                </CardContent>
+                                </Card>
+                            ))}
+                            </div>
+                        ) : (
+                            <div className="text-center text-muted-foreground py-8">
+                                <p>College suggestions will appear here once you search.</p>
+                            </div>
+                        )}
+                      </div>
                   </CardContent>
               </Card>
           </TabsContent>

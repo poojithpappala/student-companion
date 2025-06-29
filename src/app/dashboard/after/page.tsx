@@ -14,6 +14,32 @@ import { getCareerDeepDive } from '@/ai/flows/career-deep-dive';
 import { type CareerDeepDiveOutput } from '@/ai/schemas';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+
+function JobListItemSkeleton() {
+    return (
+        <div className="flex justify-between items-center p-3 rounded-md border animate-pulse">
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-48" />
+                <Skeleton className="h-3 w-32" />
+            </div>
+            <Skeleton className="h-8 w-14" />
+        </div>
+    );
+}
+
+function CourseCardSkeleton() {
+    return (
+        <div className="p-4 rounded-lg border flex items-center gap-4 animate-pulse">
+            <Skeleton className="h-12 w-12 rounded-lg" />
+            <div className="flex-grow space-y-2">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+            </div>
+            <Skeleton className="h-8 w-8" />
+        </div>
+    );
+}
 
 function AfterUndergradContent() {
     const searchParams = useSearchParams();
@@ -135,8 +161,15 @@ function AfterUndergradContent() {
                             <div>
                                 <h4 className="font-semibold text-sm mb-4">Live Job Postings for {career.name}</h4>
                                 <div className="space-y-2">
-                                    {loading && <div className="flex justify-center items-center h-full pt-10"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}
-                                    {!loading && jobs.length > 0 ? jobs.map(job => (
+                                    {loading ? (
+                                        <>
+                                            <JobListItemSkeleton />
+                                            <JobListItemSkeleton />
+                                            <JobListItemSkeleton />
+                                            <JobListItemSkeleton />
+                                            <JobListItemSkeleton />
+                                        </>
+                                    ) : jobs.length > 0 ? jobs.map(job => (
                                         <div key={job.id} className="flex justify-between items-center p-3 rounded-md border hover:bg-secondary/70 transition-colors">
                                             <div>
                                                 <p className="font-medium text-sm">{job.title}</p>
@@ -144,7 +177,9 @@ function AfterUndergradContent() {
                                             </div>
                                             <Button variant="ghost" size="sm" asChild><Link href={job.redirect_url} target="_blank">View</Link></Button>
                                         </div>
-                                    )) : !loading && <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}.</p>}
+                                    )) : (
+                                        <p className="text-sm text-muted-foreground pt-10 text-center">No jobs found for {career.name}.</p>
+                                    )}
                                 </div>
                             </div>
                         </CardContent>
@@ -158,8 +193,14 @@ function AfterUndergradContent() {
                             <CardDescription>Upskill with AI-powered micro-course recommendations based on your career choice.</CardDescription>
                         </CardHeader>
                         <CardContent className="flex-grow grid md:grid-cols-1 lg:grid-cols-2 gap-4">
-                            {loading && <div className="flex justify-center items-center h-full pt-10 lg:col-span-2"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>}
-                            {!loading && courses.length > 0 ? courses.map((course, index) => (
+                            {loading ? (
+                                <>
+                                    <CourseCardSkeleton />
+                                    <CourseCardSkeleton />
+                                    <CourseCardSkeleton />
+                                    <CourseCardSkeleton />
+                                </>
+                            ) : courses.length > 0 ? courses.map((course, index) => (
                                 <div key={index} className="p-4 rounded-lg border flex items-center gap-4 hover:bg-secondary/70 transition-colors">
                                     <div className="text-accent bg-accent/10 p-3 rounded-lg"><TrendingUp /></div>
                                     <div className="flex-grow">
@@ -168,7 +209,9 @@ function AfterUndergradContent() {
                                     </div>
                                     <Button variant="ghost" size="sm" asChild><Link href="#" target="_blank"><ExternalLink className="h-4 w-4"/></Link></Button>
                                 </div>
-                            )) : !loading && <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found.</p>}
+                            )) : (
+                                <p className="text-sm text-muted-foreground pt-10 text-center lg:col-span-2">No course recommendations found.</p>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>

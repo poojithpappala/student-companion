@@ -13,8 +13,33 @@ import { Loader2, Sparkles, Building2 } from "lucide-react";
 import { getCompanyInsights } from "@/ai/flows/company-insights";
 import { CompanyInsightsInputSchema, type CompanyInsightsOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const insightsSchema = CompanyInsightsInputSchema;
+
+function CompanyInsightsSkeleton() {
+  return (
+    <div className="space-y-8 animate-pulse">
+      <div className="space-y-3">
+        <Skeleton className="h-6 w-1/3 rounded-lg" />
+        <Skeleton className="h-4 w-full rounded-lg" />
+        <Skeleton className="h-4 w-full rounded-lg" />
+        <Skeleton className="h-4 w-5/6 rounded-lg" />
+      </div>
+      <div className="space-y-3">
+        <Skeleton className="h-6 w-1/3 rounded-lg" />
+        <Skeleton className="h-4 w-full rounded-lg" />
+        <Skeleton className="h-4 w-full rounded-lg" />
+        <Skeleton className="h-4 w-4/6 rounded-lg" />
+      </div>
+      <div className="space-y-3">
+        <Skeleton className="h-6 w-1/3 rounded-lg" />
+        <Skeleton className="h-4 w-5/6 rounded-lg" />
+        <Skeleton className="h-4 w-full rounded-lg" />
+      </div>
+    </div>
+  );
+}
 
 export default function CompanyInsightsPage() {
   const [insights, setInsights] = useState<CompanyInsightsOutput | null>(null);
@@ -85,16 +110,12 @@ export default function CompanyInsightsPage() {
             <CardDescription>Here's what our AI career researcher found for {form.getValues('companyName') || '...'}</CardDescription>
           </CardHeader>
           <CardContent>
-            {isSubmitting && (
-                <div className="flex flex-col items-center justify-center h-64">
-                    <Loader2 className="w-12 h-12 animate-spin text-primary"/>
-                    <p className="mt-4 text-muted-foreground">Gathering intel, please wait...</p>
-                </div>
-            )}
-            {insights ? (
+            {isSubmitting ? (
+                <CompanyInsightsSkeleton />
+            ) : insights ? (
               <div className="prose prose-sm dark:prose-invert max-w-none font-sans" dangerouslySetInnerHTML={{ __html: insights.report }}>
               </div>
-            ) : !isSubmitting && (
+            ) : (
               <div className="text-center text-muted-foreground h-64 flex flex-col justify-center items-center">
                 <Building2 className="w-12 h-12 mb-4" />
                 <p>Company insights will appear here once you search.</p>
