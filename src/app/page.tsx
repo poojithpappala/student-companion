@@ -3,36 +3,50 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote } from 'lucide-react';
+import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote, Compass, GraduationCap, Trophy, Lightbulb, Search, Wand2 } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function LandingPage() {
   const router = useRouter();
 
-  const features = [
+  const stageFeatures = [
     {
-      icon: <LayoutDashboard className="w-8 h-8 text-primary" />,
-      title: 'Lifecycle Dashboards',
-      description: "Personalized guidance whether you're in high school, college, or a recent grad.",
+      stage: 'High School',
+      value: 'before',
+      title: 'Navigate College Admissions',
+      description: 'Tools to help you discover your path and get into your dream school.',
+      features: [
+        { icon: Compass, title: 'AI Career Assessment', description: 'Find the perfect career match based on your interests and personality.' },
+        { icon: GraduationCap, title: 'College Explorer', description: 'Discover universities that are a great fit for your major and preferences.' },
+        { icon: Trophy, title: 'Exam Planner', description: 'Keep track of important entrance exam deadlines like the SAT and ACT.' },
+      ]
     },
     {
-      icon: <FileText className="w-8 h-8 text-primary" />,
-      title: 'AI Resume Analyzer',
-      description: 'Get instant, detailed feedback to craft the perfect, job-winning resume.',
+      stage: 'University',
+      value: 'during',
+      title: 'Excel in Your Studies & Internships',
+      description: 'Get a personalized plan and find opportunities to build your resume.',
+      features: [
+          { icon: Target, title: 'AI-Powered Roadmap', description: 'Get a year-by-year plan with actionable steps for your career goal.' },
+          { icon: Briefcase, title: 'Internship & Job Boards', description: 'Find curated internships and job listings from top companies.' },
+          { icon: Lightbulb, title: 'Project & Skill Building', description: 'Get project ideas and skill recommendations tailored to your field.' },
+      ]
     },
     {
-      icon: <Bot className="w-8 h-8 text-primary" />,
-      title: 'Career Coach Chatbot',
-      description: 'Your 24/7 AI companion for all your career questions and interview prep.',
-    },
-    {
-      icon: <Briefcase className="w-8 h-8 text-primary" />,
-      title: 'Job & Internship Hub',
-      description: 'Discover curated opportunities and track your applications seamlessly.',
-    },
+      stage: 'Recent Grads',
+      value: 'after',
+      title: 'Land Your Dream Job',
+      description: 'Powerful AI tools to help you level up your job search and negotiate your salary.',
+      features: [
+          { icon: FileText, title: 'AI Resume Analyzer', description: 'Get instant feedback to optimize your resume and beat the ATS.' },
+          { icon: Wand2, title: 'Salary Negotiation Coach', description: 'Learn how to negotiate your salary with AI-powered talking points.' },
+          { icon: Search, title: 'Job-Switch Toolkit', description: 'Research companies and track your applications all in one place.' },
+      ]
+    }
   ];
 
   const howItWorks = [
@@ -127,35 +141,54 @@ export default function LandingPage() {
             </div>
         </section>
 
-        {/* Features Section */}
+        {/* Features for Every Stage Section */}
         <section id="features" className="py-20 md:py-24">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary">
-                Everything You Need to Succeed
-              </h2>
-              <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                Powerful AI tools designed for every step of your career journey.
-              </p>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center">
+                <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary">
+                    Features for Every Stage
+                </h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    No matter where you are in your journey, we have the tools to help you succeed.
+                </p>
+                </div>
+                <Tabs defaultValue="before" className="mt-12 w-full">
+                    <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto">
+                        {stageFeatures.map(tab => (
+                            <TabsTrigger key={tab.value} value={tab.value}>{tab.stage}</TabsTrigger>
+                        ))}
+                    </TabsList>
+
+                    {stageFeatures.map(tab => (
+                        <TabsContent key={tab.value} value={tab.value} className="mt-10">
+                            <div className="text-center mb-10">
+                                <h3 className="font-headline text-2xl font-semibold text-primary">{tab.title}</h3>
+                                <p className="mt-2 text-muted-foreground">{tab.description}</p>
+                            </div>
+                            <div className="grid gap-8 md:grid-cols-3">
+                                {tab.features.map((feature, index) => {
+                                    const Icon = feature.icon;
+                                    return (
+                                        <Card key={index} className="text-center bg-card shadow-lg hover:shadow-primary/10 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${100 * index}ms` }}>
+                                            <CardContent className="p-8 flex flex-col items-center">
+                                                <div className="p-4 bg-primary/10 rounded-full">
+                                                    <Icon className="w-8 h-8 text-primary" />
+                                                </div>
+                                                <h4 className="mt-6 font-headline text-xl font-semibold text-primary">
+                                                    {feature.title}
+                                                </h4>
+                                                <p className="mt-2 text-muted-foreground text-sm">
+                                                    {feature.description}
+                                                </p>
+                                            </CardContent>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+                        </TabsContent>
+                    ))}
+                </Tabs>
             </div>
-            <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {features.map((feature, index) => (
-                <Card key={index} className="text-center bg-card shadow-lg hover:shadow-primary/10 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${200 * index}ms` }}>
-                  <CardContent className="p-8 flex flex-col items-center">
-                    <div className="p-4 bg-primary/10 rounded-full">
-                      {feature.icon}
-                    </div>
-                    <h3 className="mt-6 font-headline text-xl font-semibold text-primary">
-                      {feature.title}
-                    </h3>
-                    <p className="mt-2 text-muted-foreground">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
         </section>
 
         {/* Testimonials Section */}
