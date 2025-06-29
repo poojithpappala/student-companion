@@ -20,6 +20,7 @@ const prompt = ai.definePrompt({
   name: 'careerDeepDivePrompt',
   input: {schema: CareerDeepDiveInputSchema},
   output: {schema: CareerDeepDiveOutputSchema},
+  model: 'googleai/gemini-1.0-pro',
   prompt: `You are an expert career counselor AI, creating an engaging and informative deep dive for a high school student interested in a career in **{{{careerName}}}**.
 
   Your task is to provide a structured, encouraging, and easy-to-understand overview of this career path.
