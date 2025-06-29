@@ -1,0 +1,34 @@
+
+[
+  {
+    "id": "notif-1",
+    "type": "UpcomingEvent",
+    "message": "CyberGuard Fortress Challenge starts in 2 days",
+    "time": "2024-08-08T10:00:00Z",
+    "read": false
+  },
+  {
+    "id": "notif-2",
+    "type": "FriendRequest",
+    "from": "Alice Johnson",
+    "message": "sent you a friend request.",
+    "time": "2024-08-07T14:30:00Z",
+    "read": false
+  },
+  {
+    "id": "notif-3",
+    "type": "PodMention",
+    "from": "Alex Ray",
+    "podName": "SWE Intern Grinders",
+    "message": "mentioned you in",
+    "time": "2024-08-06T18:00:00Z",
+    "read": true
+  },
+  {
+    "id": "notif-4",
+    "type": "System",
+    "message": "Your profile is 80% complete. Add your projects to stand out!",
+    "time": "2024-08-05T09:00:00Z",
+    "read": true
+  }
+]

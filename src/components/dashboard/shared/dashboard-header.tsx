@@ -21,6 +21,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/theme-toggle";
+import { NotificationsCenter } from "@/components/dashboard/connect/notifications-center";
+import { useConnectStore } from "@/hooks/use-connect-store";
+import { useNotifications } from "@/hooks/use-notifications";
+import { useEffect } from "react";
 
 const getBreadcrumb = (pathname: string) => {
     const parts = pathname.split('/').filter(part => part);
@@ -32,6 +36,16 @@ const getBreadcrumb = (pathname: string) => {
 
 export function DashboardHeader() {
   const pathname = usePathname();
+  const { notifications, initNotifications } = useConnectStore();
+  const { notifications: allNotifications } = useNotifications();
+
+  useEffect(() => {
+    if (allNotifications.length > 0) {
+        initNotifications(allNotifications);
+    }
+  }, [allNotifications, initNotifications]);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
@@ -44,21 +58,33 @@ export function DashboardHeader() {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 text-sm font-semibold">
+        <div className="hidden sm:flex items-center gap-2 text-sm font-semibold">
           <Flame className="h-5 w-5 text-accent" />
           <span className="text-foreground">7 days</span>
         </div>
-        <div className="flex items-center gap-2 text-sm font-semibold">
+        <div className="hidden sm:flex items-center gap-2 text-sm font-semibold">
           <Gem className="h-5 w-5 text-primary" />
           <span className="text-foreground">1,200 pts</span>
         </div>
 
         <ModeToggle />
-
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Bell className="h-5 w-5" />
-          <span className="sr-only">Notifications</span>
-        </Button>
+        
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full relative">
+                    {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-xs text-destructive-foreground">
+                            {unreadCount}
+                        </span>
+                    )}
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Notifications</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-80">
+                <NotificationsCenter />
+            </DropdownMenuContent>
+        </DropdownMenu>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

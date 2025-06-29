@@ -1,0 +1,20 @@
+
+[
+    {
+        "userId": "peer-1",
+        "userName": "Alice Johnson",
+        "messages": [
+            { "id": "msg-1-1", "sender": "Alice Johnson", "text": "Hey! Saw you're also into AI. I'm working on a project with GANs, have you used them before?", "timestamp": "2024-08-07T14:35:00Z" },
+            { "id": "msg-1-2", "sender": "Me", "text": "Hi Alice! Yeah, a little bit. Mostly for image generation. What's your project about?", "timestamp": "2024-08-07T14:36:00Z" }
+        ]
+    },
+    {
+        "userId": "peer-2",
+        "userName": "Bob Williams",
+        "messages": [
+            { "id": "msg-2-1", "sender": "Bob Williams", "text": "Are you going to the Web3 Innovate Hack next week?", "timestamp": "2024-08-06T11:20:00Z" },
+            { "id": "msg-2-2", "sender": "Me", "text": "Thinking about it! Are you looking for a team?", "timestamp": "2024-08-06T11:21:00Z" },
+            { "id": "msg-2-3", "sender": "Bob Williams", "text": "Definitely. Let me know if you decide to join.", "timestamp": "2024-08-06T11:22:00Z" }
+        ]
+    }
+]

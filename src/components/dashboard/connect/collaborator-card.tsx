@@ -6,11 +6,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle, Link } from 'lucide-react';
+import { CheckCircle, Link as LinkIcon, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import type { Peer } from '@/hooks/use-peers';
 import { useConnectStore } from '@/hooks/use-connect-store';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface CollaboratorCardProps {
   peer: Peer;
@@ -51,7 +52,7 @@ export function CollaboratorCard({ peer, animationDelay }: CollaboratorCardProps
             ))}
           </div>
         </CardContent>
-        <CardFooter className="flex items-center justify-between">
+        <CardFooter className="flex items-center justify-between gap-2">
             <div className="flex items-center space-x-2">
                 <Checkbox
                     id={`select-${peer.id}`}
@@ -62,19 +63,24 @@ export function CollaboratorCard({ peer, animationDelay }: CollaboratorCardProps
                     Select
                 </label>
             </div>
-            <motion.div whileTap={{ scale: 0.95 }}>
-                <Button
-                    size="sm"
-                    className={cn(isConnected && "bg-secondary hover:bg-secondary/90 text-secondary-foreground")}
-                    onClick={handleConnect}
-                >
-                    {isConnected ? (
-                        <><CheckCircle className="mr-2 h-4 w-4" /> Connected</>
-                    ) : (
-                        <><Link className="mr-2 h-4 w-4" /> Connect</>
-                    )}
-                </Button>
-            </motion.div>
+            <div className="flex gap-2">
+                 <Button variant="ghost" size="icon" className="h-9 w-9" asChild>
+                    <Link href={`/dashboard/chat/${peer.id}`}><MessageSquare className="h-4 w-4" /></Link>
+                 </Button>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                    <Button
+                        size="sm"
+                        className={cn(isConnected && "bg-secondary hover:bg-secondary/90 text-secondary-foreground")}
+                        onClick={handleConnect}
+                    >
+                        {isConnected ? (
+                            <><CheckCircle className="mr-2 h-4 w-4" /> Connected</>
+                        ) : (
+                            <><LinkIcon className="mr-2 h-4 w-4" /> Connect</>
+                        )}
+                    </Button>
+                </motion.div>
+            </div>
         </CardFooter>
       </Card>
     </motion.div>

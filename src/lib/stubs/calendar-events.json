@@ -1,0 +1,11 @@
+
+[
+    { "id": "evt-1", "date": "2024-09-15", "title": "AI for Good Global Summit", "type": "Hackathon" },
+    { "id": "evt-2", "date": "2024-08-22", "title": "Web3 Innovate Hack", "type": "Hackathon" },
+    { "id": "evt-3", "date": "2024-08-10", "title": "CyberGuard Fortress Challenge", "type": "Hackathon" },
+    { "id": "evt-4", "date": "2024-08-19T10:00:00Z", "title": "Pod Check-In: SWE Intern Grinders", "type": "Pod" },
+    { "id": "evt-5", "date": "2024-08-26T10:00:00Z", "title": "Pod Check-In: SWE Intern Grinders", "type": "Pod" },
+    { "id": "evt-6", "date": "2024-08-15T14:00:00Z", "title": "Mock Interview with Alice Johnson", "type": "Meeting" },
+    { "id": "evt-7", "date": "2024-08-18T11:00:00Z", "title": "Interview: Google SWE Intern", "type": "Interview" },
+    { "id": "evt-8", "date": "2024-08-18T15:00:00Z", "title": "Interview: Microsoft PM Intern", "type": "Interview" }
+]

@@ -1,0 +1,31 @@
+
+[
+    {
+        "id": "sugg-1",
+        "name": "Grace Lee",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "Aspiring PM @ UMich",
+        "sharedDomains": ["AI", "Web"]
+    },
+    {
+        "id": "sugg-2",
+        "name": "Henry Kim",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "Full-Stack Dev @ UT Austin",
+        "sharedDomains": ["Web", "Mobile"]
+    },
+    {
+        "id": "sugg-3",
+        "name": "Ivy Chen",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "Security Researcher @ UIUC",
+        "sharedDomains": ["Cybersecurity", "AI"]
+    },
+    {
+        "id": "sugg-4",
+        "name": "Jack Taylor",
+        "avatarUrl": "https://placehold.co/40x40.png",
+        "role": "Data Analyst @ Purdue",
+        "sharedDomains": ["Data", "Web"]
+    }
+]
