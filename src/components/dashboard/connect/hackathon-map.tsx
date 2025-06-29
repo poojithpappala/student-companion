@@ -34,7 +34,7 @@ export default function HackathonMap({ hackathons }: HackathonMapProps) {
       : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
   return (
-    <MapContainer center={center} zoom={4} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }} className="rounded-lg z-0">
+    <MapContainer center={center} zoom={4} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }} className="rounded-lg">
       <TileLayer
         attribution={attribution}
         url={tileUrl}

@@ -1,25 +1,16 @@
+
 "use client";
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote, Compass, GraduationCap, Trophy, Lightbulb, Search, Wand2, Menu } from 'lucide-react';
+import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote, Compass, GraduationCap, Trophy, Lightbulb, Search, Wand2, Menu, Users, Zap, Calendar, MessageSquare } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
 import { ModeToggle } from '@/components/theme-toggle';
 
 export default function LandingPage() {
@@ -79,6 +70,29 @@ export default function LandingPage() {
         description: "Use our integrated tools to build skills, track your progress, and confidently move from classroom to career.",
     },
   ];
+  
+  const connectFeatures = [
+    {
+        icon: Users,
+        title: "Accountability Pods",
+        description: "Join small, focused groups to stay motivated, share progress, and achieve your goals together."
+    },
+    {
+        icon: Zap,
+        title: "Hackathon Hub",
+        description: "Discover upcoming hackathons, find teammates with complementary skills, and build amazing projects."
+    },
+    {
+        icon: MessageSquare,
+        title: "Peer Networking",
+        description: "Connect with students from top universities, get AI-powered friend suggestions, and expand your network."
+    },
+    {
+        icon: Calendar,
+        title: "Integrated Calendar",
+        description: "Never miss a beat. Keep track of interviews, deadlines, and team meetings all in one place."
+    },
+];
 
   const testimonials = [
     {
@@ -108,6 +122,7 @@ export default function LandingPage() {
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
             <Link href="#features" className="text-muted-foreground transition-colors hover:text-primary">Features</Link>
             <Link href="#how-it-works" className="text-muted-foreground transition-colors hover:text-primary">How It Works</Link>
+            <Link href="#connect" className="text-muted-foreground transition-colors hover:text-primary">Connect</Link>
             <Link href="#testimonials" className="text-muted-foreground transition-colors hover:text-primary">Testimonials</Link>
         </nav>
         <div className="flex items-center gap-4">
@@ -130,6 +145,7 @@ export default function LandingPage() {
                         <nav className="grid gap-6 text-lg font-medium mt-12 px-2">
                             <Link href="#features" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">Features</Link>
                             <Link href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">How It Works</Link>
+                            <Link href="#connect" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">Connect</Link>
                             <Link href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">Testimonials</Link>
                         </nav>
                          <div className="absolute bottom-10 left-6 right-6">
@@ -240,6 +256,34 @@ export default function LandingPage() {
             </div>
         </section>
         
+        {/* Connect Section */}
+        <section id="connect" className="py-20 md:py-24 bg-primary/5">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center">
+                  <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary">
+                      More Than a Plan. A Community.
+                  </h2>
+                  <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                      Your career journey isn't a solo mission. Join a vibrant community to learn, build, and grow together.
+                  </p>
+                </div>
+                <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                    {connectFeatures.map((feature, index) => {
+                        const Icon = feature.icon;
+                        return (
+                            <Card key={index} className="text-center p-6 bg-card border shadow-lg hover:shadow-primary/10 hover:border-primary/50 hover:-translate-y-2 transition-all duration-300 animate-fade-in-up flex flex-col items-center" style={{ animationDelay: `${150 * index}ms` }}>
+                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 mb-6">
+                                    <Icon className="w-8 h-8 text-accent" />
+                                </div>
+                                <h3 className="font-headline text-xl font-semibold text-primary">{feature.title}</h3>
+                                <p className="mt-2 text-muted-foreground text-sm flex-grow">{feature.description}</p>
+                            </Card>
+                        );
+                    })}
+                </div>
+            </div>
+        </section>
+
         {/* Testimonials Section */}
         <section id="testimonials" className="py-20 md:py-24 bg-card border-y">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
