@@ -148,7 +148,7 @@ export default function LandingPage() {
               </Button>
             </div>
             <div className="animate-fade-in-up [animation-delay:200ms]">
-                <Image src="https://placehold.co/600x400/ECF0F1/34495E.png" alt="Dashboard preview" width={600} height={400} className="rounded-xl shadow-2xl" data-ai-hint="dashboard professional students" />
+                <Image src="https://placehold.co/600x400.png" alt="Dashboard preview" width={600} height={400} className="rounded-xl shadow-2xl" data-ai-hint="dashboard professional students" />
             </div>
           </div>
         </section>
