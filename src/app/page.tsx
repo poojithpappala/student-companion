@@ -99,19 +99,19 @@ export default function LandingPage() {
         quote: "This platform was a game-changer. The AI career roadmap gave me a clear path, and the resume analyzer helped me land my first internship.",
         name: "Sarah J.",
         school: "UCLA, Computer Science",
-        image: "https://placehold.co/100x100.png"
+        image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3b21lbnxlbnwwfHx8fDE3NTExNTM3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080"
     },
     {
         quote: "As a high school student, I was completely lost. Student Companion helped me figure out what I wanted to do and which colleges to apply to. Invaluable!",
         name: "Michael B.",
         school: "High School Senior",
-        image: "https://placehold.co/100x100.png"
+        image: "https://images.unsplash.com/photo-1615109398623-88346a601842?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtYW58ZW58MHx8fHwxNzUxMTg5MDk2fDA&ixlib=rb-4.1.0&q=80&w=1080"
     },
     {
         quote: "The salary negotiation coach is incredible. I was able to negotiate a 15% higher salary than my initial offer. I can't recommend it enough!",
         name: "Emily C.",
         school: "NYU, Marketing Graduate",
-        image: "https://placehold.co/100x100.png"
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8Z2lybHxlbnwwfHx8fDE3NTEwNzI1MzV8MA&ixlib=rb-4.1.0&q=80&w=1080"
     },
   ];
 
