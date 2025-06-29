@@ -1,4 +1,3 @@
-
 "use client";
 
 import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
@@ -20,8 +19,8 @@ export default function DashboardLayout({
         </Sidebar>
         <SidebarInset>
           <DashboardHeader />
-          <main className="flex flex-col items-center p-4 sm:p-6 lg:p-8 animate-fade-in-up">
-            <div className="w-full max-w-7xl">
+          <main className="p-4 sm:p-6 lg:p-8 animate-fade-in-up">
+            <div className="w-full max-w-7xl mx-auto">
               {children}
             </div>
           </main>
