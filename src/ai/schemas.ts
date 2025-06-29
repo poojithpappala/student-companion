@@ -159,13 +159,13 @@ export type AnalyzeResumeOutput = z.infer<typeof AnalyzeResumeOutputSchema>;
 export const SalaryNegotiationInputSchema = z.object({
   jobTitle: z.string().describe('The job title for the offered position.'),
   companyName: z.string().describe('The name of the company offering the job.'),
-  baseSalary: z.number().describe('The base salary offered for the position.'),
+  baseSalary: z.coerce.number().describe('The base salary offered for the position.'),
   location: z.string().describe('The location of the job (city, state).'),
-  yearsOfExperience: z.number().describe('The candidate\'s years of experience.'),
+  yearsOfExperience: z.coerce.number().describe('The candidate\'s years of experience.'),
   benefits: z.string().describe('A description of the benefits package offered.'),
   strengths: z.string().describe('The candidate\'s key strengths and accomplishments relevant to the role.'),
   otherOffers: z.string().describe('Details of any other job offers the candidate has received.'),
-  desiredSalary: z.number().describe('The candidate\'s desired salary range.'),
+  desiredSalary: z.coerce.number().describe('The candidate\'s desired salary range.'),
 });
 export type SalaryNegotiationInput = z.infer<typeof SalaryNegotiationInputSchema>;
 

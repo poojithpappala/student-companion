@@ -18,7 +18,7 @@ function CareerSelectionContent() {
         const params = new URLSearchParams({ stage, careerId });
         if (stage === 'during') {
              router.push(`/onboarding/year?${params.toString()}`);
-        } else { // 'after' stage
+        } else { // 'after' stage, skip year selection
              router.push(`/dashboard/after?${params.toString()}`);
         }
     };

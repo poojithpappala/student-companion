@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -32,9 +33,9 @@ import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
 
 const menuItems = [
-  { href: "/dashboard/before", icon: <Rocket />, label: "Before Undergrad" },
-  { href: "/dashboard/during", icon: <School />, label: "During Undergrad" },
-  { href: "/dashboard/after", icon: <Briefcase />, label: "After Undergrad" },
+  { href: "/dashboard/before", icon: <Rocket />, label: "Before Undergrad", stage: "before" },
+  { href: "/dashboard/during", icon: <School />, label: "During Undergrad", stage: "during" },
+  { href: "/dashboard/after", icon: <Briefcase />, label: "After Undergrad", stage: "after" },
 ];
 
 const tools = [
@@ -52,8 +53,7 @@ export function DashboardSidebar() {
 
   const pathSegments = pathname.split('/').filter(Boolean);
   const stageFromPath = ['before', 'during', 'after'].find(s => s === pathSegments[1]);
-  const stageFromSearch = searchParams.get('stage');
-  const currentStage = stageFromPath || stageFromSearch;
+  const currentStage = searchParams.get('stage') || stageFromPath || 'during';
 
   const closeSidebar = () => setOpenMobile(false);
   
@@ -61,15 +61,12 @@ export function DashboardSidebar() {
     router.push('/auth');
   };
 
+  // Ensure the stage is always part of the query string for tool pages
   const preservedSearchParams = new URLSearchParams(searchParams);
-  if (currentStage && !preservedSearchParams.has('stage')) {
-    preservedSearchParams.set('stage', currentStage);
-  }
+  preservedSearchParams.set('stage', currentStage);
   const preservedQueryString = preservedSearchParams.toString();
 
-  const visibleMenuItems = currentStage 
-    ? menuItems.filter(item => item.href.includes(currentStage)) 
-    : [];
+  const activeDashboardItem = menuItems.find(item => item.stage === currentStage);
 
   return (
     <>
@@ -77,29 +74,27 @@ export function DashboardSidebar() {
         <Logo />
       </SidebarHeader>
       <SidebarContent>
-        {visibleMenuItems.length > 0 && (
+        {activeDashboardItem && (
           <>
             <SidebarMenu>
               <SidebarMenuItem>
                 <span className="text-xs text-muted-foreground px-2">Dashboard</span>
               </SidebarMenuItem>
-              {visibleMenuItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={activeDashboardItem.href}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname.startsWith(item.href)}
+                    isActive={pathname.startsWith(activeDashboardItem.href)}
                     onClick={closeSidebar}
                     tooltip={{
-                      children: item.label,
+                      children: activeDashboardItem.label,
                     }}
                   >
-                    <Link href={`${item.href}?${searchParams.toString()}`}>
-                      {item.icon}
-                      <span>{item.label}</span>
+                    <Link href={`${activeDashboardItem.href}?${searchParams.toString()}`}>
+                      {activeDashboardItem.icon}
+                      <span>{activeDashboardItem.label}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
             </SidebarMenu>
             <SidebarSeparator />
           </>
