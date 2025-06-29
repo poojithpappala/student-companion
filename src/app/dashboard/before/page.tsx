@@ -2,7 +2,7 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Bell, CheckCircle, TrendingUp, DollarSign, Briefcase, Compass, BookOpen, Search, Loader2, Target, Trophy, GraduationCap } from 'lucide-react';
@@ -74,19 +74,19 @@ function BeforeUndergradContent() {
   // If the user hasn't taken the self-assessment quiz, show a prompt.
   if (!selectedCareer) {
     return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
-        <Card className="w-full max-w-2xl text-center shadow-lg">
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+        <Card className="w-full max-w-2xl text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
             <CardHeader className="items-center p-8">
-                <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <div className="p-5 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-3xl text-primary">Discover Your Perfect Career Path</CardTitle>
+                <CardTitle className="font-headline text-3xl text-primary">Discover Your Perfect Career</CardTitle>
                 <CardDescription className="mt-2 text-base max-w-md">
-                    Take our quick, AI-powered self-assessment quiz to unlock personalized career recommendations and a tailored dashboard experience.
+                    Take our quick, AI-powered self-assessment to unlock personalized career recommendations and a tailored dashboard experience.
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/20">
                     <Link href="/dashboard/self-assessment">Take the Quiz Now</Link>
                 </Button>
             </CardContent>
@@ -100,69 +100,72 @@ function BeforeUndergradContent() {
     <>
       <Tabs defaultValue="career-path" className="w-full space-y-6">
           <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-              <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
+              <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Career Path</TabsTrigger>
               <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
               <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>
               <TabsTrigger value="college-explorer"><GraduationCap className="mr-2 h-4 w-4" /> College Explorer</TabsTrigger>
           </TabsList>
           
           <TabsContent value="career-path" className="space-y-6">
-              <Card>
+              <Card className="bg-primary/5">
                   <CardHeader>
-                    <CardTitle className="font-headline text-2xl text-primary">Your Recommended Path: {selectedCareer.name}</CardTitle>
-                    <CardDescription>Based on your self-assessment, here is our top recommendation for you.</CardDescription>
+                    <CardTitle className="font-headline text-2xl text-primary flex items-center gap-3">
+                        <selectedCareer.icon className="h-8 w-8 text-primary"/>
+                        Your Recommended Path: {selectedCareer.name}
+                    </CardTitle>
+                    <CardDescription>Based on your self-assessment, this is our top recommendation for you.</CardDescription>
                   </CardHeader>
                   {justification && (
                       <CardContent>
-                          <blockquote className="border-l-4 border-accent pl-4 italic text-muted-foreground">
+                          <blockquote className="border-l-4 border-accent bg-accent/10 p-4 italic text-primary/80 rounded-r-lg">
                               {decodeURIComponent(justification)}
                           </blockquote>
                       </CardContent>
                   )}
               </Card>
 
-              <div className="grid lg:grid-cols-2 gap-6">
-                  <Card>
+              <div className="grid lg:grid-cols-5 gap-6">
+                  <Card className="lg:col-span-3">
                       <CardHeader>
                         <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer</CardTitle>
-                        <CardDescription>This is your career interest map, showing potential salary and growth.</CardDescription>
+                        <CardDescription>An overview of potential salary and projected growth for {selectedCareer.name}.</CardDescription>
                       </CardHeader>
                       <CardContent className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
+                          <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm text-muted-foreground"><DollarSign className="h-4 w-4" />Potential Salary</h3>
                           <ResponsiveContainer width="100%" height={200}>
-                              <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                              <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                                   <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis dataKey="name" />
-                                  <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+                                  <XAxis dataKey="name" fontSize={12} />
+                                  <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} fontSize={12} />
                                   <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
-                                  <Bar dataKey="salary" fill="var(--color-chart-1)" />
+                                  <Bar dataKey="salary" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                               </BarChart>
                           </ResponsiveContainer>
                         </div>
                         <div>
-                          <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
+                          <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm text-muted-foreground"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
                             <ResponsiveContainer width="100%" height={200}>
-                              <BarChart data={growthData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                              <BarChart data={growthData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
                                   <CartesianGrid strokeDasharray="3 3" />
-                                  <XAxis dataKey="year" />
-                                  <YAxis tickFormatter={(value) => `${value}%`} />
+                                  <XAxis dataKey="year" fontSize={12} />
+                                  <YAxis tickFormatter={(value) => `${value}%`} fontSize={12} />
                                   <Tooltip formatter={(value) => `${value}% Projected Growth`} />
-                                  <Bar dataKey="growth" fill="var(--color-chart-2)" />
+                                  <Bar dataKey="growth" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]}/>
                               </BarChart>
                           </ResponsiveContainer>
                         </div>
                       </CardContent>
                   </Card>
-                  <Card className="flex flex-col">
+                  <Card className="flex flex-col lg:col-span-2">
                     <CardHeader>
                       <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
-                       <CardDescription>Skills to focus on for a head start in {selectedCareer.name}.</CardDescription>
+                       <CardDescription>Focus on these for a head start in {selectedCareer.name}.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow">
                       <ul className="space-y-3">
                         {careerSkills.map((skill, index) => (
-                          <li key={index} className="flex items-center gap-3">
+                          <li key={index} className="flex items-center gap-3 text-sm">
                             <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
                             <span className="font-medium">{skill}</span>
                           </li>
@@ -242,7 +245,7 @@ function BeforeUndergradContent() {
                   </CardHeader>
                   <CardContent>
                       <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-secondary/30">
+                        <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-card shadow-sm">
                           <FormField control={form.control} name="major" render={({ field }) => (
                               <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
                           )} />

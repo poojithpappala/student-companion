@@ -68,47 +68,47 @@ export function CareerRoadmap({ careerId, year }: CareerRoadmapProps) {
       <CardHeader>
         <CardTitle className="font-headline text-primary">AI-Powered Career Roadmap ({year})</CardTitle>
         <CardDescription>
-          Enter your interests and skills to generate a personalized roadmap for your current academic year.
+          Enter your current interests and skills to generate a personalized, actionable roadmap for this academic year.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="interests"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Your Interests</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="e.g., building web apps, AI, competitive programming" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="skills"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Your Current Skills</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} placeholder="e.g., Python, JavaScript, Figma, public speaking" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="md:col-span-2">
-                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...
-                    </>
-                  ) : 'Generate My Roadmap'}
-                </Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="interests"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Interests</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="e.g., building web apps, AI, competitive programming" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="skills"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Current Skills</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="e.g., Python, JavaScript, Figma, public speaking" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
+            <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Your Personalized Roadmap...
+                </>
+              ) : 'Generate My Roadmap'}
+            </Button>
           </form>
         </Form>
         
@@ -121,24 +121,25 @@ export function CareerRoadmap({ careerId, year }: CareerRoadmapProps) {
             )}
             {roadmap?.roadmapItems && roadmap.roadmapItems.length > 0 ? (
               <div className="space-y-4">
-                 <h3 className="text-lg font-semibold font-headline flex items-center gap-2 text-primary"><Sparkles className="text-accent" /> Your Personalized Steps</h3>
+                 <h3 className="text-lg font-semibold font-headline flex items-center gap-2 text-primary"><Sparkles className="text-accent" /> Your Personalized Steps for {year}</h3>
                 {roadmap.roadmapItems.map((item, index) => {
                   const Icon = iconMap[item.category] || BookOpen;
                   return (
-                    <div key={index} className="p-4 rounded-lg border flex items-start gap-4">
-                        <div className="text-accent bg-accent/10 p-3 rounded-lg"><Icon /></div>
+                    <div key={index} className="p-4 rounded-lg border flex items-start gap-4 bg-card">
+                        <div className="text-accent bg-accent/10 p-3 rounded-lg mt-1"><Icon /></div>
                         <div className="flex-grow">
                             <h4 className="font-semibold">{item.title}</h4>
                             <p className="text-sm text-muted-foreground">{item.description}</p>
                         </div>
-                        <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded-full">{item.category}</span>
+                        <span className="text-xs font-medium text-muted-foreground bg-secondary px-2 py-1 rounded-full whitespace-nowrap">{item.category}</span>
                     </div>
                   );
                 })}
               </div>
             ) : !isSubmitting && (
-              <div className="text-center text-muted-foreground h-40 flex flex-col justify-center items-center">
-                 <p>Your generated roadmap will appear here.</p>
+              <div className="text-center text-muted-foreground h-40 flex flex-col justify-center items-center rounded-lg bg-muted/50">
+                 <p className="font-medium">Your generated roadmap will appear here.</p>
+                 <p className="text-sm">Fill out the form above to get started!</p>
               </div>
             )}
         </div>

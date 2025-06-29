@@ -36,7 +36,13 @@ type Message = {
 
 function ChatbotContent() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 'initial',
+      text: "Hello! I'm your AI Career Coach. Ask me anything about your career path, skills, or job search.",
+      sender: "bot"
+    }
+  ]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -104,8 +110,8 @@ function ChatbotContent() {
         <Bot className="h-8 w-8" />
       </Button>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent className="flex flex-col w-full sm:max-w-lg">
-          <SheetHeader>
+        <SheetContent className="flex flex-col w-full sm:max-w-lg p-0">
+          <SheetHeader className="p-6">
             <SheetTitle className="font-headline flex items-center gap-2 text-primary">
               <Bot /> AI Career Coach
             </SheetTitle>
@@ -113,14 +119,14 @@ function ChatbotContent() {
               Your 24/7 AI companion for all your career questions.
             </SheetDescription>
           </SheetHeader>
-          <div className="flex-grow overflow-hidden">
+          <div className="flex-grow overflow-hidden bg-secondary/30">
             <ScrollArea className="h-full pr-4" ref={scrollAreaRef}>
-              <div className="flex flex-col gap-4 py-4">
+              <div className="flex flex-col gap-4 py-4 px-6">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={cn(
-                      "flex items-start gap-3",
+                      "flex items-start gap-3 w-full",
                       message.sender === "user" ? "justify-end" : "justify-start"
                     )}
                   >
@@ -131,10 +137,10 @@ function ChatbotContent() {
                     )}
                     <div
                       className={cn(
-                        "max-w-xs md:max-w-md rounded-lg p-3 text-sm",
+                        "max-w-xs md:max-w-md rounded-lg p-3 text-sm shadow-md",
                         message.sender === "user"
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-muted text-foreground"
+                          ? "bg-primary text-primary-foreground rounded-br-none"
+                          : "bg-background text-foreground rounded-bl-none"
                       )}
                     >
                       {message.text}
@@ -151,11 +157,11 @@ function ChatbotContent() {
                      <Avatar className="h-8 w-8">
                        <AvatarFallback className="bg-primary text-primary-foreground"><Bot className="h-5 w-5" /></AvatarFallback>
                      </Avatar>
-                     <div className="bg-muted text-muted-foreground rounded-lg p-3">
-                       <div className="flex items-center gap-1">
-                          <span className="h-2 w-2 rounded-full bg-foreground/50 animate-pulse delay-0" />
-                          <span className="h-2 w-2 rounded-full bg-foreground/50 animate-pulse delay-150" />
-                          <span className="h-2 w-2 rounded-full bg-foreground/50 animate-pulse delay-300" />
+                     <div className="bg-background text-muted-foreground rounded-lg p-3 shadow-md rounded-bl-none">
+                       <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-muted-foreground/50 animate-pulse delay-0" />
+                          <span className="h-2 w-2 rounded-full bg-muted-foreground/50 animate-pulse delay-150" />
+                          <span className="h-2 w-2 rounded-full bg-muted-foreground/50 animate-pulse delay-300" />
                        </div>
                      </div>
                    </div>
@@ -163,7 +169,7 @@ function ChatbotContent() {
               </div>
             </ScrollArea>
           </div>
-          <SheetFooter>
+          <SheetFooter className="p-4 border-t bg-background">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full items-center gap-2">
                 <FormField
@@ -177,7 +183,7 @@ function ChatbotContent() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" size="icon" disabled={isTyping} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button type="submit" size="icon" disabled={isTyping} className="bg-accent hover:bg-accent/90 text-accent-foreground flex-shrink-0">
                   <Send className="h-4 w-4" />
                 </Button>
               </form>

@@ -42,12 +42,12 @@ export default function CompanyInsightsPage() {
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
-      <div className="md:col-span-1">
+    <div className="grid lg:grid-cols-3 gap-8 items-start">
+      <div className="lg:col-span-1">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Company Insights</CardTitle>
-            <CardDescription>Enter a company name to get AI-powered insights on its culture, interview process, and more.</CardDescription>
+            <CardTitle className="font-headline flex items-center gap-2"><Building2 className="text-primary"/>Company Insights</CardTitle>
+            <CardDescription>Get AI-powered insights on a company's culture, interview process, and more.</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -78,11 +78,11 @@ export default function CompanyInsightsPage() {
         </Card>
       </div>
 
-      <div className="md:col-span-2">
-        <Card className="min-h-full">
+      <div className="lg:col-span-2">
+        <Card className="min-h-[30rem]">
           <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2"><Sparkles className="text-accent" /> Research Report</CardTitle>
-            <CardDescription>Here's what our AI career researcher found.</CardDescription>
+            <CardTitle className="font-headline flex items-center gap-2"><Sparkles className="text-accent" /> AI Research Report</CardTitle>
+            <CardDescription>Here's what our AI career researcher found for {form.getValues('companyName') || '...'}</CardDescription>
           </CardHeader>
           <CardContent>
             {isSubmitting && (
@@ -97,7 +97,7 @@ export default function CompanyInsightsPage() {
             ) : !isSubmitting && (
               <div className="text-center text-muted-foreground h-64 flex flex-col justify-center items-center">
                 <Building2 className="w-12 h-12 mb-4" />
-                <p>Company insights will appear here.</p>
+                <p>Company insights will appear here once you search.</p>
               </div>
             )}
           </CardContent>

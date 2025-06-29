@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { getCareerDeepDive } from "@/ai/flows/career-deep-dive";
 import { type CareerDeepDiveOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ClipboardList, Wrench, TrendingUp, Users, CheckCircle, Lightbulb } from "lucide-react";
+import { ClipboardList, Wrench, TrendingUp, Users, CheckCircle, Lightbulb, ExternalLink } from "lucide-react";
+import Link from 'next/link';
 
 type CareerDeepDiveProps = {
   careerId: string;
@@ -55,13 +56,13 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-32 w-full" />
         <div className="grid md:grid-cols-2 gap-6">
           <Skeleton className="h-48 w-full" />
           <Skeleton className="h-48 w-full" />
         </div>
-        <Skeleton className="h-32 w-full" />
         <Skeleton className="h-40 w-full" />
+        <Skeleton className="h-48 w-full" />
       </div>
     );
   }
@@ -81,7 +82,7 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
             <CardTitle className="font-headline text-2xl">An Introduction to {careerName}</CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground">{data.introduction}</p>
+            <p className="text-lg text-muted-foreground">{data.introduction}</p>
         </CardContent>
       </Card>
 
@@ -90,7 +91,7 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
           <ul className="space-y-3">
             {data.whatYouDo.map((task, index) => (
               <li key={index} className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
                 <span>{task}</span>
               </li>
             ))}
@@ -110,13 +111,32 @@ export function CareerDeepDive({ careerId, careerName }: CareerDeepDiveProps) {
         <p className="text-muted-foreground">{data.futureOutlook}</p>
       </SectionCard>
       
+       <SectionCard icon={<Lightbulb className="text-accent" />} title="Suggested Courses">
+          <div className="grid md:grid-cols-3 gap-4">
+              {data.suggestedCourses.map((course, index) => (
+                  <Card key={index} className="bg-muted/50">
+                      <CardHeader>
+                          <CardTitle className="text-base font-semibold">
+                              {course.name}
+                          </CardTitle>
+                           <CardDescription>{course.platform}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                         <Link href="#" className="text-sm font-semibold text-accent hover:underline">
+                            View Course <ExternalLink className="inline h-3 w-3 ml-1"/>
+                         </Link>
+                      </CardContent>
+                  </Card>
+              ))}
+          </div>
+      </SectionCard>
+
       <SectionCard icon={<Users className="text-accent" />} title="Explore Related Careers">
         <div className="grid md:grid-cols-3 gap-4">
             {data.relatedCareers.map((career, index) => (
                 <Card key={index} className="bg-muted/50">
                     <CardHeader>
                         <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                            <Lightbulb className="text-yellow-500 h-5 w-5"/>
                             {career.name}
                         </CardTitle>
                     </CardHeader>

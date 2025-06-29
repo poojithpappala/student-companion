@@ -62,12 +62,12 @@ export default function ResumeAnalyzerPage() {
   }
 
   return (
-    <div className="grid md:grid-cols-3 gap-8 items-start">
-      <div className="md:col-span-1">
+    <div className="grid lg:grid-cols-3 gap-8 items-start">
+      <div className="lg:col-span-1">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Analyze Your Resume</CardTitle>
-            <CardDescription>Upload your resume (PDF, max 5MB) to get AI-powered feedback.</CardDescription>
+            <CardTitle className="font-headline flex items-center gap-2"><FileText />Resume Analyzer</CardTitle>
+            <CardDescription>Upload your resume (PDF, max 5MB) to get instant AI-powered feedback.</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -79,7 +79,7 @@ export default function ResumeAnalyzerPage() {
                     <FormItem>
                       <FormLabel
                         htmlFor="resume-upload"
-                        className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer hover:bg-muted"
+                        className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer hover:bg-secondary transition-colors"
                       >
                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
                             <UploadCloud className="w-10 h-10 mb-3 text-muted-foreground" />
@@ -91,7 +91,7 @@ export default function ResumeAnalyzerPage() {
                             ) : (
                                 <>
                                     <p className="mb-2 text-sm text-muted-foreground">
-                                    <span className="font-semibold">Click to upload</span> or drag and drop
+                                    <span className="font-semibold text-accent">Click to upload</span> or drag and drop
                                     </p>
                                     <p className="text-xs text-muted-foreground">PDF (MAX. 5MB)</p>
                                 </>
@@ -131,7 +131,7 @@ export default function ResumeAnalyzerPage() {
         </Card>
       </div>
 
-      <div className="md:col-span-2">
+      <div className="lg:col-span-2">
         <Card className="min-h-full">
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2"><Sparkles className="text-accent" /> Analysis & Feedback</CardTitle>
@@ -141,23 +141,24 @@ export default function ResumeAnalyzerPage() {
             {isSubmitting && (
                 <div className="flex flex-col items-center justify-center h-64">
                     <Loader2 className="w-12 h-12 animate-spin text-primary"/>
-                    <p className="mt-4 text-muted-foreground">Analyzing, please wait...</p>
+                    <p className="mt-4 text-muted-foreground">Reading your resume, please wait...</p>
                 </div>
             )}
             {analysis ? (
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-headline font-semibold flex items-center gap-3 mb-2 text-lg">
-                      <Star className="text-accent"/> Overall Score: {analysis.overallScore} / 100
+                  <h3 className="font-headline font-semibold flex items-center justify-between gap-3 mb-2 text-lg">
+                      <span className="flex items-center gap-2"><Star className="text-accent"/> Overall Score</span>
+                      <span className="font-bold text-primary">{analysis.overallScore} / 100</span>
                   </h3>
-                  <Progress value={analysis.overallScore} className="w-full" />
+                  <Progress value={analysis.overallScore} className="w-full h-2.5" />
                 </div>
                 
-                <p className="text-muted-foreground italic border-l-4 border-accent pl-4 py-2">"{analysis.firstImpression}"</p>
+                <blockquote className="text-muted-foreground italic border-l-4 border-accent bg-accent/10 p-4 rounded-r-lg">"{analysis.firstImpression}"</blockquote>
                 
-                <Card className="bg-muted/50">
+                <Card className="bg-secondary/50">
                     <CardHeader>
-                        <CardTitle className="text-base font-semibold">Summary</CardTitle>
+                        <CardTitle className="text-base font-semibold">AI Summary</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <p className="text-muted-foreground text-sm whitespace-pre-wrap">{analysis.summary}</p>
@@ -168,7 +169,7 @@ export default function ResumeAnalyzerPage() {
                     <h3 className="text-lg font-headline font-semibold mb-3 flex items-center gap-2"><ListChecks /> Actionable Tips</h3>
                     <ul className="space-y-3">
                         {analysis.actionableTips.map((tip, index) => (
-                            <li key={index} className="flex items-start gap-3 text-sm">
+                            <li key={index} className="flex items-start gap-3 text-sm p-3 bg-card border rounded-lg">
                                 <div className="mt-1 w-4 h-4 text-accent"><Sparkles className="w-4 h-4"/></div>
                                 <span>{tip}</span>
                             </li>
@@ -190,7 +191,7 @@ export default function ResumeAnalyzerPage() {
                                         </div>
                                     </div>
                                 </AccordionTrigger>
-                                <AccordionContent className="prose prose-sm dark:prose-invert max-w-none font-sans whitespace-pre-wrap">
+                                <AccordionContent className="prose prose-sm dark:prose-invert max-w-none font-sans whitespace-pre-wrap p-4 bg-secondary/30 rounded-b-lg">
                                   {item.feedback}
                                 </AccordionContent>
                             </AccordionItem>
@@ -200,8 +201,9 @@ export default function ResumeAnalyzerPage() {
             </div>
             ) : !isSubmitting && (
               <div className="text-center text-muted-foreground h-64 flex flex-col justify-center items-center">
-                <FileText className="w-12 h-12 mb-4" />
-                <p>Your detailed resume feedback will appear here.</p>
+                <FileText className="w-12 h-12 mb-4 text-primary/30" />
+                 <p className="text-lg font-medium">Your detailed resume feedback will appear here.</p>
+                <p className="text-sm">Upload a PDF to get started.</p>
               </div>
             )}
           </CardContent>

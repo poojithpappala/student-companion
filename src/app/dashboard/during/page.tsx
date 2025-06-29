@@ -4,21 +4,23 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Lightbulb, Briefcase, Target, FileText, ArrowRight, School, Compass, Loader2, Building2, GraduationCap, Wand2 } from "lucide-react";
+import { Lightbulb, Briefcase, Target, FileText, ArrowRight, School, Compass, Loader2, Building2, GraduationCap, Wand2, ExternalLink } from "lucide-react";
 import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import { CareerRoadmap } from "@/components/dashboard/during/career-roadmap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 const applicationTracker = [
-    { company: "Innovate LLC", role: "Frontend Intern", status: "Applied" },
-    { company: "Big Tech Co", role: "SWE Intern", status: "Interview" },
-    { company: "Local Startup", role: "Full-Stack Dev", status: "Offer" },
+    { company: "Innovate LLC", role: "Frontend Intern", status: "Applied", statusColor: "bg-blue-500" },
+    { company: "Big Tech Co", role: "SWE Intern", status: "Interviewing", statusColor: "bg-yellow-500" },
+    { company: "Local Startup", role: "Full-Stack Dev", status: "Offer", statusColor: "bg-green-500" },
+    { company: "Data Corp", role: "Data Analyst Intern", status: "Rejected", statusColor: "bg-red-500" },
 ];
 
 function DuringUndergradContent() {
@@ -47,11 +49,13 @@ function DuringUndergradContent() {
           setJobs(jobResults);
         } catch (error) {
             console.error("Failed to load dashboard data:", error);
-            toast({
-                variant: "destructive",
-                title: "Error Loading Jobs",
-                description: error instanceof Error ? error.message : "Could not load job listings. Please check your connection or try again later.",
-            });
+            if (error instanceof Error && !error.message.includes('Adzuna API keys not configured')) {
+                toast({
+                    variant: "destructive",
+                    title: "Error Loading Jobs",
+                    description: error.message,
+                });
+            }
         } finally {
             setLoading(false);
         }
@@ -59,15 +63,19 @@ function DuringUndergradContent() {
         setLoading(false);
       }
     }
-    loadJobs();
+    if (process.env.NEXT_PUBLIC_ADZUNA_APP_ID && process.env.NEXT_PUBLIC_ADZUNA_API_KEY) {
+        loadJobs();
+    } else {
+        setLoading(false);
+    }
   }, [career, toast]);
 
   if (!careerId || !career) {
     return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
-        <Card className="w-full max-w-2xl text-center shadow-lg">
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+        <Card className="w-full max-w-2xl text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
             <CardHeader className="items-center p-8">
-                <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <div className="p-5 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
                 </div>
                 <CardTitle className="font-headline text-3xl text-primary">Let's Get Personal</CardTitle>
@@ -76,8 +84,8 @@ function DuringUndergradContent() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Link href="/onboarding/career?stage=during">Choose a Career Path</Link>
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/20">
+                    <Link href="/onboarding/career?stage=during">Choose Your Career</Link>
                 </Button>
             </CardContent>
         </Card>
@@ -87,10 +95,10 @@ function DuringUndergradContent() {
   
   if (!year) {
      return (
-      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 20rem)'}}>
-        <Card className="w-full max-w-2xl text-center shadow-lg">
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+        <Card className="w-full max-w-2xl text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
             <CardHeader className="items-center p-8">
-                <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <div className="p-5 bg-primary/10 rounded-full mb-4">
                     <School className="h-16 w-16 text-primary" />
                 </div>
                 <CardTitle className="font-headline text-3xl text-primary">Which Year Are You In?</CardTitle>
@@ -99,7 +107,7 @@ function DuringUndergradContent() {
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/20">
                     <Link href={`/onboarding/year?stage=during&careerId=${careerId}`}>Select Your Year</Link>
                 </Button>
             </CardContent>
@@ -112,10 +120,10 @@ function DuringUndergradContent() {
     switch(year) {
       case '1st Year':
         return (
-          <Tabs defaultValue="roadmap">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
-              <TabsTrigger value="foundations"><FileText className="mr-2 h-4 w-4" /> Foundations</TabsTrigger>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Your Roadmap</TabsTrigger>
+              <TabsTrigger value="foundations"><FileText className="mr-2 h-4 w-4" /> Career Foundations</TabsTrigger>
             </TabsList>
             <TabsContent value="roadmap">
               <CareerRoadmap careerId={career.id} year="1st Year" />
@@ -123,12 +131,12 @@ function DuringUndergradContent() {
             <TabsContent value="foundations">
               <Card>
                 <CardHeader>
-                  <CardTitle className="font-headline">Resume & Portfolio</CardTitle>
+                  <CardTitle className="font-headline">Build Your Professional Profile</CardTitle>
                   <CardDescription>Get AI-powered feedback to improve your resume. A strong resume is crucial, even in your first year!</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                    <Link href="/dashboard/resume-analyzer">Analyze Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                    <Link href="/dashboard/resume-analyzer">Analyze My Resume <ArrowRight className="ml-2 h-4 w-4"/></Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -137,9 +145,9 @@ function DuringUndergradContent() {
         );
       case '2nd Year':
         return (
-          <Tabs defaultValue="roadmap">
+          <Tabs defaultValue="roadmap" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Your Roadmap</TabsTrigger>
               <TabsTrigger value="skill-building"><Lightbulb className="mr-2 h-4 w-4" /> Skill Building</TabsTrigger>
             </TabsList>
             <TabsContent value="roadmap">
@@ -149,7 +157,7 @@ function DuringUndergradContent() {
                 <div className="grid md:grid-cols-2 gap-6">
                     <Card>
                         <CardHeader>
-                        <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas</CardTitle>
+                        <CardTitle className="font-headline flex items-center gap-2"><Lightbulb/> Project Ideas Feed</CardTitle>
                         <CardDescription>Get inspired with projects tailored to {career.name}.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -172,13 +180,16 @@ function DuringUndergradContent() {
                         <CardDescription>Short-term projects to build your experience.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                        <ScrollArea className="h-64">
+                        <ScrollArea className="h-64 pr-4">
                         {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
                         {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No micro-internships found for {career.name}.</p>}
                         {internships.slice(0, 5).map(i => (
-                            <div key={i.id} className="p-3 mb-2 rounded-md border">
-                                <h4 className="font-semibold text-sm">{i.title}</h4>
-                                <p className="text-xs text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                            <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
+                                <div>
+                                    <h4 className="font-semibold text-sm">{i.title}</h4>
+                                    <p className="text-xs text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                                </div>
+                                <Button size="sm" asChild variant="ghost"><Link href={i.redirect_url} target="_blank"><ExternalLink className="h-4 w-4"/></Link></Button>
                             </div>
                         ))}
                         </ScrollArea>
@@ -190,27 +201,27 @@ function DuringUndergradContent() {
         );
       case '3rd Year':
         return (
-          <Tabs defaultValue="roadmap">
+          <Tabs defaultValue="internships" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Your Roadmap</TabsTrigger>
               <TabsTrigger value="internships"><Briefcase className="mr-2 h-4 w-4" /> Internships</TabsTrigger>
               <TabsTrigger value="research"><Building2 className="mr-2 h-4 w-4" /> Company Research</TabsTrigger>
             </TabsList>
             <TabsContent value="roadmap">
               <CareerRoadmap careerId={career.id} year="3rd Year" />
             </TabsContent>
-            <TabsContent value="internships" className="grid md:grid-cols-2 gap-6">
-                <Card>
+            <TabsContent value="internships" className="grid lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2">
                     <CardHeader>
                     <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship Board</CardTitle>
-                    <CardDescription>Live internship postings for {career.name} from Adzuna.</CardDescription>
+                    <CardDescription>Live internship postings for {career.name}.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                    <ScrollArea className="h-72">
+                    <ScrollArea className="h-[26rem] pr-4">
                         {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
                         {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No internships found.</p>}
                         {internships.map(i => (
-                        <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
+                        <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center hover:bg-secondary transition-colors">
                             <div>
                             <h4 className="font-semibold">{i.title}</h4>
                             <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
@@ -224,31 +235,32 @@ function DuringUndergradContent() {
                 <Card>
                     <CardHeader>
                     <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
-                    <CardDescription>Keep track of your job applications (demo).</CardDescription>
+                    <CardDescription>Keep track of your applications.</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-3">
                     {applicationTracker.map(app => (
-                        <div key={app.company} className="p-3 mb-2 rounded-md border">
+                        <div key={app.company} className="p-3 rounded-md border">
                         <div className="flex justify-between items-center">
                             <div>
                             <h4 className="font-semibold">{app.role}</h4>
                             <p className="text-sm text-muted-foreground">{app.company}</p>
                             </div>
-                            <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
+                            <span title={app.status} className="h-3 w-3 rounded-full" style={{backgroundColor: app.statusColor}}/>
                         </div>
+                        <Progress value={75} className="h-1 mt-2"/>
                         </div>
                     ))}
                     </CardContent>
                 </Card>
             </TabsContent>
             <TabsContent value="research">
-                 <Card>
-                    <CardHeader className="items-center text-center">
-                        <div className="p-3 bg-accent/10 rounded-full mb-2"><Building2 className="w-8 h-8 text-accent"/></div>
+                 <Card className="text-center">
+                    <CardHeader className="items-center">
+                        <div className="p-4 bg-accent/10 rounded-full mb-2"><Building2 className="w-10 h-10 text-accent"/></div>
                         <CardTitle className="font-headline flex items-center gap-2 text-primary">Company Insights</CardTitle>
                         <CardDescription>Research companies before you apply. Get AI-powered insights on culture and interviews.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex justify-center">
+                    <CardContent>
                         <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
                             <Link href="/dashboard/company-insights">Launch Company Researcher <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
@@ -259,10 +271,10 @@ function DuringUndergradContent() {
         );
       case 'Final Year':
         return (
-          <Tabs defaultValue="roadmap">
+          <Tabs defaultValue="next-steps" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
-              <TabsTrigger value="next-steps"><ArrowRight className="mr-2 h-4 w-4" /> Career Steps</TabsTrigger>
+              <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Your Roadmap</TabsTrigger>
+              <TabsTrigger value="next-steps"><GraduationCap className="mr-2 h-4 w-4" /> Next Steps</TabsTrigger>
             </TabsList>
             <TabsContent value="roadmap">
               <CareerRoadmap careerId={career.id} year="Final Year" />
@@ -278,21 +290,21 @@ function DuringUndergradContent() {
                     {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
                     {!loading && jobs.length === 0 && <p className="text-muted-foreground text-center pt-4">No graduate jobs found. Check back later!</p>}
                     {jobs.map(job => (
-                        <div key={job.id} className="p-3 rounded-md border flex justify-between items-center">
+                        <div key={job.id} className="p-3 rounded-md border flex justify-between items-center hover:bg-secondary transition-colors">
                             <div>
                             <h4 className="font-semibold">{job.title}</h4>
-                            <p className="text-sm text-muted-foreground">{job.company.display_name} - {job.location.display_name}</p>
+                            <p className="text-sm text-muted-foreground">{job.company.display_name}</p>
                             </div>
-                            <Button size="sm" asChild variant="secondary"><Link href={job.redirect_url} target="_blank">View Job</Link></Button>
+                            <Button size="sm" asChild variant="secondary"><Link href={job.redirect_url} target="_blank">View</Link></Button>
                         </div>
                     ))}
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="items-center text-center">
-                        <div className="p-3 bg-accent/10 rounded-full mb-2"><GraduationCap className="w-8 h-8 text-accent"/></div>
+                        <div className="p-4 bg-accent/10 rounded-full mb-2"><GraduationCap className="w-10 h-10 text-accent"/></div>
                         <CardTitle className="font-headline flex items-center gap-2 text-primary">Explore Higher Studies</CardTitle>
-                        <CardDescription>Use our AI-powered tool to find the best graduate programs for you.</CardDescription>
+                        <CardDescription>Considering a Master's or PhD? Find the best graduate programs.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"><Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4"/></Link></Button>
@@ -300,13 +312,13 @@ function DuringUndergradContent() {
                 </Card>
                 </div>
 
-                <Card className="bg-primary text-primary-foreground">
+                <Card className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground">
                     <CardHeader className="flex flex-row items-center justify-between">
                     <div>
                         <CardTitle className="font-headline flex items-center gap-2"><Wand2/> Salary Negotiation Coach</CardTitle>
                         <CardDescription className="text-primary-foreground/80">Don't leave money on the table. Get AI-powered negotiation tips.</CardDescription>
                     </div>
-                    <Button asChild variant="secondary">
+                    <Button asChild variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                         <Link href="/dashboard/salary-negotiator">Launch Coach <ArrowRight className="ml-2 h-4 w-4"/></Link>
                     </Button>
                     </CardHeader>
@@ -321,12 +333,19 @@ function DuringUndergradContent() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-card">
         <CardHeader>
-          <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard for {career?.name}</CardTitle>
-          <CardDescription>
-            Here are your personalized tools and resources for this year. You can switch years in the settings.
-          </CardDescription>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard</CardTitle>
+              <CardDescription>
+                Personalized tools and resources for your journey in <span className="font-semibold text-primary">{career?.name}</span>.
+              </CardDescription>
+            </div>
+            <Link href={`/onboarding/year?stage=during&careerId=${careerId}`}>
+                <Button variant="outline">Change Year</Button>
+            </Link>
+          </div>
         </CardHeader>
       </Card>
       {renderContentForYear()}

@@ -10,11 +10,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Search, GraduationCap, University, BookOpen } from "lucide-react";
+import { Loader2, Search, GraduationCap, University, BookOpen, ExternalLink } from "lucide-react";
 import { findGraduatePrograms } from "@/ai/flows/graduate-school-finder";
 import { GraduateSchoolFinderInputSchema, type GraduateSchoolFinderOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
-import { Separator } from "@/components/ui/separator";
+import Link from 'next/link';
 
 const prepResources = [
     { name: 'GRE', description: 'For most graduate schools in the US and Canada.' },
@@ -60,7 +60,7 @@ export default function GraduateSchoolFinderPage() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField control={form.control} name="fieldOfStudy" render={({ field }) => (
-                  <FormItem><FormLabel>Field of Study</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Field of Study</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science" /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="degreeType" render={({ field }) => (
                     <FormItem>
@@ -91,15 +91,15 @@ export default function GraduateSchoolFinderPage() {
                 <CardTitle className="font-headline flex items-center gap-2 text-primary"><BookOpen/> Exam Prep Resources</CardTitle>
                 <CardDescription>Links and info for common entrance exams.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
                 {prepResources.map(res => (
-                    <div key={res.name}>
+                    <div key={res.name} className="p-3 rounded-lg border bg-secondary/50">
                         <div className="flex justify-between items-center">
                             <div>
                                 <h4 className="font-semibold">{res.name}</h4>
                                 <p className="text-sm text-muted-foreground">{res.description}</p>
                             </div>
-                             <Button variant="outline" size="sm" asChild><a href="#" target="_blank">Learn More</a></Button>
+                             <Button variant="outline" size="sm" asChild><Link href="#" target="_blank">Learn More</Link></Button>
                         </div>
                     </div>
                 ))}
@@ -123,9 +123,9 @@ export default function GraduateSchoolFinderPage() {
             {result?.programs && result.programs.length > 0 ? (
               <div className="space-y-4">
                 {result.programs.map((prog, index) => (
-                   <Card key={index} className="bg-secondary/30">
+                   <Card key={index} className="bg-card">
                      <CardHeader>
-                       <CardTitle className="text-lg flex items-center gap-2"><University className="text-accent" />{prog.universityName}</CardTitle>
+                       <CardTitle className="text-lg flex items-center gap-3"><University className="text-accent h-6 w-6" />{prog.universityName}</CardTitle>
                        <CardDescription>{prog.location}</CardDescription>
                      </CardHeader>
                      <CardContent>
@@ -137,8 +137,9 @@ export default function GraduateSchoolFinderPage() {
               </div>
             ) : !isSubmitting && (
               <div className="text-center text-muted-foreground py-20 flex flex-col justify-center items-center">
-                <GraduationCap className="w-16 h-16 mb-4" />
-                <p>Your recommended graduate programs will appear here.</p>
+                <GraduationCap className="w-16 h-16 mb-4 text-primary/30" />
+                <p className="text-lg font-medium">Your recommended programs will appear here.</p>
+                <p className="text-sm">Fill out the form to get started.</p>
               </div>
             )}
           </CardContent>
