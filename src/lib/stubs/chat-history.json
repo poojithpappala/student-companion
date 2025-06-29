@@ -3,6 +3,7 @@
     {
         "userId": "peer-1",
         "userName": "Alice Johnson",
+        "userAvatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1080&auto=format&fit=crop",
         "messages": [
             { "id": "msg-1-1", "sender": "Alice Johnson", "text": "Hey! Saw you're also into AI. I'm working on a project with GANs, have you used them before?", "timestamp": "2024-08-07T14:35:00Z" },
             { "id": "msg-1-2", "sender": "Me", "text": "Hi Alice! Yeah, a little bit. Mostly for image generation. What's your project about?", "timestamp": "2024-08-07T14:36:00Z" }
@@ -11,6 +12,7 @@
     {
         "userId": "peer-2",
         "userName": "Bob Williams",
+        "userAvatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1080&auto=format&fit=crop",
         "messages": [
             { "id": "msg-2-1", "sender": "Bob Williams", "text": "Are you going to the Web3 Innovate Hack next week?", "timestamp": "2024-08-06T11:20:00Z" },
             { "id": "msg-2-2", "sender": "Me", "text": "Thinking about it! Are you looking for a team?", "timestamp": "2024-08-06T11:21:00Z" },

@@ -3,28 +3,28 @@
     {
         "id": "sugg-1",
         "name": "Grace Lee",
-        "avatarUrl": "https://placehold.co/40x40.png",
+        "avatarUrl": "https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=1080&auto=format&fit=crop",
         "role": "Aspiring PM @ UMich",
         "sharedDomains": ["AI", "Web"]
     },
     {
         "id": "sugg-2",
         "name": "Henry Kim",
-        "avatarUrl": "https://placehold.co/40x40.png",
+        "avatarUrl": "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?q=80&w=1080&auto=format&fit=crop",
         "role": "Full-Stack Dev @ UT Austin",
         "sharedDomains": ["Web", "Mobile"]
     },
     {
         "id": "sugg-3",
         "name": "Ivy Chen",
-        "avatarUrl": "https://placehold.co/40x40.png",
+        "avatarUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1080&auto=format&fit=crop",
         "role": "Security Researcher @ UIUC",
         "sharedDomains": ["Cybersecurity", "AI"]
     },
     {
         "id": "sugg-4",
         "name": "Jack Taylor",
-        "avatarUrl": "https://placehold.co/40x40.png",
+        "avatarUrl": "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=1080&auto=format&fit=crop",
         "role": "Data Analyst @ Purdue",
         "sharedDomains": ["Data", "Web"]
     }

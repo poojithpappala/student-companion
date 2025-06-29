@@ -26,12 +26,14 @@ export default function ChatPage() {
         );
     }
 
+    const otherUserAvatar = chatHistory.userAvatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1080&auto=format&fit=crop';
+
     return (
         <div className="w-full max-w-3xl mx-auto">
             <Card className="flex flex-col h-[calc(100vh-10rem)]">
                 <CardHeader className="flex flex-row items-center gap-4 border-b">
                     <Avatar>
-                        <AvatarImage src={`https://placehold.co/40x40.png`} alt={chatHistory.userName} data-ai-hint="person face" />
+                        <AvatarImage src={otherUserAvatar} alt={chatHistory.userName} data-ai-hint="person face" />
                         <AvatarFallback>{chatHistory.userName.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
@@ -44,7 +46,7 @@ export default function ChatPage() {
                         <div className="p-6 space-y-4">
                             {chatHistory.messages.map(message => (
                                 <div key={message.id} className={cn("flex items-end gap-2", message.sender === 'Me' ? "justify-end" : "justify-start")}>
-                                    {message.sender !== 'Me' && <Avatar className="h-8 w-8"><AvatarImage src={`https://placehold.co/40x40.png`} alt={message.sender} data-ai-hint="person face" /><AvatarFallback>{message.sender.charAt(0)}</AvatarFallback></Avatar>}
+                                    {message.sender !== 'Me' && <Avatar className="h-8 w-8"><AvatarImage src={otherUserAvatar} alt={message.sender} data-ai-hint="person face" /><AvatarFallback>{message.sender.charAt(0)}</AvatarFallback></Avatar>}
                                     <div className={cn(
                                         "max-w-md rounded-lg p-3 text-sm shadow",
                                         message.sender === 'Me' 

@@ -12,6 +12,7 @@ type Message = {
 type ChatHistory = {
     userId: string;
     userName: string;
+    userAvatar?: string;
     messages: Message[];
 };
 

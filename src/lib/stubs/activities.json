@@ -4,7 +4,7 @@
     "id": "act-1",
     "podId": "pod-swe-interns",
     "type": "check-in",
-    "user": { "name": "Alex Ray", "avatar": "https://placehold.co/40x40.png" },
+    "user": { "name": "Alex Ray", "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1080&auto=format&fit=crop" },
     "content": "Completed 2 Medium LeetCode problems today! Focused on dynamic programming.",
     "timestamp": "2024-07-29T10:00:00Z",
     "kudos": 5
@@ -13,7 +13,7 @@
     "id": "act-2",
     "podId": "pod-swe-interns",
     "type": "kudos",
-    "user": { "name": "Brenda Smith", "avatar": "https://placehold.co/40x40.png" },
+    "user": { "name": "Brenda Smith", "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1080&auto=format&fit=crop" },
     "content": "Gave kudos to @Alex Ray for their consistency!",
     "timestamp": "2024-07-29T10:05:00Z",
     "kudos": 2
@@ -22,7 +22,7 @@
     "id": "act-3",
     "podId": "pod-swe-interns",
     "type": "check-in",
-    "user": { "name": "Charlie Day", "avatar": "https://placehold.co/40x40.png" },
+    "user": { "name": "Charlie Day", "avatar": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1080&auto=format&fit=crop" },
     "content": "Finished my resume review and applied to 3 internships.",
     "timestamp": "2024-07-29T09:30:00Z",
     "kudos": 12
@@ -31,7 +31,7 @@
     "id": "act-4",
     "podId": "pod-swe-interns",
     "type": "check-in",
-    "user": { "name": "Diana Prince", "avatar": "https://placehold.co/40x40.png" },
+    "user": { "name": "Diana Prince", "avatar": "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=1080&auto=format&fit=crop" },
     "content": "Worked on my portfolio project's backend. Fixed a nasty bug!",
     "timestamp": "2024-07-28T18:00:00Z",
     "kudos": 8
@@ -40,7 +40,7 @@
     "id": "act-5",
     "podId": "pod-data-wizards",
     "type": "check-in",
-    "user": { "name": "Ethan Hunt", "avatar": "https://placehold.co/40x40.png" },
+    "user": { "name": "Ethan Hunt", "avatar": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=1080&auto=format&fit=crop" },
     "content": "Cleaned up the dataset for our Kaggle competition.",
     "timestamp": "2024-07-29T11:00:00Z",
     "kudos": 3
