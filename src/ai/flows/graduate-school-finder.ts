@@ -13,6 +13,9 @@ import {
 } from '@/ai/schemas';
 
 export async function findGraduatePrograms(input: GraduateSchoolFinderInput): Promise<GraduateSchoolFinderOutput> {
+  if (!process.env.GOOGLE_API_KEY) {
+    throw new Error("Google API Key not configured. Please add it to your .env file.");
+  }
   return graduateSchoolFinderFlow(input);
 }
 

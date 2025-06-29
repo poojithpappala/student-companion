@@ -14,6 +14,9 @@ import {
 
 
 export async function analyzeResume(input: AnalyzeResumeInput): Promise<AnalyzeResumeOutput> {
+  if (!process.env.GOOGLE_API_KEY) {
+    throw new Error("Google API Key not configured. Please add it to your .env file.");
+  }
   return analyzeResumeFlow(input);
 }
 

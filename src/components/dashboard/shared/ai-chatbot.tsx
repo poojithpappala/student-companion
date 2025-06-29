@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect, Suspense } from "react";
@@ -21,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { aiCareerCoachChatbot } from "@/ai/flows/ai-career-coach-chatbot";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 const chatSchema = z.object({
   question: z.string().min(1, "Message cannot be empty"),
@@ -37,6 +39,7 @@ function ChatbotContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
   
   const searchParams = useSearchParams();
   const stage = searchParams.get('stage') || 'during';
@@ -73,12 +76,18 @@ function ChatbotContent() {
       const botMessage: Message = { id: (Date.now() + 1).toString(), text: response.answer, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
+      const errorMessageText = error instanceof Error ? error.message : "Sorry, I'm having trouble connecting. Please try again later.";
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Sorry, I'm having trouble connecting. Please try again later.",
+        text: errorMessageText,
         sender: "bot",
       };
       setMessages((prev) => [...prev, errorMessage]);
+      toast({
+          variant: "destructive",
+          title: "Chatbot Error",
+          description: errorMessageText,
+      });
     } finally {
       setIsTyping(false);
     }

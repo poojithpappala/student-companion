@@ -14,6 +14,9 @@ import {
 } from '@/ai/schemas';
 
 export async function recommendCareer(input: CareerAssessmentInput): Promise<CareerRecommendation> {
+  if (!process.env.GOOGLE_API_KEY) {
+    throw new Error("Google API Key not configured. Please add it to your .env file.");
+  }
   return careerAssessmentFlow(input);
 }
 

@@ -50,7 +50,7 @@ function DuringUndergradContent() {
             toast({
                 variant: "destructive",
                 title: "Error Loading Jobs",
-                description: "Could not load job listings. Please check your connection or try again later.",
+                description: error instanceof Error ? error.message : "Could not load job listings. Please check your connection or try again later.",
             });
         } finally {
             setLoading(false);
@@ -341,5 +341,3 @@ export default function DuringUndergradPage() {
         </Suspense>
     )
 }
-
-    

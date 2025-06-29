@@ -15,6 +15,9 @@ import {
 } from '@/ai/schemas';
 
 export async function generateCareerRoadmap(input: CareerRoadmapInput): Promise<CareerRoadmapOutput> {
+    if (!process.env.GOOGLE_API_KEY) {
+      throw new Error("Google API Key not configured. Please add it to your .env file.");
+    }
     const career = careers.find(c => c.id === input.careerId);
     return careerRoadmapFlow({...input, careerName: career?.name || 'the selected field'});
 }

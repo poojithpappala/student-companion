@@ -28,8 +28,7 @@ export async function fetchAdzunaJobs({
     page = 1
 }: { query?: string, country?: string, resultsPerPage?: number, page?: number }): Promise<Job[]> {
     if (!APP_ID || !API_KEY || APP_ID === 'YOUR_ADZUNA_APP_ID' || API_KEY === 'YOUR_ADZUNA_API_KEY') {
-        console.warn("Adzuna API credentials are not set or are using default placeholders. Skipping job fetch.");
-        return [];
+        throw new Error("Adzuna API keys not configured. Please add ADZUNA_APP_ID and ADZUNA_API_KEY to your .env file.");
     }
 
     const url = `https://api.adzuna.com/v1/api/jobs/${country}/search/${page}?app_id=${APP_ID}&app_key=${API_KEY}&results_per_page=${resultsPerPage}&what=${encodeURIComponent(query)}&content-type=application/json`;
@@ -37,16 +36,18 @@ export async function fetchAdzunaJobs({
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            // Log the error but don't throw, to avoid crashing the page
-            console.error(`Adzuna API error: ${response.status} ${response.statusText}`);
             const errorBody = await response.text();
-            console.error('Error body:', errorBody);
-            return [];
+            console.error('Adzuna API error body:', errorBody);
+            throw new Error(`Adzuna API error: ${response.status} ${response.statusText}`);
         }
         const data: AdzunaResponse = await response.json();
         return data.results || [];
     } catch (error) {
-        console.error("Failed to fetch jobs from Adzuna:", error);
-        return [];
+        if (error instanceof Error) {
+            console.error("Failed to fetch jobs from Adzuna:", error.message);
+            throw new Error(`Failed to fetch jobs: ${error.message}`);
+        }
+        console.error("An unknown error occurred while fetching jobs from Adzuna:", error);
+        throw new Error("An unknown error occurred while fetching jobs.");
     }
 }
