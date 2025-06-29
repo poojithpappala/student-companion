@@ -5,7 +5,7 @@
       "title": "AI for Good Global Summit",
       "logoUrl": "https://placehold.co/40x40.png",
       "domains": ["AI", "Social Impact", "Data Science"],
-      "startDate": "2024-09-15T09:00:00Z",
+      "startDate": "2025-09-15T09:00:00Z",
       "location": { "lat": 46.2044, "lng": 6.1432, "label": "Geneva, Switzerland" },
       "mode": "On-Site"
     },
@@ -14,7 +14,7 @@
       "title": "Web3 Innovate Hack",
       "logoUrl": "https://placehold.co/40x40.png",
       "domains": ["Web", "Mobile", "Cybersecurity"],
-      "startDate": "2024-08-22T18:00:00Z",
+      "startDate": "2025-08-22T18:00:00Z",
       "location": { "lat": 0, "lng": 0, "label": "Virtual" },
       "mode": "Virtual"
     },
@@ -23,7 +23,7 @@
       "title": "CyberGuard Fortress Challenge",
       "logoUrl": "https://placehold.co/40x40.png",
       "domains": ["Cybersecurity"],
-      "startDate": "2024-08-10T10:00:00Z",
+      "startDate": "2025-08-10T10:00:00Z",
       "location": { "lat": 34.0522, "lng": -118.2437, "label": "Los Angeles, CA" },
       "mode": "On-Site"
     },
@@ -32,7 +32,7 @@
       "title": "DataViz Masters",
       "logoUrl": "https://placehold.co/40x40.png",
       "domains": ["Data", "AI"],
-      "startDate": "2024-08-05T12:00:00Z",
+      "startDate": "2025-08-05T12:00:00Z",
       "location": { "lat": 0, "lng": 0, "label": "Virtual" },
       "mode": "Virtual"
     },
@@ -41,7 +41,7 @@
         "title": "Future of Mobile Hackathon",
         "logoUrl": "https://placehold.co/40x40.png",
         "domains": ["Mobile", "Web"],
-        "startDate": "2024-09-01T09:00:00Z",
+        "startDate": "2025-09-01T09:00:00Z",
         "location": { "lat": 37.7749, "lng": -122.4194, "label": "San Francisco, CA" },
         "mode": "On-Site"
     }

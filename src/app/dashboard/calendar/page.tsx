@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +22,7 @@ export default function CalendarPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                 <Card className="lg:col-span-2">
-                    <CardContent className="p-2 sm:p-4">
+                    <CardContent className="p-0">
                         <CalendarView />
                     </CardContent>
                 </Card>
