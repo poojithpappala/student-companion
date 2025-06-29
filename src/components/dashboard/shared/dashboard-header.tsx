@@ -20,6 +20,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "@/components/theme-toggle";
 
 const getBreadcrumb = (pathname: string) => {
     const parts = pathname.split('/').filter(part => part);
@@ -42,7 +43,7 @@ export function DashboardHeader() {
         <h1 className="font-headline text-xl font-semibold text-primary">{getBreadcrumb(pathname)}</h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <Flame className="h-5 w-5 text-accent" />
           <span className="text-foreground">7 days</span>
@@ -51,6 +52,8 @@ export function DashboardHeader() {
           <Gem className="h-5 w-5 text-primary" />
           <span className="text-foreground">1,200 pts</span>
         </div>
+
+        <ModeToggle />
 
         <Button variant="ghost" size="icon" className="rounded-full">
           <Bell className="h-5 w-5" />
