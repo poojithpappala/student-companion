@@ -58,18 +58,18 @@ export default function DuringUndergradPage() {
 
   if (!careerId || !career) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <Card className="w-full max-w-lg p-8">
-            <CardHeader className="p-0 items-center">
-                <div className="p-4 bg-accent/10 rounded-full mb-4">
-                    <Compass className="h-12 w-12 text-accent" />
+      <div className="flex items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
+        <Card className="w-full max-w-2xl text-center shadow-lg">
+            <CardHeader className="items-center p-8">
+                <div className="p-4 bg-primary/10 rounded-full mb-4">
+                    <Compass className="h-16 w-16 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-2xl">Let's Get Personal</CardTitle>
-                <CardDescription className="mt-2">
+                <CardTitle className="font-headline text-3xl">Let's Get Personal</CardTitle>
+                <CardDescription className="mt-2 text-base max-w-md">
                     Choose a career path to unlock your personalized dashboard and AI-powered roadmap.
                 </CardDescription>
             </CardHeader>
-            <CardContent className="p-0 mt-6">
+            <CardContent className="pb-8">
                 <Button asChild size="lg">
                     <Link href="/onboarding/career?stage=during">Choose a Career Path</Link>
                 </Button>
@@ -92,9 +92,8 @@ export default function DuringUndergradPage() {
           </Button>
         </CardHeader>
       </Card>
-      <div className="w-full overflow-x-auto">
         <Tabs defaultValue="year1" className="w-full">
-            <TabsList>
+            <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="year1">1st Year</TabsTrigger>
             <TabsTrigger value="year2">2nd Year</TabsTrigger>
             <TabsTrigger value="year3">3rd Year</TabsTrigger>
@@ -228,7 +227,6 @@ export default function DuringUndergradPage() {
                 </Card>
             </TabsContent>
         </Tabs>
-      </div>
     </div>
   );
 }
