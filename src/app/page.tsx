@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from 'react';
@@ -21,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { ModeToggle } from '@/components/theme-toggle';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -111,6 +111,7 @@ export default function LandingPage() {
             <Link href="#testimonials" className="text-muted-foreground transition-colors hover:text-primary">Testimonials</Link>
         </nav>
         <div className="flex items-center gap-4">
+            <ModeToggle />
             <Button asChild>
                 <Link href="/auth">Sign In</Link>
             </Button>
