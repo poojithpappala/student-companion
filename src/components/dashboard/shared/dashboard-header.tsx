@@ -1,3 +1,4 @@
+
 "use client";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -19,7 +20,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 const getBreadcrumb = (pathname: string) => {
     const parts = pathname.split('/').filter(part => part);
@@ -31,7 +31,6 @@ const getBreadcrumb = (pathname: string) => {
 
 export function DashboardHeader() {
   const pathname = usePathname();
-  const { data: session } = useSession();
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
@@ -62,10 +61,10 @@ export function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 px-2">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={session?.user?.image ?? "https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
-                <AvatarFallback>{session?.user?.name?.charAt(0).toUpperCase() ?? 'U'}</AvatarFallback>
+                <AvatarImage src={"https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
-              <span className="hidden sm:inline">{session?.user?.name ?? 'Guest User'}</span>
+              <span className="hidden sm:inline">Guest User</span>
               <ChevronDown className="h-4 w-4 hidden sm:inline" />
             </Button>
           </DropdownMenuTrigger>

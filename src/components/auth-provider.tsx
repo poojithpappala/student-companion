@@ -1,11 +1,14 @@
+
 "use client";
 
-import { SessionProvider } from "next-auth/react";
+// This component is no longer used for authentication.
+// It is kept to prevent breaking imports if they exist elsewhere,
+// but it renders nothing.
 
 export default function AuthProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <>{children}</>;
 }
