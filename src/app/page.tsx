@@ -1,17 +1,20 @@
 
 "use client";
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote, Compass, GraduationCap, Trophy, Lightbulb, Search, Wand2 } from 'lucide-react';
+import { ArrowRight, Bot, FileText, Briefcase, Target, LayoutDashboard, Route, Quote, Compass, GraduationCap, Trophy, Lightbulb, Search, Wand2, Menu } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export default function LandingPage() {
   const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const stageFeatures = [
     {
@@ -89,9 +92,41 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-background">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
         <Logo />
-        <Button variant="ghost" asChild>
-           <Link href="/auth">Sign In</Link>
-        </Button>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+            <Link href="#features" className="text-muted-foreground transition-colors hover:text-primary">Features</Link>
+            <Link href="#how-it-works" className="text-muted-foreground transition-colors hover:text-primary">How It Works</Link>
+            <Link href="#testimonials" className="text-muted-foreground transition-colors hover:text-primary">Testimonials</Link>
+        </nav>
+        <div className="flex items-center gap-4">
+            <Button asChild className="hidden md:inline-flex bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Link href="/auth">Get Started</Link>
+            </Button>
+            <div className="md:hidden">
+                <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant="outline" size="icon">
+                            <Menu className="h-5 w-5" />
+                            <span className="sr-only">Toggle navigation menu</span>
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <div className="flex justify-start">
+                            <Logo />
+                        </div>
+                        <nav className="grid gap-6 text-lg font-medium mt-12">
+                            <Link href="#features" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">Features</Link>
+                            <Link href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">How It Works</Link>
+                            <Link href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="text-muted-foreground hover:text-foreground">Testimonials</Link>
+                        </nav>
+                         <div className="absolute bottom-10 left-6 right-6">
+                            <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                                <Link href="/auth">Get Started</Link>
+                            </Button>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
+        </div>
       </header>
 
       <main className="flex-grow">
@@ -243,12 +278,14 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex gap-6 mt-4 sm:mt-0">
-                <Link href="#features" className="text-sm text-primary-foreground/80 hover:text-white">Features</Link>
-                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white">Pricing</Link>
-                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white">Contact</Link>
+                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white">About Us</Link>
+                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white">Contact Us</Link>
+                <Link href="#" className="text-sm text-primary-foreground/80 hover:text-white">Privacy Policy</Link>
             </div>
         </div>
       </footer>
     </div>
   );
 }
+
+    
