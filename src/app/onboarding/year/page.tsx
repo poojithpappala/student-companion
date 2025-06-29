@@ -35,22 +35,26 @@ function YearSelectionContent() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen items-center justify-center p-4">
-            <div className="text-center mb-10">
+        <div className="flex flex-col min-h-screen items-center justify-center p-4 bg-secondary/30">
+            <div className="text-center mb-10 animate-fade-in-up">
                 <Logo />
                 <h1 className="mt-6 font-headline text-3xl md:text-4xl font-bold text-primary">What year are you in?</h1>
                 <p className="mt-2 text-lg text-muted-foreground">Let's customize your roadmap for your current stage.</p>
             </div>
             <div className="grid w-full max-w-4xl grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {years.map((year) => (
-                    <Card key={year.value} className="group flex flex-col justify-between text-center hover:border-accent hover:shadow-xl transition-all duration-300">
+                {years.map((year, index) => (
+                    <Card 
+                      key={year.value} 
+                      className="group flex flex-col justify-between text-center hover:border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-in-up"
+                      style={{ animationDelay: `${100 * index}ms` }}
+                    >
                         <CardHeader>
                             <CardTitle className="font-headline text-2xl">{year.title}</CardTitle>
                             <CardDescription className="mt-2 min-h-[40px]">{year.description}</CardDescription>
                         </CardHeader>
                         <CardContent />
                         <CardFooter>
-                            <Button onClick={() => handleSelectYear(year.value)} className="w-full bg-accent/90 hover:bg-accent text-accent-foreground">
+                            <Button onClick={() => handleSelectYear(year.value)} className="w-full">
                                 Select <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                         </CardFooter>
