@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -9,13 +10,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, Sparkles, BookOpen, Wrench, FolderKanban, Users, Briefcase } from 'lucide-react';
-import { generateCareerRoadmap, CareerRoadmapOutput } from '@/ai/flows/career-roadmap';
+import { generateCareerRoadmap } from '@/ai/flows/career-roadmap';
+import { CareerRoadmapInputSchema, type CareerRoadmapOutput } from '@/ai/schemas';
 import { useToast } from '@/hooks/use-toast';
 import type { ComponentType, LucideProps } from 'react';
 
-const roadmapSchema = z.object({
-  interests: z.string().min(10, "Please describe your interests in a bit more detail."),
-  skills: z.string().min(5, "Please list at least one skill."),
+const roadmapSchema = CareerRoadmapInputSchema.pick({
+  interests: true,
+  skills: true,
 });
 
 type CareerRoadmapProps = {

@@ -2,31 +2,16 @@
 'use server';
 /**
  * @fileOverview An AI agent that recommends a career path based on a student's self-assessment.
- *
- * - recommendCareer - A function that returns a single career recommendation and justification.
- * - CareerAssessmentInput - The input type for the recommendCareer function.
- * - CareerRecommendation - The return type for the recommendCareer function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
 import { careers } from '@/lib/constants';
-
-const CareerAssessmentInputSchema = z.object({
-  grade: z.string().describe('The student\'s current grade level (e.g., 9th, 10th, 11th, 12th).'),
-  subjects: z.string().describe('The student\'s favorite subjects in school.'),
-  hobbies: z.string().describe('The student\'s hobbies and interests outside of school.'),
-  personality: z.string().describe('A brief description of the student\'s personality traits (e.g., creative, analytical, team player).'),
-  workStyle: z.string().describe("The student's preferred style of working (e.g., solving puzzles, teamwork, hands-on creation)."),
-  ambition: z.string().describe("The student's long-term career ambitions or desired impact."),
-});
-export type CareerAssessmentInput = z.infer<typeof CareerAssessmentInputSchema>;
-
-const CareerRecommendationSchema = z.object({
-  recommendedCareerId: z.string().describe(`The ID of the single best-fit career. Must be one of: ${careers.map(c => c.id).join(', ')}`),
-  justification: z.string().describe("A friendly, encouraging paragraph explaining why this career is a great fit for the student, based on their inputs."),
-});
-export type CareerRecommendation = z.infer<typeof CareerRecommendationSchema>;
+import {
+  CareerAssessmentInputSchema,
+  type CareerAssessmentInput,
+  CareerRecommendationSchema,
+  type CareerRecommendation,
+} from '@/ai/schemas';
 
 export async function recommendCareer(input: CareerAssessmentInput): Promise<CareerRecommendation> {
   return careerAssessmentFlow(input);

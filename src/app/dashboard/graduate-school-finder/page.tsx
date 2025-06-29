@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -10,7 +11,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, Search, GraduationCap, University, BookOpen } from "lucide-react";
-import { findGraduatePrograms, GraduateSchoolFinderInputSchema, GraduateSchoolFinderOutput } from "@/ai/flows/graduate-school-finder";
+import { findGraduatePrograms } from "@/ai/flows/graduate-school-finder";
+import { GraduateSchoolFinderInputSchema, type GraduateSchoolFinderOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 

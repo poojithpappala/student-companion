@@ -16,14 +16,14 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { getCollegeSuggestions, CollegeSuggestion } from '@/ai/flows/college-explorer';
+import { getCollegeSuggestions } from '@/ai/flows/college-explorer';
+import { type CollegeSuggestion, CollegeExplorerInputSchema } from '@/ai/schemas';
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CareerDeepDive } from '@/components/dashboard/before/career-deep-dive';
 
-
-const collegeExplorerSchema = z.object({
-  major: z.string().min(3, "Please enter a major."),
+const collegeExplorerSchema = CollegeExplorerInputSchema.omit({ grade: true }).extend({
+  major: CollegeExplorerInputSchema.shape.desiredMajor,
   location: z.string().optional(),
 });
 
@@ -110,7 +110,7 @@ export default function BeforeUndergradPage() {
   // The main tabbed dashboard for users who have completed the assessment.
   return (
     <Tabs defaultValue="career-path" className="w-full space-y-6">
-        <TabsList>
+        <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
             <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
             <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>

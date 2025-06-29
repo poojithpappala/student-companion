@@ -2,33 +2,15 @@
 'use server';
 /**
  * @fileOverview An AI agent that suggests colleges based on student preferences.
- *
- * - getCollegeSuggestions - A function that returns a list of college suggestions.
- * - CollegeExplorerInput - The input type for the function.
- * - CollegeExplorerOutput - The return type for the function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const CollegeExplorerInputSchema = z.object({
-  grade: z.string().describe("The student's current grade level."),
-  desiredMajor: z.string().describe('The major or field of study the student is interested in.'),
-  locationPreference: z.string().describe('The student\'s preferred location (e.g., "California, USA", "near Boston", "anywhere in the UK", or "any").'),
-});
-export type CollegeExplorerInput = z.infer<typeof CollegeExplorerInputSchema>;
-
-const CollegeSuggestionSchema = z.object({
-    name: z.string().describe("The full name of the college or university."),
-    location: z.string().describe("The city and state/country of the college."),
-    description: z.string().describe("A brief, one-sentence summary of what makes this college a good suggestion for the student's desired major."),
-});
-export type CollegeSuggestion = z.infer<typeof CollegeSuggestionSchema>;
-
-const CollegeExplorerOutputSchema = z.object({
-  colleges: z.array(CollegeSuggestionSchema).describe('A list of 3-5 college suggestions.'),
-});
-export type CollegeExplorerOutput = z.infer<typeof CollegeExplorerOutputSchema>;
+import {
+  CollegeExplorerInputSchema,
+  type CollegeExplorerInput,
+  CollegeExplorerOutputSchema,
+  type CollegeExplorerOutput,
+} from '@/ai/schemas';
 
 export async function getCollegeSuggestions(input: CollegeExplorerInput): Promise<CollegeExplorerOutput> {
   return collegeExplorerFlow(input);

@@ -10,12 +10,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, Building2 } from "lucide-react";
-import { getCompanyInsights, CompanyInsightsOutput } from "@/ai/flows/company-insights";
+import { getCompanyInsights } from "@/ai/flows/company-insights";
+import { CompanyInsightsInputSchema, type CompanyInsightsOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 
-const insightsSchema = z.object({
-  companyName: z.string().min(2, "Company name is required."),
-});
+const insightsSchema = CompanyInsightsInputSchema;
 
 export default function CompanyInsightsPage() {
   const [insights, setInsights] = useState<CompanyInsightsOutput | null>(null);

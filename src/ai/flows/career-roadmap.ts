@@ -1,34 +1,18 @@
+
 'use server';
 /**
  * @fileOverview Generates a personalized AI career roadmap for students.
- *
- * - generateCareerRoadmap - A function to get a personalized career roadmap.
- * - CareerRoadmapInput - The input type.
- * - CareerRoadmapOutput - The output type.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { careers } from '@/lib/constants';
-
-const CareerRoadmapInputSchema = z.object({
-  careerId: z.string().describe("The ID of the user's chosen career path."),
-  interests: z.string().describe("The user's personal and professional interests."),
-  skills: z.string().describe("The user's current skills."),
-  currentYear: z.enum(['1st Year', '2nd Year', '3rd Year', 'Final Year']).describe("The user's current year of study."),
-});
-export type CareerRoadmapInput = z.infer<typeof CareerRoadmapInputSchema>;
-
-const RoadmapItemSchema = z.object({
-    title: z.string().describe('The title of the roadmap activity.'),
-    category: z.enum(['Academics', 'Skills', 'Projects', 'Networking', 'Internships']).describe('The category of the activity.'),
-    description: z.string().describe('A brief description of what to do for this activity.'),
-});
-
-const CareerRoadmapOutputSchema = z.object({
-  roadmapItems: z.array(RoadmapItemSchema).describe('A list of personalized roadmap items for the student for the current year.'),
-});
-export type CareerRoadmapOutput = z.infer<typeof CareerRoadmapOutputSchema>;
+import {
+  CareerRoadmapInputSchema,
+  type CareerRoadmapInput,
+  CareerRoadmapOutputSchema,
+  type CareerRoadmapOutput,
+} from '@/ai/schemas';
 
 export async function generateCareerRoadmap(input: CareerRoadmapInput): Promise<CareerRoadmapOutput> {
     const career = careers.find(c => c.id === input.careerId);

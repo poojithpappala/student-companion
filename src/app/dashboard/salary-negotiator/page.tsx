@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -10,21 +11,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Wand2, Lightbulb, TrendingUp, Goal, Smile } from "lucide-react";
-import { salaryNegotiationCoach, SalaryNegotiationOutput } from "@/ai/flows/salary-negotiation-coach";
+import { salaryNegotiationCoach } from "@/ai/flows/salary-negotiation-coach";
+import { SalaryNegotiationInputSchema, type SalaryNegotiationOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-const negotiationSchema = z.object({
-  jobTitle: z.string().min(1, "Job title is required"),
-  companyName: z.string().min(1, "Company name is required"),
-  baseSalary: z.coerce.number().min(1, "Base salary is required"),
-  location: z.string().min(1, "Location is required"),
-  yearsOfExperience: z.coerce.number().min(0),
-  benefits: z.string().min(1, "Benefits description is required"),
-  strengths: z.string().min(1, "Strengths are required"),
-  otherOffers: z.string().optional(),
-  desiredSalary: z.coerce.number().min(1, "Desired salary is required"),
-});
+const negotiationSchema = SalaryNegotiationInputSchema;
 
 export default function SalaryNegotiatorPage() {
   const [result, setResult] = useState<SalaryNegotiationOutput | null>(null);

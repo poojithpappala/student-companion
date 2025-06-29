@@ -14,7 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, Wand2, Lightbulb, Book, Paintbrush, FlaskConical, Atom } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from "@/hooks/use-toast";
-import { recommendCareer, CareerRecommendation } from "@/ai/flows/career-assessment";
+import { recommendCareer } from "@/ai/flows/career-assessment";
+import { CareerAssessmentInputSchema, type CareerRecommendation } from "@/ai/schemas";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,14 +28,7 @@ import {
 import { careers } from "@/lib/constants";
 
 
-const assessmentSchema = z.object({
-  grade: z.string({ required_error: "Please select your grade." }),
-  subjects: z.string().min(10, "Please list a few favorite subjects."),
-  hobbies: z.string().min(10, "Please tell us about your hobbies."),
-  personality: z.string().min(5, "Describe your personality in a few words."),
-  workStyle: z.string().min(10, "Please describe your preferred work style."),
-  ambition: z.string().min(10, "Please tell us about your future ambitions."),
-});
+const assessmentSchema = CareerAssessmentInputSchema;
 
 export default function SelfAssessmentPage() {
   const router = useRouter();

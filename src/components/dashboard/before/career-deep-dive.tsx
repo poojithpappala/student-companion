@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCareerDeepDive, type CareerDeepDiveOutput } from "@/ai/flows/career-deep-dive";
+import { getCareerDeepDive } from "@/ai/flows/career-deep-dive";
+import { type CareerDeepDiveOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

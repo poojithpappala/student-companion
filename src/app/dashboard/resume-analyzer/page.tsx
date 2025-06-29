@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -9,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2, UploadCloud, FileText, Sparkles, Star, ListChecks } from "lucide-react";
-import { analyzeResume, AnalyzeResumeOutput } from "@/ai/flows/resume-analyzer";
+import { analyzeResume } from "@/ai/flows/resume-analyzer";
+import { type AnalyzeResumeOutput } from "@/ai/schemas";
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";

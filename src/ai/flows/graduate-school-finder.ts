@@ -1,33 +1,16 @@
+
 'use server';
 /**
  * @fileOverview An AI agent that suggests graduate school programs.
- *
- * - findGraduatePrograms - A function that returns a list of program suggestions.
- * - GraduateSchoolFinderInput - The input type for the function.
- * - GraduateSchoolFinderOutput - The return type for the function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-export const GraduateSchoolFinderInputSchema = z.object({
-  fieldOfStudy: z.string().describe('The field of study the student is interested in (e.g., Computer Science, Finance).'),
-  degreeType: z.enum(["Master's", "PhD", "Any"]).describe('The type of graduate degree the student is seeking.'),
-  countryPreference: z.string().describe('The student\'s preferred country for study (e.g., "USA", "Canada", "anywhere").'),
-});
-export type GraduateSchoolFinderInput = z.infer<typeof GraduateSchoolFinderInputSchema>;
-
-const ProgramSuggestionSchema = z.object({
-    universityName: z.string().describe("The full name of the university."),
-    programName: z.string().describe("The specific name of the suggested graduate program."),
-    location: z.string().describe("The city and country of the university."),
-    reason: z.string().describe("A brief, one or two-sentence summary of why this program is a top choice, mentioning its strengths or reputation."),
-});
-
-export const GraduateSchoolFinderOutputSchema = z.object({
-  programs: z.array(ProgramSuggestionSchema).describe('A list of 3-5 graduate program suggestions.'),
-});
-export type GraduateSchoolFinderOutput = z.infer<typeof GraduateSchoolFinderOutputSchema>;
+import {
+  GraduateSchoolFinderInputSchema,
+  type GraduateSchoolFinderInput,
+  GraduateSchoolFinderOutputSchema,
+  type GraduateSchoolFinderOutput,
+} from '@/ai/schemas';
 
 export async function findGraduatePrograms(input: GraduateSchoolFinderInput): Promise<GraduateSchoolFinderOutput> {
   return graduateSchoolFinderFlow(input);

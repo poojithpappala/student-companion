@@ -2,24 +2,15 @@
 'use server';
 /**
  * @fileOverview An AI agent that provides insights about a company.
- *
- * - getCompanyInsights - A function that returns insights on culture, interviews, etc.
- * - CompanyInsightsInput - The input type for the getCompanyInsights function.
- * - CompanyInsightsOutput - The return type for the getCompanyInsights function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const CompanyInsightsInputSchema = z.object({
-  companyName: z.string().describe('The name of the company to research.'),
-});
-export type CompanyInsightsInput = z.infer<typeof CompanyInsightsInputSchema>;
-
-const CompanyInsightsOutputSchema = z.object({
-  report: z.string().describe('A detailed report on the company, formatted as clean HTML.'),
-});
-export type CompanyInsightsOutput = z.infer<typeof CompanyInsightsOutputSchema>;
+import {
+  CompanyInsightsInputSchema,
+  type CompanyInsightsInput,
+  CompanyInsightsOutputSchema,
+  type CompanyInsightsOutput,
+} from '@/ai/schemas';
 
 export async function getCompanyInsights(input: CompanyInsightsInput): Promise<CompanyInsightsOutput> {
   return companyInsightsFlow(input);
