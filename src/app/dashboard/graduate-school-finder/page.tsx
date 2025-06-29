@@ -49,7 +49,7 @@ export default function GraduateSchoolFinderPage() {
   }
 
   return (
-    <div className="w-full grid lg:grid-cols-3 gap-8 items-start">
+    <div className="w-full grid lg:grid-cols-3 gap-8 items-start max-w-7xl mx-auto">
       <div className="lg:col-span-1 space-y-8">
         <Card>
           <CardHeader>

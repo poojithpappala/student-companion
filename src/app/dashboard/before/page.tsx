@@ -74,8 +74,8 @@ function BeforeUndergradContent() {
   // If the user hasn't taken the self-assessment quiz, show a prompt.
   if (!selectedCareer) {
     return (
-      <div className="flex w-full items-center justify-center p-4" style={{minHeight: 'calc(100vh - 10rem)'}}>
-        <Card className="w-full max-w-2xl text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
+      <div className="flex w-full items-center justify-center p-4 mx-auto max-w-2xl" style={{minHeight: 'calc(100vh - 10rem)'}}>
+        <Card className="w-full text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
             <CardHeader className="items-center p-8">
                 <div className="p-5 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
@@ -97,7 +97,7 @@ function BeforeUndergradContent() {
 
   // The main tabbed dashboard for users who have completed the assessment.
   return (
-    <>
+    <div className="max-w-7xl mx-auto">
       <Tabs defaultValue="career-path" className="w-full space-y-6">
           <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
               <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Career Path</TabsTrigger>
@@ -292,7 +292,7 @@ function BeforeUndergradContent() {
               </Card>
           </TabsContent>
       </Tabs>
-    </>
+    </div>
   );
 }
 

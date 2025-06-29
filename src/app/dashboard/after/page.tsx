@@ -61,8 +61,8 @@ function AfterUndergradContent() {
 
     if (!career) {
         return (
-            <div className="flex w-full items-center justify-center p-4" style={{ minHeight: 'calc(100vh - 10rem)' }}>
-                <Card className="w-full max-w-2xl text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
+            <div className="flex w-full items-center justify-center p-4 mx-auto max-w-2xl" style={{ minHeight: 'calc(100vh - 10rem)' }}>
+                <Card className="w-full text-center shadow-2xl border-border/20 backdrop-blur-lg bg-card/80">
                     <CardHeader className="items-center p-8">
                         <div className="p-5 bg-primary/10 rounded-full mb-4">
                             <Compass className="h-16 w-16 text-primary" />
@@ -83,7 +83,7 @@ function AfterUndergradContent() {
     }
 
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-6 max-w-7xl mx-auto">
             <Card>
                 <CardHeader>
                     <div className="flex justify-between items-center">
