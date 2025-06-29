@@ -12,6 +12,15 @@ import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function LandingPage() {
   const router = useRouter();
@@ -150,7 +159,7 @@ export default function LandingPage() {
             </div>
             <div className="animate-fade-in-up [animation-delay:200ms] relative">
                 <div className="absolute -inset-2 bg-gradient-to-br from-primary via-accent to-background rounded-2xl opacity-20 blur-2xl"></div>
-                <Image src="https://placehold.co/600x400.png" alt="A student happily using the Student Companion dashboard on a laptop" width={600} height={400} className="rounded-xl shadow-2xl relative" data-ai-hint="student laptop professional" />
+                <Image src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzdHVkZW50c3xlbnwwfHx8fDE3NTExNzc0Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="A student happily using the Student Companion dashboard on a laptop" width={600} height={400} className="rounded-xl shadow-2xl relative" data-ai-hint="student laptop professional" />
             </div>
           </div>
         </section>
@@ -291,3 +300,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
