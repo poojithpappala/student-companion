@@ -20,9 +20,11 @@ export default function DashboardLayout({
         </Sidebar>
         <SidebarInset className="flex-1">
           <DashboardHeader />
-          <div className="flex-1 p-4 sm:p-6 lg:p-8">
-            {children}
-          </div>
+          <main className="flex-1 p-4 sm:p-6 lg:p-8">
+            <div className="mx-auto w-full max-w-7xl">
+              {children}
+            </div>
+          </main>
         </SidebarInset>
         <AiChatbot />
       </div>
