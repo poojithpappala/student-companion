@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Calendar as CalendarIcon, Zap, Users, Briefcase, Handshake } from "lucide-react";
+import { cn } from '@/lib/utils';
 
 const eventTypeIcons = {
     Hackathon: <Zap className="h-4 w-4" />,
@@ -39,14 +40,8 @@ export function CalendarView() {
     const handleSelectDate = (date: Date | undefined) => {
         if (!date) return;
         
-        const eventsOnDay = events.filter(event => isSameDay(parseISO(event.date), date));
-        if (eventsOnDay.length > 0) {
-            setSelectedDate(date);
-            setIsSheetOpen(true);
-        } else {
-            setSelectedDate(undefined);
-            setIsSheetOpen(false);
-        }
+        setSelectedDate(date);
+        setIsSheetOpen(true);
     };
     
     const selectedDayEvents = selectedDate
@@ -85,10 +80,10 @@ export function CalendarView() {
                             <CalendarIcon />
                              Events for {selectedDate?.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                         </SheetTitle>
-                        <SheetDescription>Here's what's scheduled for today.</SheetDescription>
+                        <SheetDescription>Here's what's scheduled for this day.</SheetDescription>
                     </SheetHeader>
                     <div className="py-4 space-y-4">
-                        {selectedDayEvents.map(event => (
+                        {selectedDayEvents.length > 0 ? selectedDayEvents.map(event => (
                             <div key={event.id} className="p-3 rounded-lg border flex items-center gap-3">
                                 <div className={cn("p-2 rounded-md", eventTypeColors[event.type as keyof typeof eventTypeColors])}>
                                     {eventTypeIcons[event.type as keyof typeof eventTypeIcons]}
@@ -98,7 +93,9 @@ export function CalendarView() {
                                     <Badge variant="outline" className="mt-1">{event.type}</Badge>
                                 </div>
                             </div>
-                        ))}
+                        )) : (
+                            <p className="text-muted-foreground text-center pt-4">No events scheduled for this day.</p>
+                        )}
                     </div>
                 </SheetContent>
             </Sheet>

@@ -30,6 +30,8 @@ import {
   GraduationCap,
   Users,
   Zap,
+  Calendar,
+  Bell,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -47,6 +49,8 @@ const tools = [
     { href: "/dashboard/graduate-school-finder", icon: <GraduationCap />, label: "Graduate School Finder" },
     { href: "/dashboard/pods", icon: <Users />, label: "Accountability Pods"},
     { href: "/dashboard/connect", icon: <Zap />, label: "Connect" },
+    { href: "/dashboard/calendar", icon: <Calendar />, label: "Calendar" },
+    { href: "/dashboard/notifications", icon: <Bell />, label: "Notifications" },
 ]
 
 export function DashboardSidebar() {

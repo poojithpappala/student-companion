@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { CalendarView } from '@/components/dashboard/connect/calendar-view';
+import { CalendarView } from '@/components/dashboard/calendar/calendar-view';
 
 export default function CalendarPage() {
     return (
