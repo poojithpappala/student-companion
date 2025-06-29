@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
+import { useSession, signOut } from "next-auth/react";
 
 const menuItems = [
   { href: "/dashboard/before", icon: <Rocket />, label: "Before Undergrad", stage: "before" },
@@ -49,6 +50,7 @@ export function DashboardSidebar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setOpenMobile } = useSidebar();
+  const { data: session } = useSession();
 
   const pathSegments = pathname.split('/').filter(Boolean);
   const stageFromPath = ['before', 'during', 'after'].find(s => s === pathSegments[1]);
@@ -57,7 +59,7 @@ export function DashboardSidebar() {
   const closeSidebar = () => setOpenMobile(false);
   
   const handleLogout = () => {
-    router.push('/auth');
+    signOut({ callbackUrl: '/auth' });
   };
 
   // Ensure the stage is always part of the query string for tool pages
@@ -141,12 +143,12 @@ export function DashboardSidebar() {
          </SidebarMenu>
          <div className="flex items-center gap-3 p-2 rounded-lg">
              <Avatar>
-                 <AvatarImage src={"https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
-                 <AvatarFallback>U</AvatarFallback>
+                 <AvatarImage src={session?.user?.image ?? "https://placehold.co/40x40.png"} alt="User avatar" data-ai-hint="person profile" />
+                 <AvatarFallback>{session?.user?.name?.charAt(0).toUpperCase() ?? 'U'}</AvatarFallback>
              </Avatar>
              <div className="flex-1 overflow-hidden group-data-[collapsible=icon]:hidden">
-                 <p className="font-semibold text-sm truncate">Guest User</p>
-                 <p className="text-xs text-muted-foreground truncate">guest@example.com</p>
+                 <p className="font-semibold text-sm truncate">{session?.user?.name ?? 'Guest User'}</p>
+                 <p className="text-xs text-muted-foreground truncate">{session?.user?.email ?? 'guest@example.com'}</p>
              </div>
               <Button variant="ghost" size="icon" className="h-8 w-8 group-data-[collapsible=icon]:hidden" onClick={handleLogout}>
                   <LogOut className="h-4 w-4"/>

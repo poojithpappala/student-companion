@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/logo';
@@ -17,13 +17,12 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 )
 
 export default function AuthPage() {
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSignIn = async () => {
         setIsLoading(true);
-        // This is now a mock sign-in, just navigate to the first step of onboarding.
-        router.push('/onboarding/stage');
+        // The page will redirect, so we don't need to set isLoading back to false.
+        await signIn('google', { callbackUrl: '/onboarding/stage' });
     };
 
     return (
@@ -34,9 +33,9 @@ export default function AuthPage() {
                         <div className="flex justify-center mb-4">
                             <Logo />
                         </div>
-                        <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
+                        <CardTitle className="font-headline text-2xl">Welcome</CardTitle>
                         <CardDescription>
-                            Sign in to access your personalized career dashboard.
+                            Sign in to create your personalized career dashboard.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="p-6">
