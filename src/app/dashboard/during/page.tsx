@@ -310,7 +310,7 @@ function DuringUndergradContent() {
   };
 
   return (
-    <div className="w-full space-y-6 max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard for {career.name}</CardTitle>
