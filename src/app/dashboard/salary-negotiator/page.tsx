@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -66,7 +65,7 @@ export default function SalaryNegotiatorPage() {
       <div className="lg:col-span-1">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline">Negotiation Coach</CardTitle>
+            <CardTitle className="font-headline text-primary">Negotiation Coach</CardTitle>
             <CardDescription>Enter your offer details to get a personalized negotiation plan.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -100,7 +99,7 @@ export default function SalaryNegotiatorPage() {
                   <FormItem><FormLabel>Other Offers (optional)</FormLabel><FormControl><Textarea {...field} placeholder="e.g., Competing offers, details..." /></FormControl><FormMessage /></FormItem>
                 )} />
 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isSubmitting}>
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating Plan...</> : "Get My Strategy"}
                 </Button>
               </form>
@@ -112,7 +111,7 @@ export default function SalaryNegotiatorPage() {
       <div className="lg:col-span-2">
         <Card className="min-h-full">
           <CardHeader>
-            <CardTitle className="font-headline">Your Negotiation Playbook</CardTitle>
+            <CardTitle className="font-headline text-primary">Your Negotiation Playbook</CardTitle>
             <CardDescription>Follow these AI-generated steps to maximize your offer.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -126,7 +125,7 @@ export default function SalaryNegotiatorPage() {
               <Accordion type="single" collapsible defaultValue="strategy" className="w-full">
                 {resultSections.map(section => (
                    <AccordionItem key={section.id} value={section.id}>
-                     <AccordionTrigger className="text-lg font-semibold font-headline">
+                     <AccordionTrigger className="text-lg font-semibold font-headline text-primary">
                        <div className="flex items-center gap-3">
                          <span className="text-accent">{section.icon}</span>{section.title}
                        </div>

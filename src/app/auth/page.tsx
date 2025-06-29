@@ -27,7 +27,7 @@ export default function AuthPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+        <div className="flex min-h-screen items-center justify-center bg-background p-4">
             <div className="w-full max-w-md">
                 <Card className="shadow-2xl">
                     <CardHeader className="text-center">
@@ -41,7 +41,7 @@ export default function AuthPage() {
                     </CardHeader>
                     <CardContent className="p-6">
                         <div className="flex flex-col gap-4">
-                            <Button onClick={handleSignIn} className="w-full" size="lg" disabled={isLoading}>
+                            <Button onClick={handleSignIn} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg" disabled={isLoading}>
                                 {isLoading ? (
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 ) : (

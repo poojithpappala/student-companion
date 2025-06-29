@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect, Suspense } from "react";
@@ -88,7 +87,7 @@ function ChatbotContent() {
   return (
     <>
       <Button
-        className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-20 bg-accent hover:bg-accent/90"
+        className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg z-20 bg-accent hover:bg-accent/90 text-accent-foreground"
         size="icon"
         onClick={() => setIsOpen(true)}
         aria-label="Open AI Career Coach"
@@ -98,7 +97,7 @@ function ChatbotContent() {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent className="flex flex-col w-full sm:max-w-lg">
           <SheetHeader>
-            <SheetTitle className="font-headline flex items-center gap-2">
+            <SheetTitle className="font-headline flex items-center gap-2 text-primary">
               <Bot /> AI Career Coach
             </SheetTitle>
             <SheetDescription>
@@ -125,8 +124,8 @@ function ChatbotContent() {
                       className={cn(
                         "max-w-xs md:max-w-md rounded-lg p-3 text-sm",
                         message.sender === "user"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted text-muted-foreground"
+                          ? "bg-accent text-accent-foreground"
+                          : "bg-muted text-foreground"
                       )}
                     >
                       {message.text}
@@ -169,7 +168,7 @@ function ChatbotContent() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" size="icon" disabled={isTyping}>
+                <Button type="submit" size="icon" disabled={isTyping} className="bg-accent hover:bg-accent/90 text-accent-foreground">
                   <Send className="h-4 w-4" />
                 </Button>
               </form>

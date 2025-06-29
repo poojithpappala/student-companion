@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -71,7 +70,7 @@ export function DashboardSidebar() {
   return (
     <>
       <SidebarHeader>
-        <Logo />
+        <Logo isWhite />
       </SidebarHeader>
       <SidebarContent>
         {activeDashboardItem && (

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
@@ -47,6 +46,8 @@ function DuringUndergradContent() {
     }
     if (career) {
         loadJobs();
+    } else {
+        setLoading(false);
     }
   }, [career]);
 
@@ -58,13 +59,13 @@ function DuringUndergradContent() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-3xl">Let's Get Personal</CardTitle>
+                <CardTitle className="font-headline text-3xl text-primary">Let's Get Personal</CardTitle>
                 <CardDescription className="mt-2 text-base max-w-md">
                     Choose a career path to unlock your personalized dashboard and AI-powered roadmap.
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                     <Link href="/onboarding/career?stage=during">Choose a Career Path</Link>
                 </Button>
             </CardContent>
@@ -81,13 +82,13 @@ function DuringUndergradContent() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <School className="h-16 w-16 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-3xl">Which Year Are You In?</CardTitle>
+                <CardTitle className="font-headline text-3xl text-primary">Which Year Are You In?</CardTitle>
                 <CardDescription className="mt-2 text-base max-w-md">
                     Please select your current year of study to see your personalized dashboard.
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                     <Link href={`/onboarding/year?stage=during&careerId=${careerId}`}>Select Your Year</Link>
                 </Button>
             </CardContent>
@@ -115,7 +116,7 @@ function DuringUndergradContent() {
                   <CardDescription>Get AI-powered feedback to improve your resume. A strong resume is crucial, even in your first year!</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button asChild>
+                  <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
                     <Link href="/dashboard/resume-analyzer">Analyze Now <ArrowRight className="ml-2 h-4 w-4"/></Link>
                   </Button>
                 </CardContent>
@@ -233,11 +234,11 @@ function DuringUndergradContent() {
                  <Card>
                     <CardHeader className="items-center text-center">
                         <div className="p-3 bg-accent/10 rounded-full mb-2"><Building2 className="w-8 h-8 text-accent"/></div>
-                        <CardTitle className="font-headline flex items-center gap-2">Company Insights</CardTitle>
+                        <CardTitle className="font-headline flex items-center gap-2 text-primary">Company Insights</CardTitle>
                         <CardDescription>Research companies before you apply. Get AI-powered insights on culture and interviews.</CardDescription>
                     </CardHeader>
                     <CardContent className="flex justify-center">
-                        <Button asChild>
+                        <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
                             <Link href="/dashboard/company-insights">Launch Company Researcher <ArrowRight className="ml-2 h-4 w-4"/></Link>
                         </Button>
                     </CardContent>
@@ -279,11 +280,11 @@ function DuringUndergradContent() {
                 <Card>
                     <CardHeader className="items-center text-center">
                         <div className="p-3 bg-accent/10 rounded-full mb-2"><GraduationCap className="w-8 h-8 text-accent"/></div>
-                        <CardTitle className="font-headline flex items-center gap-2">Explore Higher Studies</CardTitle>
+                        <CardTitle className="font-headline flex items-center gap-2 text-primary">Explore Higher Studies</CardTitle>
                         <CardDescription>Use our AI-powered tool to find the best graduate programs for you.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Button asChild className="w-full"><Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4"/></Link></Button>
+                        <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground"><Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4"/></Link></Button>
                     </CardContent>
                 </Card>
                 </div>
@@ -311,7 +312,7 @@ function DuringUndergradContent() {
     <div className="w-full space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline text-2xl">Your {year} Dashboard for {career.name}</CardTitle>
+          <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard for {career.name}</CardTitle>
           <CardDescription>
             Here are your personalized tools and resources for this year. You can switch years in the settings.
           </CardDescription>

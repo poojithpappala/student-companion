@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -53,7 +52,7 @@ export default function GraduateSchoolFinderPage() {
       <div className="lg:col-span-1 space-y-8">
         <Card>
           <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2"><GraduationCap /> Graduate School Finder</CardTitle>
+            <CardTitle className="font-headline flex items-center gap-2 text-primary"><GraduationCap /> Graduate School Finder</CardTitle>
             <CardDescription>Discover top-tier graduate programs tailored to your goals.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -79,7 +78,7 @@ export default function GraduateSchoolFinderPage() {
                  <FormField control={form.control} name="countryPreference" render={({ field }) => (
                   <FormItem><FormLabel>Country Preference</FormLabel><FormControl><Input {...field} placeholder="e.g., USA, UK, any" /></FormControl><FormMessage /></FormItem>
                 )} />
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isSubmitting}>
                   {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Searching...</> : <><Search className="mr-2 h-4 w-4" /> Find Programs</>}
                 </Button>
               </form>
@@ -88,7 +87,7 @@ export default function GraduateSchoolFinderPage() {
         </Card>
         <Card>
             <CardHeader>
-                <CardTitle className="font-headline flex items-center gap-2"><BookOpen/> Exam Prep Resources</CardTitle>
+                <CardTitle className="font-headline flex items-center gap-2 text-primary"><BookOpen/> Exam Prep Resources</CardTitle>
                 <CardDescription>Links and info for common entrance exams.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -110,7 +109,7 @@ export default function GraduateSchoolFinderPage() {
       <div className="lg:col-span-2">
         <Card className="min-h-full">
           <CardHeader>
-            <CardTitle className="font-headline">AI-Powered Recommendations</CardTitle>
+            <CardTitle className="font-headline text-primary">AI-Powered Recommendations</CardTitle>
             <CardDescription>Here are the top programs our AI advisor found for you.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -123,7 +122,7 @@ export default function GraduateSchoolFinderPage() {
             {result?.programs && result.programs.length > 0 ? (
               <div className="space-y-4">
                 {result.programs.map((prog, index) => (
-                   <Card key={index} className="bg-muted/50">
+                   <Card key={index} className="bg-secondary/30">
                      <CardHeader>
                        <CardTitle className="text-lg flex items-center gap-2"><University className="text-accent" />{prog.universityName}</CardTitle>
                        <CardDescription>{prog.location}</CardDescription>

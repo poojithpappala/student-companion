@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -66,7 +65,7 @@ export function CareerRoadmap({ careerId, year }: CareerRoadmapProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">AI-Powered Career Roadmap ({year})</CardTitle>
+        <CardTitle className="font-headline text-primary">AI-Powered Career Roadmap ({year})</CardTitle>
         <CardDescription>
           Enter your interests and skills to generate a personalized roadmap for your current academic year.
         </CardDescription>
@@ -101,7 +100,7 @@ export function CareerRoadmap({ careerId, year }: CareerRoadmapProps) {
               )}
             />
             <div className="md:col-span-2">
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...
@@ -121,7 +120,7 @@ export function CareerRoadmap({ careerId, year }: CareerRoadmapProps) {
             )}
             {roadmap?.roadmapItems && roadmap.roadmapItems.length > 0 ? (
               <div className="space-y-4">
-                 <h3 className="text-lg font-semibold font-headline flex items-center gap-2"><Sparkles className="text-accent" /> Your Personalized Steps</h3>
+                 <h3 className="text-lg font-semibold font-headline flex items-center gap-2 text-primary"><Sparkles className="text-accent" /> Your Personalized Steps</h3>
                 {roadmap.roadmapItems.map((item, index) => {
                   const Icon = iconMap[item.category] || BookOpen;
                   return (

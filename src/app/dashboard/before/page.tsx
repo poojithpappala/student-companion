@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useSearchParams } from 'next/navigation';
@@ -92,13 +91,13 @@ export default function BeforeUndergradPage() {
                 <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <Compass className="h-16 w-16 text-primary" />
                 </div>
-                <CardTitle className="font-headline text-3xl">Discover Your Perfect Career Path</CardTitle>
+                <CardTitle className="font-headline text-3xl text-primary">Discover Your Perfect Career Path</CardTitle>
                 <CardDescription className="mt-2 text-base max-w-md">
                     Take our quick, AI-powered self-assessment quiz to unlock personalized career recommendations and a tailored dashboard experience.
                 </CardDescription>
             </CardHeader>
             <CardContent className="pb-8">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                     <Link href="/dashboard/self-assessment">Take the Quiz Now</Link>
                 </Button>
             </CardContent>
@@ -110,7 +109,7 @@ export default function BeforeUndergradPage() {
   // The main tabbed dashboard for users who have completed the assessment.
   return (
     <Tabs defaultValue="career-path" className="w-full space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
             <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
             <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
             <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>
@@ -120,7 +119,7 @@ export default function BeforeUndergradPage() {
         <TabsContent value="career-path" className="space-y-6">
             <Card>
                 <CardHeader>
-                  <CardTitle className="font-headline text-2xl">Your Recommended Path: {selectedCareer.name}</CardTitle>
+                  <CardTitle className="font-headline text-2xl text-primary">Your Recommended Path: {selectedCareer.name}</CardTitle>
                   <CardDescription>Based on your self-assessment, here is our top recommendation for you.</CardDescription>
                 </CardHeader>
                 {justification && (
@@ -147,7 +146,7 @@ export default function BeforeUndergradPage() {
                                 <XAxis dataKey="name" />
                                 <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
                                 <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
-                                <Bar dataKey="salary" fill="hsl(var(--primary))" />
+                                <Bar dataKey="salary" fill="var(--color-chart-1)" />
                             </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -159,7 +158,7 @@ export default function BeforeUndergradPage() {
                                 <XAxis dataKey="year" />
                                 <YAxis tickFormatter={(value) => `${value}%`} />
                                 <Tooltip formatter={(value) => `${value}% Projected Growth`} />
-                                <Bar dataKey="growth" fill="hsl(var(--accent))" />
+                                <Bar dataKey="growth" fill="var(--color-chart-2)" />
                             </BarChart>
                         </ResponsiveContainer>
                       </div>
@@ -253,14 +252,14 @@ export default function BeforeUndergradPage() {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-muted/50">
+                      <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-secondary/30">
                         <FormField control={form.control} name="major" render={({ field }) => (
                             <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
                         )} />
                         <FormField control={form.control} name="location" render={({ field }) => (
                             <FormItem className="w-full md:col-span-2"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA or any" /></FormControl><FormMessage /></FormItem>
                         )} />
-                        <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1">
+                        <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1 bg-accent hover:bg-accent/90 text-accent-foreground">
                             {isExploring ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
                              Find Colleges
                         </Button>

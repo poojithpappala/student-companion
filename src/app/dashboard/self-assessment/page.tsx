@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -90,7 +89,7 @@ export default function SelfAssessmentPage() {
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <Wand2 className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="font-headline text-3xl">Career Self-Assessment</CardTitle>
+            <CardTitle className="font-headline text-3xl text-primary">Career Self-Assessment</CardTitle>
             <CardDescription className="text-base">Answer a few questions to let our AI find the best career path for you.</CardDescription>
           </CardHeader>
           <CardContent>
@@ -160,7 +159,7 @@ export default function SelfAssessmentPage() {
                     </FormItem>
                 )} />
 
-                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
@@ -187,7 +186,7 @@ export default function SelfAssessmentPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={handleModalClose} className="w-full">
+            <AlertDialogAction onClick={handleModalClose} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
                 Go to My Personalized Dashboard
             </AlertDialogAction>
           </AlertDialogFooter>

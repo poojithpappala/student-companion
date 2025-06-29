@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Suspense, useState, useEffect } from 'react';
@@ -43,13 +42,13 @@ function AfterUndergradContent() {
                         <div className="p-4 bg-primary/10 rounded-full mb-4">
                             <Compass className="h-16 w-16 text-primary" />
                         </div>
-                        <CardTitle className="font-headline text-3xl">Select a Career to Begin</CardTitle>
+                        <CardTitle className="font-headline text-3xl text-primary">Select a Career to Begin</CardTitle>
                         <CardDescription className="mt-2 text-base max-w-md">
                             Choose a career path to see relevant job opportunities, courses, and tools.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="pb-8">
-                        <Button asChild size="lg">
+                        <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                             <Link href="/onboarding/career?stage=after">Choose a Career Path</Link>
                         </Button>
                     </CardContent>
@@ -62,7 +61,7 @@ function AfterUndergradContent() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline text-2xl">Your Dashboard for {career.name}</CardTitle>
+                    <CardTitle className="font-headline text-2xl text-primary">Your Dashboard for {career.name}</CardTitle>
                     <CardDescription>
                         Here are your personalized tools and resources for career growth and job searching.
                     </CardDescription>
@@ -160,7 +159,7 @@ function AfterUndergradContent() {
                                 <CardTitle className="font-headline flex items-center gap-2"><GraduationCap /> Explore Higher Studies</CardTitle>
                                 <CardDescription>Find the best graduate programs with our AI-powered tool.</CardDescription>
                             </div>
-                            <Button asChild variant="default">
+                            <Button asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
                                 <Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4" /></Link>
                             </Button>
                             </CardHeader>
