@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, Compass, type LucideProps, Loader2, Building2 } from "lucide-react";
+import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, Compass, type LucideProps, Loader2, Building2, GraduationCap } from "lucide-react";
 import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import type { ComponentType } from "react";
@@ -284,14 +284,13 @@ function DuringUndergradContent() {
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader>
-                        <CardTitle className="font-headline flex items-center gap-2"><School/> Higher Studies</CardTitle>
-                        <CardDescription>Resources to prepare for post-graduate exams.</CardDescription>
+                    <CardHeader className="items-center text-center">
+                        <div className="p-3 bg-accent/10 rounded-full mb-2"><GraduationCap className="w-8 h-8 text-accent"/></div>
+                        <CardTitle className="font-headline flex items-center gap-2">Explore Higher Studies</CardTitle>
+                        <CardDescription>Use our AI-powered tool to find the best graduate programs for you.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex flex-wrap justify-center gap-4">
-                        <Button variant="outline">GRE Prep</Button>
-                        <Button variant="outline">GMAT Prep</Button>
-                        <Button variant="outline">IELTS Prep</Button>
+                    <CardContent>
+                        <Button asChild className="w-full"><Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4"/></Link></Button>
                     </CardContent>
                 </Card>
                 </div>

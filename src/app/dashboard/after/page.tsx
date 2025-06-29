@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, RefreshCw, Briefcase, School, ArrowRight, type LucideProps } from 'lucide-react';
+import { TrendingUp, RefreshCw, Briefcase, School, ArrowRight, type LucideProps, GraduationCap } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { growthPlansByCareer, defaultGrowthPlans, careers } from '@/lib/constants';
 import { fetchAdzunaJobs } from '@/services/jobs';
@@ -67,14 +67,16 @@ export default async function AfterUndergradPage({ searchParams }: { searchParam
                     </div>
                 </CardContent>
             </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2"><School/> Higher-Ed & Abroad Guides</CardTitle>
+             <Card>
+                <CardHeader className="items-center text-center">
+                     <div className="p-3 bg-accent/10 rounded-full mb-2"><GraduationCap className="w-8 h-8 text-accent"/></div>
+                    <CardTitle className="font-headline flex items-center gap-2">Explore Higher Studies</CardTitle>
+                    <CardDescription>Use our AI-powered tool to find the best graduate programs for you.</CardDescription>
                 </CardHeader>
-                <CardContent className="flex flex-wrap justify-center gap-4">
-                     <Button variant="outline">GRE Prep</Button>
-                     <Button variant="outline">GMAT Prep</Button>
-                     <Button variant="outline">IELTS Prep</Button>
+                <CardContent>
+                    <Button asChild className="w-full">
+                        <Link href="/dashboard/graduate-school-finder">Launch Finder <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                    </Button>
                 </CardContent>
             </Card>
         </div>

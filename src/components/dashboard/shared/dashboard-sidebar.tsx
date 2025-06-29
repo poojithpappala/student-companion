@@ -26,6 +26,7 @@ import {
   Settings,
   LogOut,
   Building2,
+  GraduationCap,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -40,6 +41,7 @@ const tools = [
     { href: "/dashboard/resume-analyzer", icon: <FileText />, label: "Resume Analyzer" },
     { href: "/dashboard/salary-negotiator", icon: <BadgeCent />, label: "Salary Negotiator" },
     { href: "/dashboard/company-insights", icon: <Building2 />, label: "Company Insights" },
+    { href: "/dashboard/graduate-school-finder", icon: <GraduationCap />, label: "Graduate School Finder" },
 ]
 
 export function DashboardSidebar() {
