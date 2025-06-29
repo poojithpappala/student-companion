@@ -15,20 +15,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Calendar as CalendarIcon, Zap, Users, Briefcase, Handshake } from "lucide-react";
 import { cn } from '@/lib/utils';
+import React from 'react';
 
-const eventTypeIcons = {
-    Hackathon: <Zap className="h-4 w-4" />,
-    Pod: <Users className="h-4 w-4" />,
-    Meeting: <Handshake className="h-4 w-4" />,
-    Interview: <Briefcase className="h-4 w-4" />,
+const eventTypeDetails: Record<string, { icon: React.ReactNode; className: string }> = {
+    Hackathon: { icon: <Zap className="h-5 w-5" />, className: "bg-accent text-accent-foreground hover:bg-accent/90 border-transparent" },
+    Pod: { icon: <Users className="h-5 w-5" />, className: "bg-[hsl(var(--chart-2))] text-primary-foreground hover:bg-[hsl(var(--chart-2))]/90 border-transparent" }, 
+    Meeting: { icon: <Handshake className="h-5 w-5" />, className: "bg-[hsl(var(--chart-3))] text-primary-foreground hover:bg-[hsl(var(--chart-3))]/90 border-transparent" }, 
+    Interview: { icon: <Briefcase className="h-5 w-5" />, className: "bg-primary text-primary-foreground hover:bg-primary/90 border-transparent" },
 };
 
-const eventTypeColors = {
-    Hackathon: "bg-accent text-accent-foreground",
-    Pod: "bg-blue-500 text-white",
-    Meeting: "bg-green-500 text-white",
-    Interview: "bg-primary text-primary-foreground",
-};
 
 export function CalendarView() {
     const { events } = useCalendarEvents();
@@ -40,8 +35,11 @@ export function CalendarView() {
     const handleSelectDate = (date: Date | undefined) => {
         if (!date) return;
         
+        const eventsOnDay = events.filter(event => isSameDay(parseISO(event.date), date));
         setSelectedDate(date);
-        setIsSheetOpen(true);
+        if (eventsOnDay.length > 0) {
+            setIsSheetOpen(true);
+        }
     };
     
     const selectedDayEvents = selectedDate
@@ -54,7 +52,7 @@ export function CalendarView() {
                 mode="single"
                 selected={selectedDate}
                 onSelect={handleSelectDate}
-                className="rounded-md border p-0"
+                className="w-full"
                 modifiers={{
                     hasEvent: (date) => eventDates.some(eventDate => isSameDay(eventDate, date)),
                 }}
@@ -67,7 +65,7 @@ export function CalendarView() {
                       return (
                           <div className="relative w-full h-full flex items-center justify-center">
                               {props.date.getDate()}
-                              {hasEvent && <div className="absolute bottom-1 h-1 w-1 rounded-full bg-accent" />}
+                              {hasEvent && <div className="absolute bottom-1 h-1.5 w-1.5 rounded-full bg-accent" />}
                           </div>
                       );
                   },
@@ -83,17 +81,22 @@ export function CalendarView() {
                         <SheetDescription>Here's what's scheduled for this day.</SheetDescription>
                     </SheetHeader>
                     <div className="py-4 space-y-4">
-                        {selectedDayEvents.length > 0 ? selectedDayEvents.map(event => (
+                        {selectedDayEvents.length > 0 ? selectedDayEvents.map(event => {
+                            const details = eventTypeDetails[event.type] || { icon: <CalendarIcon className="h-5 w-5" />, className: "bg-secondary text-secondary-foreground" };
+                            return (
                             <div key={event.id} className="p-3 rounded-lg border flex items-center gap-3">
-                                <div className={cn("p-2 rounded-md", eventTypeColors[event.type as keyof typeof eventTypeColors])}>
-                                    {eventTypeIcons[event.type as keyof typeof eventTypeIcons]}
+                                <div className={cn("p-2 rounded-md", details.className.replace(/hover:bg-accent\/90|hover:bg-primary\/90|hover:bg-\[hsl\(var\(--chart-.\)\)\]\/90/g, ''))}>
+                                    {details.icon}
                                 </div>
                                 <div className="flex-grow">
                                     <p className="font-semibold">{event.title}</p>
-                                    <Badge variant="outline" className="mt-1">{event.type}</Badge>
+                                    <Badge className={cn("mt-1", details.className)}>
+                                        {event.type}
+                                    </Badge>
                                 </div>
                             </div>
-                        )) : (
+                            )
+                        }) : (
                             <p className="text-muted-foreground text-center pt-4">No events scheduled for this day.</p>
                         )}
                     </div>
