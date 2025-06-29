@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useSearchParams } from 'next/navigation';
@@ -96,196 +97,198 @@ export default function BeforeUndergradPage() {
 
   // The main tabbed dashboard for users who have completed the assessment.
   return (
-    <Tabs defaultValue="career-path" className="w-full space-y-6">
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-            <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
-            <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
-            <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>
-            <TabsTrigger value="college-explorer"><GraduationCap className="mr-2 h-4 w-4" /> College Explorer</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="career-path" className="space-y-6">
-            <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline text-2xl text-primary">Your Recommended Path: {selectedCareer.name}</CardTitle>
-                  <CardDescription>Based on your self-assessment, here is our top recommendation for you.</CardDescription>
-                </CardHeader>
-                {justification && (
-                    <CardContent>
-                        <blockquote className="border-l-4 border-accent pl-4 italic text-muted-foreground">
-                            {decodeURIComponent(justification)}
-                        </blockquote>
-                    </CardContent>
-                )}
-            </Card>
-
-            <div className="grid lg:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                      <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer</CardTitle>
-                      <CardDescription>This is your career interest map, showing potential salary and growth.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
-                        <ResponsiveContainer width="100%" height={200}>
-                            <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
-                                <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
-                                <Bar dataKey="salary" fill="var(--color-chart-1)" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
-                          <ResponsiveContainer width="100%" height={200}>
-                            <BarChart data={growthData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="year" />
-                                <YAxis tickFormatter={(value) => `${value}%`} />
-                                <Tooltip formatter={(value) => `${value}% Projected Growth`} />
-                                <Bar dataKey="growth" fill="var(--color-chart-2)" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                      </div>
-                    </CardContent>
-                </Card>
-                <Card className="flex flex-col">
+    <div className="max-w-7xl mx-auto">
+      <Tabs defaultValue="career-path" className="w-full space-y-6">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+              <TabsTrigger value="career-path"><Target className="mr-2 h-4 w-4" /> Your Career Path</TabsTrigger>
+              <TabsTrigger value="career-deep-dive"><BookOpen className="mr-2 h-4 w-4" /> Career Deep Dive</TabsTrigger>
+              <TabsTrigger value="exam-planner"><Trophy className="mr-2 h-4 w-4" /> Exam Planner</TabsTrigger>
+              <TabsTrigger value="college-explorer"><GraduationCap className="mr-2 h-4 w-4" /> College Explorer</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="career-path" className="space-y-6">
+              <Card>
                   <CardHeader>
-                    <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
-                     <CardDescription>Skills to focus on for a head start in {selectedCareer.name}.</CardDescription>
+                    <CardTitle className="font-headline text-2xl text-primary">Your Recommended Path: {selectedCareer.name}</CardTitle>
+                    <CardDescription>Based on your self-assessment, here is our top recommendation for you.</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-grow">
-                    <ul className="space-y-3">
-                      {careerSkills.map((skill, index) => (
-                        <li key={index} className="flex items-center gap-3">
-                          <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
-                          <span className="font-medium">{skill}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-            </div>
-        </TabsContent>
+                  {justification && (
+                      <CardContent>
+                          <blockquote className="border-l-4 border-accent pl-4 italic text-muted-foreground">
+                              {decodeURIComponent(justification)}
+                          </blockquote>
+                      </CardContent>
+                  )}
+              </Card>
 
-        <TabsContent value="career-deep-dive">
-            <CareerDeepDive careerId={selectedCareer.id} careerName={selectedCareer.name} />
-        </TabsContent>
-
-        <TabsContent value="exam-planner">
-            <Card>
-                <CardHeader>
-                  <div className="flex flex-wrap justify-between items-center gap-4">
-                    <div>
-                      <CardTitle className="font-headline">Entrance Exam Planner</CardTitle>
-                      <CardDescription>Stay ahead of important exam deadlines based on your grade.</CardDescription>
-                    </div>
-                    <Select value={selectedGrade} onValueChange={setSelectedGrade}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select your grade" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="9th">9th Grade</SelectItem>
-                        <SelectItem value="10th">10th Grade</SelectItem>
-                        <SelectItem value="11th">11th Grade</SelectItem>
-                        <SelectItem value="12th">12th Grade</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Exam</TableHead>
-                        <TableHead>Area</TableHead>
-                        <TableHead>Eligibility</TableHead>
-                        <TableHead>Typical Deadline</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredExams.map((exam) => (
-                        <TableRow key={exam.name}>
-                          <TableCell className="font-medium">{exam.name}</TableCell>
-                          <TableCell>{exam.area}</TableCell>
-                          <TableCell>{exam.eligibility}</TableCell>
-                          <TableCell>{exam.deadline}</TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="ghost" size="sm">
-                              <Bell className="mr-2 h-4 w-4" /> Set Reminder
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      {filteredExams.length === 0 && (
-                        <TableRow>
-                            <TableCell colSpan={5} className="text-center text-muted-foreground py-6">No exams typically taken in {selectedGrade} Grade.</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-            </Card>
-        </TabsContent>
-        
-        <TabsContent value="college-explorer">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="font-headline">AI College Explorer</CardTitle>
-                    <CardDescription>Find colleges that match your interests. Powered by AI.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-secondary/30">
-                        <FormField control={form.control} name="major" render={({ field }) => (
-                            <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <FormField control={form.control} name="location" render={({ field }) => (
-                            <FormItem className="w-full md:col-span-2"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA or any" /></FormControl><FormMessage /></FormItem>
-                        )} />
-                        <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1 bg-accent hover:bg-accent/90 text-accent-foreground">
-                            {isExploring ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
-                             Find Colleges
-                        </Button>
-                      </form>
-                    </Form>
-                    
-                    {isExploring && (
-                      <div className="text-center py-8">
-                        <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-                        <p className="mt-2 text-muted-foreground">Our AI is searching for the best colleges for you...</p>
-                      </div>
-                    )}
-                    
-                    {!isExploring && collegeSuggestions.length > 0 && (
-                      <div className="space-y-4">
-                        <h3 className="font-semibold text-lg">AI Recommendations:</h3>
-                        {collegeSuggestions.map(college => (
-                          <Card key={college.name}>
-                            <CardHeader>
-                              <CardTitle className="text-lg">{college.name}</CardTitle>
-                              <CardDescription>{college.location}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                              <p>{college.description}</p>
-                            </CardContent>
-                          </Card>
+              <div className="grid lg:grid-cols-2 gap-6">
+                  <Card>
+                      <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><Briefcase /> Job Scope Explorer</CardTitle>
+                        <CardDescription>This is your career interest map, showing potential salary and growth.</CardDescription>
+                      </CardHeader>
+                      <CardContent className="grid md:grid-cols-2 gap-6">
+                        <div>
+                          <h3 className="font-semibold mb-2 flex items-center gap-2"><DollarSign className="h-4 w-4" />Potential Salary</h3>
+                          <ResponsiveContainer width="100%" height={200}>
+                              <BarChart data={salaryData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis dataKey="name" />
+                                  <YAxis tickFormatter={(value) => `$${Number(value) / 1000}k`} />
+                                  <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))} />
+                                  <Bar dataKey="salary" fill="var(--color-chart-1)" />
+                              </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-2 flex items-center gap-2"><TrendingUp className="h-4 w-4" />Growth Outlook</h3>
+                            <ResponsiveContainer width="100%" height={200}>
+                              <BarChart data={growthData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                                  <CartesianGrid strokeDasharray="3 3" />
+                                  <XAxis dataKey="year" />
+                                  <YAxis tickFormatter={(value) => `${value}%`} />
+                                  <Tooltip formatter={(value) => `${value}% Projected Growth`} />
+                                  <Bar dataKey="growth" fill="var(--color-chart-2)" />
+                              </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </CardContent>
+                  </Card>
+                  <Card className="flex flex-col">
+                    <CardHeader>
+                      <CardTitle className="font-headline">Top 5 Foundational Skills</CardTitle>
+                       <CardDescription>Skills to focus on for a head start in {selectedCareer.name}.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <ul className="space-y-3">
+                        {careerSkills.map((skill, index) => (
+                          <li key={index} className="flex items-center gap-3">
+                            <CheckCircle className="h-5 w-5 text-accent flex-shrink-0" />
+                            <span className="font-medium">{skill}</span>
+                          </li>
                         ))}
-                      </div>
-                    )}
+                      </ul>
+                    </CardContent>
+                  </Card>
+              </div>
+          </TabsContent>
 
-                    {!isExploring && collegeSuggestions.length === 0 && (
-                         <div className="text-center text-muted-foreground py-8">
-                            <p>College suggestions will appear here once you search.</p>
-                         </div>
-                    )}
-                </CardContent>
-            </Card>
-        </TabsContent>
-    </Tabs>
+          <TabsContent value="career-deep-dive">
+              <CareerDeepDive careerId={selectedCareer.id} careerName={selectedCareer.name} />
+          </TabsContent>
+
+          <TabsContent value="exam-planner">
+              <Card>
+                  <CardHeader>
+                    <div className="flex flex-wrap justify-between items-center gap-4">
+                      <div>
+                        <CardTitle className="font-headline">Entrance Exam Planner</CardTitle>
+                        <CardDescription>Stay ahead of important exam deadlines based on your grade.</CardDescription>
+                      </div>
+                      <Select value={selectedGrade} onValueChange={setSelectedGrade}>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select your grade" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="9th">9th Grade</SelectItem>
+                          <SelectItem value="10th">10th Grade</SelectItem>
+                          <SelectItem value="11th">11th Grade</SelectItem>
+                          <SelectItem value="12th">12th Grade</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Exam</TableHead>
+                          <TableHead>Area</TableHead>
+                          <TableHead>Eligibility</TableHead>
+                          <TableHead>Typical Deadline</TableHead>
+                          <TableHead className="text-right">Action</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredExams.map((exam) => (
+                          <TableRow key={exam.name}>
+                            <TableCell className="font-medium">{exam.name}</TableCell>
+                            <TableCell>{exam.area}</TableCell>
+                            <TableCell>{exam.eligibility}</TableCell>
+                            <TableCell>{exam.deadline}</TableCell>
+                            <TableCell className="text-right">
+                              <Button variant="ghost" size="sm">
+                                <Bell className="mr-2 h-4 w-4" /> Set Reminder
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                        {filteredExams.length === 0 && (
+                          <TableRow>
+                              <TableCell colSpan={5} className="text-center text-muted-foreground py-6">No exams typically taken in {selectedGrade} Grade.</TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+              </Card>
+          </TabsContent>
+          
+          <TabsContent value="college-explorer">
+              <Card>
+                  <CardHeader>
+                      <CardTitle className="font-headline">AI College Explorer</CardTitle>
+                      <CardDescription>Find colleges that match your interests. Powered by AI.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onCollegeExplorerSubmit)} className="grid grid-cols-1 md:grid-cols-5 items-end gap-4 mb-6 p-4 border rounded-lg bg-secondary/30">
+                          <FormField control={form.control} name="major" render={({ field }) => (
+                              <FormItem className="w-full md:col-span-2"><FormLabel>Desired Major</FormLabel><FormControl><Input {...field} placeholder="e.g., Computer Science, Biology" /></FormControl><FormMessage /></FormItem>
+                          )} />
+                          <FormField control={form.control} name="location" render={({ field }) => (
+                              <FormItem className="w-full md:col-span-2"><FormLabel>Location (Optional)</FormLabel><FormControl><Input {...field} placeholder="e.g., California, USA or any" /></FormControl><FormMessage /></FormItem>
+                          )} />
+                          <Button type="submit" disabled={isExploring} className="w-full md:w-auto md:col-span-1 bg-accent hover:bg-accent/90 text-accent-foreground">
+                              {isExploring ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
+                               Find Colleges
+                          </Button>
+                        </form>
+                      </Form>
+                      
+                      {isExploring && (
+                        <div className="text-center py-8">
+                          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+                          <p className="mt-2 text-muted-foreground">Our AI is searching for the best colleges for you...</p>
+                        </div>
+                      )}
+                      
+                      {!isExploring && collegeSuggestions.length > 0 && (
+                        <div className="space-y-4">
+                          <h3 className="font-semibold text-lg">AI Recommendations:</h3>
+                          {collegeSuggestions.map(college => (
+                            <Card key={college.name}>
+                              <CardHeader>
+                                <CardTitle className="text-lg">{college.name}</CardTitle>
+                                <CardDescription>{college.location}</CardDescription>
+                              </CardHeader>
+                              <CardContent>
+                                <p>{college.description}</p>
+                              </CardContent>
+                            </Card>
+                          ))}
+                        </div>
+                      )}
+
+                      {!isExploring && collegeSuggestions.length === 0 && (
+                           <div className="text-center text-muted-foreground py-8">
+                              <p>College suggestions will appear here once you search.</p>
+                           </div>
+                      )}
+                  </CardContent>
+              </Card>
+          </TabsContent>
+      </Tabs>
+    </div>
   );
 }

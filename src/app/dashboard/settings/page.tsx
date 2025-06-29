@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -37,7 +38,7 @@ export default function SettingsPage() {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-3xl mx-auto">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline">Account Settings</CardTitle>

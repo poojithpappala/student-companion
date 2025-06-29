@@ -76,7 +76,7 @@ function AfterUndergradContent() {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 max-w-7xl mx-auto">
             <Card>
                 <CardHeader>
                     <CardTitle className="font-headline text-2xl text-primary">Your Dashboard for {career.name}</CardTitle>
