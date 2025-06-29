@@ -28,6 +28,7 @@ import {
   LogOut,
   Building2,
   GraduationCap,
+  Users,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -43,6 +44,7 @@ const tools = [
     { href: "/dashboard/salary-negotiator", icon: <BadgeCent />, label: "Salary Negotiator" },
     { href: "/dashboard/company-insights", icon: <Building2 />, label: "Company Insights" },
     { href: "/dashboard/graduate-school-finder", icon: <GraduationCap />, label: "Graduate School Finder" },
+    { href: "/dashboard/pods", icon: <Users />, label: "Accountability Pods"},
 ]
 
 export function DashboardSidebar() {
@@ -62,7 +64,6 @@ export function DashboardSidebar() {
     router.push('/auth');
   };
 
-  // Ensure the stage is always part of the query string for tool pages
   const preservedSearchParams = new URLSearchParams(searchParams);
   if (!preservedSearchParams.has('stage')) {
     preservedSearchParams.set('stage', currentStage);
@@ -110,7 +111,7 @@ export function DashboardSidebar() {
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname === item.href}
+                    isActive={pathname.startsWith(item.href)}
                     onClick={closeSidebar}
                     tooltip={{
                       children: item.label,

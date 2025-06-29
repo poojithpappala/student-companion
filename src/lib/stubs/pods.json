@@ -1,0 +1,35 @@
+
+[
+  {
+    "id": "pod-swe-interns",
+    "name": "SWE Intern Grinders",
+    "description": "For students aiming for top tech internships. Daily LeetCode check-ins and mock interview practice.",
+    "memberCount": 12,
+    "maxMembers": 20,
+    "tags": ["Software Engineering", "Internships", "LeetCode"]
+  },
+  {
+    "id": "pod-data-wizards",
+    "name": "Data Science Wizards",
+    "description": "A group for aspiring data scientists. We share datasets, work on Kaggle competitions, and build projects.",
+    "memberCount": 8,
+    "maxMembers": 15,
+    "tags": ["Data Science", "AI/ML", "Kaggle"]
+  },
+  {
+    "id": "pod-ux-innovators",
+    "name": "UX/UI Innovators",
+    "description": "Daily design challenges, portfolio reviews, and sharing the latest trends in UI/UX.",
+    "memberCount": 15,
+    "maxMembers": 25,
+    "tags": ["UX/UI Design", "Figma", "Portfolio"]
+  },
+  {
+    "id": "pod-founder-fuel",
+    "name": "Founder Fuel",
+    "description": "For student entrepreneurs building their startups. Weekly goal setting and progress sharing.",
+    "memberCount": 7,
+    "maxMembers": 10,
+    "tags": ["Entrepreneurship", "Startups", "Networking"]
+  }
+]

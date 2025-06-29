@@ -1,0 +1,48 @@
+
+[
+  {
+    "id": "act-1",
+    "podId": "pod-swe-interns",
+    "type": "check-in",
+    "user": { "name": "Alex Ray", "avatar": "https://placehold.co/40x40.png" },
+    "content": "Completed 2 Medium LeetCode problems today! Focused on dynamic programming.",
+    "timestamp": "2024-07-29T10:00:00Z",
+    "kudos": 5
+  },
+  {
+    "id": "act-2",
+    "podId": "pod-swe-interns",
+    "type": "kudos",
+    "user": { "name": "Brenda Smith", "avatar": "https://placehold.co/40x40.png" },
+    "content": "Gave kudos to @Alex Ray for their consistency!",
+    "timestamp": "2024-07-29T10:05:00Z",
+    "kudos": 2
+  },
+  {
+    "id": "act-3",
+    "podId": "pod-swe-interns",
+    "type": "check-in",
+    "user": { "name": "Charlie Day", "avatar": "https://placehold.co/40x40.png" },
+    "content": "Finished my resume review and applied to 3 internships.",
+    "timestamp": "2024-07-29T09:30:00Z",
+    "kudos": 12
+  },
+  {
+    "id": "act-4",
+    "podId": "pod-swe-interns",
+    "type": "check-in",
+    "user": { "name": "Diana Prince", "avatar": "https://placehold.co/40x40.png" },
+    "content": "Worked on my portfolio project's backend. Fixed a nasty bug!",
+    "timestamp": "2024-07-28T18:00:00Z",
+    "kudos": 8
+  },
+    {
+    "id": "act-5",
+    "podId": "pod-data-wizards",
+    "type": "check-in",
+    "user": { "name": "Ethan Hunt", "avatar": "https://placehold.co/40x40.png" },
+    "content": "Cleaned up the dataset for our Kaggle competition.",
+    "timestamp": "2024-07-29T11:00:00Z",
+    "kudos": 3
+  }
+]
