@@ -143,7 +143,7 @@ export default function LandingPage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-12 md:py-16">
+        <section className="pt-2 md:pt-4 pb-12 md:pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
             <div className="animate-fade-in-up text-center md:text-left">
               <h1 className="font-headline text-4xl md:text-6xl font-bold text-primary leading-tight">
@@ -299,3 +299,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
