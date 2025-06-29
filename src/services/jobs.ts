@@ -27,9 +27,8 @@ export async function fetchAdzunaJobs({
     resultsPerPage = 5,
     page = 1
 }: { query?: string, country?: string, resultsPerPage?: number, page?: number }): Promise<Job[]> {
-    if (!APP_ID || !API_KEY) {
-        console.error("Adzuna API credentials are not set in .env file");
-        // Return empty array but don't crash the app
+    if (!APP_ID || !API_KEY || APP_ID === 'YOUR_ADZUNA_APP_ID' || API_KEY === 'YOUR_ADZUNA_API_KEY') {
+        console.warn("Adzuna API credentials are not set or are using default placeholders. Skipping job fetch.");
         return [];
     }
 
