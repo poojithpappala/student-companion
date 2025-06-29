@@ -13,6 +13,7 @@ import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/consta
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import { CareerRoadmap } from "@/components/dashboard/during/career-roadmap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 const applicationTracker = [
     { company: "Innovate LLC", role: "Frontend Intern", status: "Applied" },
@@ -29,6 +30,7 @@ function DuringUndergradContent() {
   const [internships, setInternships] = useState<Job[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   const projectIdeas = (careerId && projectIdeasByCareer[careerId]) || defaultProjectIdeas;
 
@@ -36,21 +38,29 @@ function DuringUndergradContent() {
     async function loadJobs() {
       if (career) {
         setLoading(true);
-        const [internshipResults, jobResults] = await Promise.all([
-          fetchAdzunaJobs({ query: `${career.name} intern`, resultsPerPage: 10 }),
-          fetchAdzunaJobs({ query: `${career.name} graduate`, resultsPerPage: 5 })
-        ]);
-        setInternships(internshipResults);
-        setJobs(jobResults);
+        try {
+          const [internshipResults, jobResults] = await Promise.all([
+            fetchAdzunaJobs({ query: `${career.name} intern`, resultsPerPage: 10 }),
+            fetchAdzunaJobs({ query: `${career.name} graduate`, resultsPerPage: 5 })
+          ]);
+          setInternships(internshipResults);
+          setJobs(jobResults);
+        } catch (error) {
+            console.error("Failed to load dashboard data:", error);
+            toast({
+                variant: "destructive",
+                title: "Error Loading Jobs",
+                description: "Could not load job listings. Please check your connection or try again later.",
+            });
+        } finally {
+            setLoading(false);
+        }
+      } else {
         setLoading(false);
       }
     }
-    if (career) {
-        loadJobs();
-    } else {
-        setLoading(false);
-    }
-  }, [career]);
+    loadJobs();
+  }, [career, toast]);
 
   if (!careerId || !career) {
     return (
@@ -102,7 +112,7 @@ function DuringUndergradContent() {
     switch(year) {
       case '1st Year':
         return (
-          <Tabs defaultValue="roadmap" className="space-y-6">
+          <Tabs defaultValue="roadmap">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="foundations"><FileText className="mr-2 h-4 w-4" /> Foundations</TabsTrigger>
@@ -127,7 +137,7 @@ function DuringUndergradContent() {
         );
       case '2nd Year':
         return (
-          <Tabs defaultValue="roadmap" className="space-y-6">
+          <Tabs defaultValue="roadmap">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="skill-building"><Lightbulb className="mr-2 h-4 w-4" /> Skill Building</TabsTrigger>
@@ -180,7 +190,7 @@ function DuringUndergradContent() {
         );
       case '3rd Year':
         return (
-          <Tabs defaultValue="roadmap" className="space-y-6">
+          <Tabs defaultValue="roadmap">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="internships"><Briefcase className="mr-2 h-4 w-4" /> Internships</TabsTrigger>
@@ -249,7 +259,7 @@ function DuringUndergradContent() {
         );
       case 'Final Year':
         return (
-          <Tabs defaultValue="roadmap" className="space-y-6">
+          <Tabs defaultValue="roadmap">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="roadmap"><Target className="mr-2 h-4 w-4" /> Roadmap</TabsTrigger>
               <TabsTrigger value="next-steps"><ArrowRight className="mr-2 h-4 w-4" /> Career Steps</TabsTrigger>
@@ -313,7 +323,7 @@ function DuringUndergradContent() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard for {career.name}</CardTitle>
+          <CardTitle className="font-headline text-2xl text-primary">Your {year} Dashboard for {career?.name}</CardTitle>
           <CardDescription>
             Here are your personalized tools and resources for this year. You can switch years in the settings.
           </CardDescription>
@@ -331,3 +341,5 @@ export default function DuringUndergradPage() {
         </Suspense>
     )
 }
+
+    
