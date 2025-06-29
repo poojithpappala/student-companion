@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
@@ -7,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, Compass, type LucideProps, Loader2 } from "lucide-react";
+import { Lightbulb, Briefcase, Target, FileText, MessageSquare, ArrowRight, School, Compass, type LucideProps, Loader2, Building2 } from "lucide-react";
 import { projectIdeasByCareer, defaultProjectIdeas, careers } from '@/lib/constants';
 import { fetchAdzunaJobs, type Job } from '@/services/jobs';
 import type { ComponentType } from "react";
@@ -196,47 +197,58 @@ function DuringUndergradContent() {
             </TabsContent>
             <TabsContent value="internships" className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship Board</CardTitle>
-                    <CardDescription>Live internship postings for {career.name} from Adzuna.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                    <ScrollArea className="h-72">
-                        {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
-                        {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No internships found.</p>}
-                        {internships.map(i => (
-                        <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
-                            <div>
-                            <h4 className="font-semibold">{i.title}</h4>
-                            <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                    <Card>
+                        <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><Briefcase/> Internship Board</CardTitle>
+                        <CardDescription>Live internship postings for {career.name} from Adzuna.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                        <ScrollArea className="h-72">
+                            {loading && <div className="flex justify-center items-center h-full"><Loader2 className="w-8 h-8 animate-spin text-primary"/></div>}
+                            {!loading && internships.length === 0 && <p className="text-muted-foreground text-center pt-4">No internships found.</p>}
+                            {internships.map(i => (
+                            <div key={i.id} className="p-3 mb-2 rounded-md border flex justify-between items-center">
+                                <div>
+                                <h4 className="font-semibold">{i.title}</h4>
+                                <p className="text-sm text-muted-foreground">{i.company.display_name} - {i.location.display_name}</p>
+                                </div>
+                                <Button size="sm" asChild variant="secondary"><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
                             </div>
-                            <Button size="sm" asChild variant="secondary"><Link href={i.redirect_url} target="_blank">Apply</Link></Button>
-                        </div>
+                            ))}
+                        </ScrollArea>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                        <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
+                        <CardDescription>Keep track of your job applications (demo).</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                        {applicationTracker.map(app => (
+                            <div key={app.company} className="p-3 mb-2 rounded-md border">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                <h4 className="font-semibold">{app.role}</h4>
+                                <p className="text-sm text-muted-foreground">{app.company}</p>
+                                </div>
+                                <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
+                            </div>
+                            </div>
                         ))}
-                    </ScrollArea>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                    <CardTitle className="font-headline flex items-center gap-2"><Target/> Application Tracker</CardTitle>
-                    <CardDescription>Keep track of your job applications (demo).</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                    {applicationTracker.map(app => (
-                        <div key={app.company} className="p-3 mb-2 rounded-md border">
-                        <div className="flex justify-between items-center">
-                            <div>
-                            <h4 className="font-semibold">{app.role}</h4>
-                            <p className="text-sm text-muted-foreground">{app.company}</p>
-                            </div>
-                            <Badge variant={app.status === 'Offer' ? 'default' : 'outline'}>{app.status}</Badge>
-                        </div>
-                        </div>
-                    ))}
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
                 </div>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                       <div>
+                        <CardTitle className="font-headline flex items-center gap-2"><Building2/> Company Insights</CardTitle>
+                        <CardDescription>Research companies before you apply. Get AI-powered insights on culture and interviews.</CardDescription>
+                       </div>
+                        <Button asChild>
+                            <Link href="/dashboard/company-insights">Get Insights <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                        </Button>
+                    </CardHeader>
+                </Card>
             </TabsContent>
           </Tabs>
         );
@@ -283,6 +295,18 @@ function DuringUndergradContent() {
                     </CardContent>
                 </Card>
                 </div>
+
+                <Card className="bg-primary text-primary-foreground">
+                    <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle className="font-headline">Salary Negotiation Coach</CardTitle>
+                        <CardDescription className="text-primary-foreground/80">Don't leave money on the table. Get AI-powered negotiation tips.</CardDescription>
+                    </div>
+                    <Button asChild variant="secondary">
+                        <Link href="/dashboard/salary-negotiator">Launch Coach <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                    </Button>
+                    </CardHeader>
+                </Card>
             </TabsContent>
           </Tabs>
         );
