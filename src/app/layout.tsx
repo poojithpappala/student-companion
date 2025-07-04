@@ -6,6 +6,9 @@ import { ThemeProvider } from '@/components/theme-provider';
 export const metadata: Metadata = {
   title: 'Student Companion',
   description: 'Your career coach in your pocket',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
